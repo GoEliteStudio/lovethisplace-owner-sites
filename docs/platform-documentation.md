@@ -10,9 +10,9 @@ canonical: "https://lovethisplace-sites.vercel.app/platform-documentation"
 
 # Villa Engine — Technical Platform Documentation
 
-> **Version:** 2025-12-05  
+> **Version:** 2026-01-01  
 > **Branch:** `main`  
-> **Status:** Production multi-villa system with 3 villas, full i18n (EN/ES/FR), Stripe payments, Firestore database, Brevo email delivery, villa-specific pricing, and minimum nights validation.
+> **Status:** Production multi-villa system with 6 villas, full i18n (EN/ES/FR/EL/RU), Stripe payments, Firestore database, Brevo email delivery, villa-specific pricing, and minimum nights validation.
 
 ---
 
@@ -24,16 +24,17 @@ The **LoveThisPlace Villa Engine** is a production-grade, multi-villa website pl
 - **Direct bookings** without Airbnb/Booking.com commissions
 - **Enterprise SEO** with 8+ JSON-LD schemas for Google rich results
 - **Secure payments** via Stripe with 23-hour checkout sessions
-- **Multi-language support** (English, Spanish, French)
+- **Multi-language support** (English, Spanish, French, Greek, Russian)
 - **Zero maintenance** — no plugins, no updates, no security patches
+- **Master FAQ Bank** — 170+ tokenized FAQs with preset system for scalability
 
 ### Current Production Status
 
 | Metric | Value |
 |--------|-------|
-| **Villas Live** | 3 (Domaine des Montarels, Casa de la Muralla, Mount Zurich) |
-| **Languages** | EN, ES, FR |
-| **Total Images** | 216 curated |
+| **Villas Live** | 6 (Domaine des Montarels, Casa de la Muralla, Casa Del Toro, Mount Zurich, Villa Kassandra, Villa Orama) |
+| **Languages** | EN, ES, FR, EL, RU |
+| **Total FAQs** | 170+ (Master FAQ Bank) |
 | **Email Provider** | Brevo SMTP (99.9% deliverability) |
 | **Payment Provider** | Stripe Checkout |
 | **Database** | Firebase Firestore |

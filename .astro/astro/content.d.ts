@@ -155,6 +155,16 @@ declare module 'astro:content' {
   collection: "villas";
   data: any
 };
+"casa-del-toro.en": {
+	id: "casa-del-toro.en";
+  collection: "villas";
+  data: any
+};
+"casa-del-toro.es": {
+	id: "casa-del-toro.es";
+  collection: "villas";
+  data: any
+};
 "domaine-des-montarels.en": {
 	id: "domaine-des-montarels.en";
   collection: "villas";

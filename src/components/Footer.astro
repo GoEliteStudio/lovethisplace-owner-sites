@@ -15,6 +15,7 @@ interface Props {
   contactHeading: string;
   contactLinks: FooterLink[];
   copyrightSuffix: string;
+  ecosystemNote?: string;
 }
 
 const {
@@ -27,7 +28,8 @@ const {
   infoLinks,
   contactHeading,
   contactLinks,
-  copyrightSuffix
+  copyrightSuffix,
+  ecosystemNote
 } = Astro.props as Props;
 
 const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href))?.href ?? 'mailto:info@villa.com';
@@ -89,6 +91,7 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
     
     <div class="footer-bottom">
       <p>&copy; {new Date().getFullYear()} {villaName}. {copyrightSuffix}</p>
+      {ecosystemNote && <p class="ecosystem-note">{ecosystemNote}</p>}
     </div>
   </div>
 </footer>
@@ -97,7 +100,7 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
   .site-footer {
     background-color: var(--color-dark-gray);
     color: var(--color-white);
-    padding: 80px 0 40px;
+    padding: 25px 0 15px;
     margin-top: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
@@ -112,24 +115,25 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
   .footer-content {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 60px;
-    margin-bottom: 60px;
+    gap: 20px;
+    margin-bottom: 12px;
+    align-items: start;
   }
 
   .footer-logo {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-family: var(--font-serif);
     font-weight: 600;
-    letter-spacing: 3px;
-    margin-bottom: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
     color: var(--color-white);
   }
 
   .footer-heading {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-family: var(--font-serif);
     font-weight: 500;
-    margin-bottom: 25px;
+    margin-bottom: 12px;
     position: relative;
     display: inline-block;
     color: var(--color-white);
@@ -140,9 +144,9 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
   .footer-heading:after {
     content: '';
     position: absolute;
-    bottom: -12px;
+    bottom: -6px;
     left: 0;
-    width: 30px;
+    width: 25px;
     height: 1px;
     background-color: var(--color-accent);
     transition: width var(--transition-fast);
@@ -154,24 +158,24 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
 
   .footer-description {
     color: #aaa;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin-bottom: 30px;
-    max-width: 320px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    max-width: 300px;
     font-weight: 300;
   }
 
   .social-links {
     display: flex;
-    gap: 15px;
+    gap: 10px;
   }
 
   .social-link {
     color: #aaa;
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: var(--transition-fast);
-    width: 44px;
-    height: 44px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -193,14 +197,18 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
   }
 
   .footer-links li {
-    margin-bottom: 14px;
+    margin-bottom: 4px;
+  }
+
+  .footer-links li:last-child {
+    margin-bottom: 0;
   }
 
   .footer-links a {
     color: #aaa;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     transition: var(--transition-fast);
-    padding: 4px 0;
+    padding: 1px 0;
     display: inline-block;
     position: relative;
     font-weight: 300;
@@ -229,9 +237,9 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
 
   .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 30px;
+    padding-top: 12px;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #777;
     letter-spacing: 1px;
   }
@@ -240,6 +248,15 @@ const fallbackEmailLink = contactLinks.find((item) => /^mailto:/i.test(item.href
     margin: 0;
     font-weight: 300;
     text-transform: uppercase;
+  }
+
+  .footer-bottom .ecosystem-note {
+    margin-top: 5px;
+    font-size: 0.65rem;
+    color: #666;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    font-weight: 300;
   }
 
   /* Responsive Design */

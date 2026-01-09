@@ -70,9 +70,10 @@ const villaFooter = {
 const contactEmails: Record<string, string> = {
   'casa-de-la-muralla': 'reservations@casadelamuralla.com',
   'domaine-des-montarels': 'jc@elitecartagena.com',
-  'mount-zurich': 'reservations@mountzurich.com'
+  'mount-zurich': 'reservations@mountzurich.com',
+  'casa-del-toro': 'jc@elitecartagena.com'
 };
-const contactEmail = contactEmails[slug] || contactEmails['domaine-des-montarels'];
+const contactEmail = contactEmails[slug] || 'jc@elitecartagena.com';
 
 // Page metadata
 const title = `${thankYouUI.pageTitle} — ${villa.name}`;

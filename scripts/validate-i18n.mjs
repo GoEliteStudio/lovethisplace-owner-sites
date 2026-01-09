@@ -44,6 +44,7 @@ const log = {
 };
 
 // Required top-level fields
+// Note: content.faq is NOT required if faqConfig is present (bank-first approach)
 const REQUIRED_FIELDS = [
   'slug',
   'name',
@@ -62,11 +63,14 @@ const REQUIRED_FIELDS = [
   'content.hosts.names',
   'content.hosts.bio',
   'content.testimonials',
-  'content.faq',
+  // 'content.faq' - Now optional if faqConfig is present (bank-first approach)
   'amenities',
   'specs',
   'seasons'
 ];
+
+// Fields that make content.faq optional (bank-first FAQ approach)
+const FAQ_BANK_FIELDS = ['faqConfig', 'villaTokens'];
 
 /**
  * Get value from nested object using dot notation path
@@ -117,19 +121,23 @@ function findMissingKeys(master, variant, prefix = '') {
 
 /**
  * Check array lengths match between master and variant
+ * @param {boolean} usesBankFirst - If true, skip content.faq check
  */
-function checkArrayLengths(master, variant, villaName, lang) {
+function checkArrayLengths(master, variant, villaName, lang, usesBankFirst = false) {
   const issues = [];
   
   const arrays = [
     { path: 'images', name: 'Images' },
     { path: 'amenities', name: 'Amenities' },
     { path: 'content.testimonials', name: 'Testimonials' },
-    { path: 'content.faq', name: 'FAQ' },
+    { path: 'content.faq', name: 'FAQ', skipIfBankFirst: true },
     { path: 'seasons', name: 'Seasons' }
   ];
   
-  for (const { path, name } of arrays) {
+  for (const { path, name, skipIfBankFirst } of arrays) {
+    // Skip content.faq for bank-first villas
+    if (skipIfBankFirst && usesBankFirst) continue;
+    
     const masterArray = getNestedValue(master, path);
     const variantArray = getNestedValue(variant, path);
     
@@ -223,10 +231,22 @@ function validateVilla(slug) {
     let warnings = 0;
     
     // 1. Check required fields
+    // Determine if this villa uses bank-first FAQ approach (faqConfig instead of content.faq)
+    const usesBankFirst = FAQ_BANK_FIELDS.some(field => master[field] !== undefined);
+    
     for (const field of REQUIRED_FIELDS) {
       const value = getNestedValue(variant, field);
       if (value === undefined || value === null) {
         log.error(`  Missing required field: ${field}`);
+        errors++;
+      }
+    }
+    
+    // Check content.faq ONLY if NOT using bank-first approach
+    if (!usesBankFirst) {
+      const faqValue = getNestedValue(variant, 'content.faq');
+      if (faqValue === undefined || faqValue === null) {
+        log.error(`  Missing required field: content.faq`);
         errors++;
       }
     }
@@ -244,8 +264,8 @@ function validateVilla(slug) {
       errors += missingKeys.length;
     }
     
-    // 3. Check array lengths
-    const arrayIssues = checkArrayLengths(master, variant, slug, lang);
+    // 3. Check array lengths (pass usesBankFirst to skip content.faq check if applicable)
+    const arrayIssues = checkArrayLengths(master, variant, slug, lang, usesBankFirst);
     if (arrayIssues.length > 0) {
       log.error(`  Array length mismatches:`);
       arrayIssues.forEach(issue => {

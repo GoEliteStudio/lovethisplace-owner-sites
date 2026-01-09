@@ -10,6 +10,7 @@ import { VILLA_LANGUAGES, LANG_META } from '../../../config/i18n';
 import { getUIStrings } from '../../../config/uiStrings';
 import { buildSchemaGraph } from '../../../lib/schema';
 import { buildSearchDataset } from '../../../lib/search';
+import { resolveFaqs, injectContext, type VillaContext, type ResolvedFaq } from '../../../data/faq';
 
 // 1. DYNAMIC ROUTING & DATA LOADING
 export async function getStaticPaths() {
@@ -41,9 +42,42 @@ type VillaImage = { src: string; alt: string; caption?: string };
 type VillaSeason = { id: string; label: string; price: string | null; currency: string | null; priceDisplay: string };
 type FaqGroup = { category: string; items: { q: string; a: string }[] };
 
+// 2b. FAQ RESOLUTION (Bank-First System)
+// Detect whether villa uses new FAQ bank or legacy embedded FAQs
+const useBankFaqs = Boolean(villa.faqConfig?.faqPreset || villa.faqConfig?.faqIds);
+
+// Resolve FAQs from bank or use legacy fallback
+let resolvedFaqSet: ReturnType<typeof resolveFaqs> | null = null;
+let bankFaqs: Array<{ q: string; a: string; category: string }> = [];
+
+if (useBankFaqs) {
+  // Build villa context for token interpolation
+  const villaContext: VillaContext = {
+    villaName: villa.name,
+    ...(villa.villaTokens || {})
+  };
+  
+  // Resolve FAQs from the Master FAQ Bank
+  const rawFaqSet = resolveFaqs(
+    villa.faqConfig,
+    undefined, // no legacy FAQs
+    lang
+  );
+  
+  // Apply token interpolation
+  resolvedFaqSet = injectContext(rawFaqSet, villaContext);
+  
+  // Convert to simple format for tabs/search compatibility
+  bankFaqs = resolvedFaqSet.allFaqs.map((faq: ResolvedFaq) => ({
+    q: faq.q,
+    a: faq.a,
+    category: faq.category
+  }));
+}
+
 // 3. LOGIC (Preserved Exactly from Original)
 
-const searchItems = buildSearchDataset(villa);
+const searchItems = buildSearchDataset(villa, bankFaqs);
 
 // Hero image ordering – configurable priority with graceful fallbacks
 const allImages: VillaImage[] = Array.isArray(villa.images) ? villa.images : [];
@@ -258,6 +292,29 @@ if (villa.content?.faq?.length) {
       });
     }
   }
+} else if (useBankFaqs && bankFaqs.length) {
+  // Bank-first FAQ system: group by category for rich accordion display
+  const defaultCategory = ui.tabs.faqGeneralCategory || 'General';
+  const groupMap = new Map<string, { q: string; a: string }[]>();
+
+  for (const entry of bankFaqs) {
+    const category = entry.category || defaultCategory;
+    if (!groupMap.has(category)) {
+      groupMap.set(category, []);
+    }
+    groupMap.get(category)?.push({ q: entry.q, a: entry.a });
+  }
+
+  const faqGroups: FaqGroup[] = Array.from(groupMap.entries()).map(([category, items]) => ({ category, items }));
+
+  if (faqGroups.length) {
+    extraTabs.push({
+      id: 'faq',
+      label: ui.tabs.faqLabel ?? 'FAQ',
+      heading: ui.tabs.faqHeading ?? 'Frequently Asked Questions',
+      faqGroups
+    });
+  }
 }
 
 const tabs = [
@@ -427,7 +484,7 @@ const villaFooter = {
     </section>
   )}
 
-  {(villa.content?.faq?.length || villa.amenities?.length) && (
+  {(villa.content?.faq?.length || useBankFaqs || villa.amenities?.length) && (
     <section class="container search-section">
       <div class="search-elegant">
         <div class="search-trigger" id="search-trigger">
@@ -436,7 +493,10 @@ const villaFooter = {
         </div>
 
         <ul id="search-seed" hidden>
+          {/* Legacy embedded FAQs */}
           {(villa.content?.faq || []).map((f: any) => <li data-type="faq" data-title={f.q} data-content={f.a} data-search={(f.q + ' ' + f.a).toLowerCase()}></li>)}
+          {/* Bank FAQs (when using new system) */}
+          {useBankFaqs && bankFaqs.map((f) => <li data-type="faq" data-title={f.q} data-content={f.a} data-search={(f.q + ' ' + f.a).toLowerCase()}></li>)}
           {(villa.amenities || []).map((a: string) => <li data-type="amenity" data-title={a} data-content="Available feature" data-search={a.toLowerCase()}></li>)}
         </ul>
         
@@ -592,14 +652,14 @@ const villaFooter = {
     .experience-content { display: grid; gap: 20px; }
     .experience-intro { max-width: 720px; font-size: 1.1rem; color: var(--color-muted); }
     
-    .hosts { margin: 56px auto; }
-    .hosts-wrapper { display: grid; grid-template-columns: 1.15fr 1.85fr; gap: 28px; align-items: stretch; }
-    .hosts-media { margin: 0; border-radius: 18px; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,.12); background: #000; }
-    .hosts-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .hosts-card { background: linear-gradient(180deg, #fff, #faf8f5); border: 1px solid #eee; border-radius: 18px; padding: 40px; }
-    .hosts-card h2 { font-size: 2rem; margin-bottom: 12px; }
-    .hosts-subtitle { font-size: 0.95rem; color: var(--color-accent); text-transform: uppercase; letter-spacing: 1px; margin: -8px 0 16px; font-weight: 500; }
-    .hosts-highlights { list-style: none; padding: 0; margin-top: 10px; display: grid; gap: 10px; }
+    .hosts { margin: 40px auto; }
+    .hosts-wrapper { display: grid; grid-template-columns: 1.15fr 1.85fr; gap: 20px; align-items: start; }
+    .hosts-media { margin: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,.10); background: #000; }
+    .hosts-media img { display: block; width: 100%; height: auto; object-fit: cover; }
+    .hosts-card { background: linear-gradient(180deg, #fff, #faf8f5); border: 1px solid #eee; border-radius: 14px; padding: 24px 28px; }
+    .hosts-card h2 { font-size: 1.75rem; margin-bottom: 8px; }
+    .hosts-subtitle { font-size: 0.9rem; color: var(--color-accent); text-transform: uppercase; letter-spacing: 1px; margin: -4px 0 12px; font-weight: 500; }
+    .hosts-highlights { list-style: none; padding: 0; margin-top: 8px; display: grid; gap: 6px; }
     .hosts-highlights li { display: flex; gap: 10px; align-items: center; color: #444; }
     .hosts-highlights i { color: var(--color-accent); }
 

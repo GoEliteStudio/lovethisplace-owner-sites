@@ -11,8 +11,8 @@ export function getUIStrings(lang: string) {
 export const UI_STRINGS: Record<SupportedLang, any> = {
   en: {
     trustBar: {
-      flexibleCancellationTitle: 'Flexible Cancellation',
-      flexibleCancellationDetail: 'Full refund up to 60 days prior',
+      flexibleCancellationTitle: 'Cancellation Policy',
+      flexibleCancellationDetail: 'Refund available 14+ days prior',
       secureContractTitle: 'Secure Contract',
       secureContractDetail: 'Stripe-protected agreements',
       conciergeTitle: 'Concierge',
@@ -112,7 +112,8 @@ export const UI_STRINGS: Record<SupportedLang, any> = {
         { label: 'info@villa.com', href: 'mailto:info@villa.com' },
         { label: 'Contact Us', href: '/contact' }
       ],
-      copyrightSuffix: 'All rights reserved. | Luxury Villa Retreat'
+      copyrightSuffix: 'All rights reserved. | Luxury Villa Retreat',
+      ecosystemNote: 'Part of the LoveThisPlace Ecosystem. VIP hosting services by Elite Cartagena.'
     },
     search: {
       triggerLabel: 'Search FAQs & amenities',
@@ -244,7 +245,7 @@ export const UI_STRINGS: Record<SupportedLang, any> = {
   es: {
     trustBar: {
       flexibleCancellationTitle: 'Cancelación flexible',
-      flexibleCancellationDetail: 'Reembolso completo hasta 60 días antes',
+      flexibleCancellationDetail: 'Reembolso disponible 14+ días antes',
       secureContractTitle: 'Contrato seguro',
       secureContractDetail: 'Acuerdos protegidos por Stripe',
       conciergeTitle: 'Conserjería',
@@ -322,7 +323,8 @@ export const UI_STRINGS: Record<SupportedLang, any> = {
         { label: 'info@villa.com', href: 'mailto:info@villa.com' },
         { label: 'Contáctenos', href: '/contact' }
       ],
-      copyrightSuffix: 'Todos los derechos reservados. | Retiro de villa de lujo'
+      copyrightSuffix: 'Todos los derechos reservados. | Retiro de villa de lujo',
+      ecosystemNote: 'Parte del Ecosistema LoveThisPlace. Servicios de hosting VIP por Elite Cartagena.'
     },
     search: {
       triggerLabel: 'Buscar preguntas y servicios',

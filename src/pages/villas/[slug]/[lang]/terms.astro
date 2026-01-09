@@ -450,6 +450,138 @@ const villaOverrides: Record<string, Record<string, Partial<TermsData>>> = {
   // Add more villa overrides here as owners customize their terms
 };
 
+// Casa Del Toro - Cartagena Walled City Villa
+villaOverrides['casa-del-toro'] = {
+  en: {
+    intro: `These terms govern reservations, guest conduct, and operational policies for Casa Del Toro, Getsemaní, Cartagena, Colombia.`,
+    sections: [
+      {
+        heading: '1. Reservations & Payments',
+        content: [
+          '<strong>Booking Confirmation</strong> — All reservations must be confirmed in writing by our concierge team.',
+          '<strong>Deposit Requirement</strong> — A 50% deposit is typically required to secure your dates, with the remaining 50% due 30 days prior to arrival.',
+          '<strong>Last-Minute Bookings</strong> — For last-minute bookings, full payment may be required upfront.',
+          '<strong>Payment Methods</strong> — We accept Visa, MasterCard, and AMEX via secure Stripe link (3% processing fee applies). Wire transfers have no fee.'
+        ]
+      },
+      {
+        heading: '2. Cancellation Policy',
+        content: [
+          '<strong>Deposit</strong> — The 50% deposit is non-refundable.',
+          '<strong>14+ Days Before Check-in</strong> — Cancellations made 14 or more days prior to check-in will receive a refund for any amount paid beyond the initial 50% deposit.',
+          '<strong>Less Than 14 Days</strong> — No refund will be provided.',
+          '<strong>Travel Insurance</strong> — We strongly recommend guests obtain comprehensive travel insurance.'
+        ]
+      },
+      {
+        heading: '3. Guest Responsibilities',
+        content: [
+          'Treat the villa, furnishings, equipment, and staff with respect.',
+          'Comply with local guidelines regarding music and nighttime noise (music must stop at 10 PM per Cartagena police enforcement).',
+          'No smoking inside any interior spaces.',
+          'Supervise children at all times, especially around the pool.',
+          'Report damages or maintenance issues immediately.'
+        ]
+      },
+      {
+        heading: '4. Staff & Service Hours',
+        content: [
+          'The villa includes a dedicated daytime cook and maid (7:00 AM – 4:00 PM).',
+          'A live-in administrator provides 24/7 security and on-site assistance.',
+          'Breakfast preparation can be arranged with our chef services (groceries cost extra).',
+          'Additional late-night service or extended chef hours may incur extra fees.'
+        ]
+      },
+      {
+        heading: '5. Liability & Personal Property',
+        content: [
+          'Casa Del Toro is not responsible for loss or damage to personal belongings.',
+          'Guests assume responsibility for their own safety when using facilities.',
+          'The villa is not liable for service interruptions beyond its control.'
+        ]
+      },
+      {
+        heading: '6. Events & Gatherings',
+        content: [
+          'Events with more than 14 guests require prior approval.',
+          'Outside vendors are permitted with advance coordination.',
+          'Music must stop at 10:00 PM in compliance with local noise ordinances.'
+        ]
+      },
+      {
+        heading: '7. Force Majeure',
+        content: `In the event of circumstances beyond reasonable control, Casa Del Toro may reschedule the stay or offer a credit for future use.`
+      }
+    ],
+    jurisdiction: 'These terms are governed by the laws of Colombia.',
+    contact: { email: 'jc@elitecartagena.com', note: 'or contact your dedicated VIP concierge.' }
+  },
+  es: {
+    intro: `Estos términos rigen las reservas, conducta de los huéspedes y políticas operativas para Casa Del Toro, Getsemaní, Cartagena, Colombia.`,
+    sections: [
+      {
+        heading: '1. Reservas y Pagos',
+        content: [
+          '<strong>Confirmación de Reserva</strong> — Todas las reservas deben ser confirmadas por escrito por nuestro equipo de conserjería.',
+          '<strong>Requisito de Depósito</strong> — Normalmente se requiere un depósito del 50% para asegurar las fechas, con el 50% restante a pagar 30 días antes de la llegada.',
+          '<strong>Reservas de Último Momento</strong> — Para reservas de último momento, puede requerirse el pago completo por adelantado.',
+          '<strong>Métodos de Pago</strong> — Aceptamos Visa, MasterCard y AMEX a través de enlace seguro de Stripe (aplica tarifa de procesamiento del 3%). Las transferencias bancarias no tienen comisión.'
+        ]
+      },
+      {
+        heading: '2. Política de Cancelación',
+        content: [
+          '<strong>Depósito</strong> — El depósito del 50% no es reembolsable.',
+          '<strong>14+ Días Antes del Check-in</strong> — Las cancelaciones realizadas 14 o más días antes del check-in recibirán un reembolso por cualquier monto pagado más allá del depósito inicial del 50%.',
+          '<strong>Menos de 14 Días</strong> — No se proporcionará reembolso.',
+          '<strong>Seguro de Viaje</strong> — Recomendamos encarecidamente que los huéspedes obtengan un seguro de viaje integral.'
+        ]
+      },
+      {
+        heading: '3. Responsabilidades del Huésped',
+        content: [
+          'Tratar la villa, muebles, equipos y personal con respeto.',
+          'Cumplir con las normas locales sobre música y ruido nocturno (la música debe parar a las 10 PM según la aplicación de la policía de Cartagena).',
+          'No fumar dentro de espacios interiores.',
+          'Supervisar a los niños en todo momento, especialmente cerca de la piscina.',
+          'Reportar daños o problemas de mantenimiento inmediatamente.'
+        ]
+      },
+      {
+        heading: '4. Personal y Horarios de Servicio',
+        content: [
+          'La villa incluye cocinera y empleada de día dedicadas (7:00 AM – 4:00 PM).',
+          'Un administrador residente proporciona seguridad 24/7 y asistencia en el sitio.',
+          'La preparación del desayuno puede organizarse con nuestros servicios de chef (los alimentos cuestan extra).',
+          'El servicio nocturno adicional o horas extendidas de chef pueden incurrir en cargos extra.'
+        ]
+      },
+      {
+        heading: '5. Responsabilidad y Propiedad Personal',
+        content: [
+          'Casa Del Toro no es responsable por pérdida o daño a pertenencias personales.',
+          'Los huéspedes asumen responsabilidad por su propia seguridad al usar las instalaciones.',
+          'La villa no es responsable por interrupciones de servicio fuera de su control.'
+        ]
+      },
+      {
+        heading: '6. Eventos y Reuniones',
+        content: [
+          'Los eventos con más de 14 invitados requieren aprobación previa.',
+          'Se permiten proveedores externos con coordinación anticipada.',
+          'La música debe parar a las 10:00 PM en cumplimiento con las ordenanzas locales de ruido.'
+        ]
+      },
+      {
+        heading: '7. Fuerza Mayor',
+        content: `En caso de circunstancias fuera de control razonable, Casa Del Toro puede reprogramar la estadía u ofrecer un crédito para uso futuro.`
+      }
+    ],
+    jurisdiction: 'Estos términos se rigen por las leyes de Colombia.',
+    contact: { email: 'jc@elitecartagena.com', note: 'o contacte a su conserje VIP dedicado.' }
+  }
+};
+
 // =============================================================================
 // TERMS RESOLUTION LOGIC
 // 1. Check for villa-specific override

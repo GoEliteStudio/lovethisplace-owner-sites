@@ -1,0 +1,266 @@
+{
+  "slug": "casa-del-toro",
+  "language": "en",
+  "name": "Casa Del Toro",
+  "summary": "Casa Del Toro is a luxury 7-bedroom villa in Getsemaní, Cartagena, offering an exceptional blend of historic charm, modern comfort, and privacy-first service. Fully renovated in October 2024, this private villa features an expansive ground-floor pool, a rooftop terrace with hot tub and daybeds, and seven oversized bedrooms — each with a king-size bed and en-suite bathroom. Located steps from the Walled City, Casa Del Toro is ideal for groups seeking a refined, walkable, and authentic Cartagena experience.",
+
+  "faqConfig": {
+    "faqPreset": "cartagena-walled-city-villa",
+    "excludeFaqIds": [
+      "arrival-helicopter",
+      "arrival-pier-capacity", 
+      "arrival-pier-depth",
+      "arrival-rental-boat",
+      "arrival-rental-boat-docking",
+      "arrival-luggage-boat",
+      "arrival-luggage-logistics",
+      "location-island-privacy",
+      "location-privacy",
+      "location-getsemani",
+      "staff-butler",
+      "staff-turndown",
+      "amenities-tennis-court"
+    ],
+    "neighborhoods": ["getsemani", "walled-city", "centro"]
+  },
+
+  "propertyFeatures": ["walled-city", "full-staff", "has-pool", "events-allowed"],
+
+  "villaTokens": {
+    "villaName": "Casa Del Toro",
+    "neighborhood": "Getsemaní",
+    "city": "Cartagena",
+    "address": "Calle de San Juan, #25-136",
+    "checkInTime": "1:00 PM",
+    "checkOutTime": "11:00 AM",
+    "conciergeHours": "Daytime staff (cook and maid). Live-in security available 24/7.",
+    "staffLead": "Your dedicated house staff",
+    "airportCode": "CTG",
+    "airportName": "Rafael Núñez International Airport",
+    "currency": "USD",
+    "timezone": "America/Bogota",
+    "taxDisclaimer": "Rates quoted in USD. Colombian peso conversion at TRM on day of payment.",
+
+    "arrivalRouteSummary": "15-minute private airport transfer directly to the villa door. As a city-center property, no boat transfer is required for arrival.",
+    "departurePoint": "the villa front door for city tours, or a 5-minute taxi to the Pegasus Pier for boat excursions",
+
+    "walledCityAccessSummary": "A 5-minute walk through the Centenario Park takes you directly to the Clock Tower and the main Walled City entrance.",
+    "getsemaniAccessSummary": "You are located on one of Getsemaní's most iconic streets. Plaza de la Trinidad is a 3-minute walk away.",
+    "bocagrandeAccessSummary": "10-minute taxi ride (approx. $3-5 USD) to the modern skyscrapers, shopping malls, and beaches of Bocagrande.",
+
+    "bedConfiguration": "7 oversized bedrooms with en-suite bathrooms. All bedrooms feature King-size beds. 2 extra beds can be added upon request for a total of 14+ guests.",
+    "wifiSpec": "High-speed fiber optic WiFi (49 Mbps) with signal repeaters covering the pool, bedrooms, and rooftop.",
+    "toiletriesDetails": "Premium hotel-grade toiletries, fresh linens, and pool towels are provided and replenished by the house staff.",
+    "entertainmentDetails": "Smart TVs in living areas and select bedrooms for streaming and guest use.",
+
+    "nearestHospitalDetails": "Hospital Bocagrande is the nearest modern facility, located 10 minutes away by taxi. Our VIP concierge can coordinate emergency transport if required.",
+    "safetyDisclaimer": "Casa Del Toro features live-in security and 24/7 staffing. While Getsemaní is a vibrant and safe tourist district, we recommend standard urban travel precautions.",
+
+    "beachClubDistances": "Excursions depart from the nearby marina (5-min taxi). Tierrabomba clubs are ~15 mins away; Rosario Islands are ~45 mins away.",
+    "transferTimeAmare": "a 5-min taxi to the pier followed by a 10-min boat ride",
+    "transferTimeBlueApple": "a 5-min taxi to the pier followed by a 20-min boat ride",
+    "transferTimeBoraBoraFromVilla": "approx. 50 minutes total (taxi + private speedboat)",
+    "transferTimeFenix": "a 5-min taxi to the pier followed by a 15-min boat ride",
+    "transferTimeHiCartagena": "a 5-min taxi to the pier followed by a 15-min boat ride",
+    "transferTimeMakani": "a 5-min taxi to the pier followed by a 15-min boat ride",
+    "transferTimeMangata": "a 5-min taxi to the pier followed by a 10-min boat ride",
+    "transferTimeNamaste": "a 5-min taxi to the pier followed by a 10-min boat ride",
+    "transferTimePalmarito": "a 5-min taxi to the pier followed by a 20-min boat ride",
+    "transferTimeBendita": "a 5-min taxi to the pier followed by a 15-min boat ride",
+    "transferTimePlayaBlanca": "a 5-min taxi to the pier followed by a 45-min boat ride",
+    "transferTimeMambo": "a 5-min taxi to the pier followed by a 20-min boat ride",
+    "transferTimeNena": "a 5-min taxi to the pier followed by a 20-min boat ride",
+
+    "topRestaurantsSummary": "Casa Del Toro is within walking distance of Cartagena's finest dining. Nearest gems: Celele (2 min, World's 50 Best), Demente (3 min), Pezetarian (4 min), Cocina de Pepina (4 min), Marea (7 min), Mar y Zielo (7 min), El Barón (9 min), Alma (10 min), Club de Pesca (10 min), Cuzco (11 min), La Vitrola (11 min), María (11 min), DonJuán (11 min), Lobo de Mar (11 min), Agua de Mar (11 min), Harry's (12 min), Carmen (12 min), Restaurante 1621 (12 min), and Candé/Mistura (14 min). Our VIP concierge handles all reservations.",
+    "topNightlifeSummary": "World-class nightlife within walking distance: Space (4 min, electronic), Café Havana (5 min, live salsa), Mister Babilla (6 min, crossover), Mirador (7 min, rooftop), Alquímico (8 min, #1 bar in LatAm), Fragma (9 min), La Movida (9 min, elite club), La Jugada (10 min), Townhouse (11 min), and El Coro at Sofitel (12 min). Our concierge can arrange VIP access and table reservations.",
+    "conciergeFallback": "Our VIP concierge service handles all specific guest requests, including niche amenities or specialized services not listed here.",
+
+    "cancellationPolicy": "A 50% deposit is required to secure your dates and is non-refundable. Cancellations made 14+ days prior to check-in will receive a refund for any amount paid beyond the initial 50%. Less than 14 days: no refund.",
+    "securityDepositPolicy": "A refundable security deposit of $500 USD is required, typically handled via a credit card hold or cash upon arrival, and released within 48 hours of checkout.",
+    "staffDescription": "A dedicated daytime cook and maid (7:00 AM – 4:00 PM) and a live-in administrator providing 24/7 security.",
+    "groceryPolicy": "Our staff handles grocery shopping at premium markets and local fish vendors. We present receipts for reimbursement plus a 10% service fee.",
+    "conciergeFacilitation": "While not provided on-site, our VIP concierge can facilitate armored transport, specialized dietary sourcing (Kosher/Halal), and other premium services through our local network."
+  },
+
+  "hero": {
+    "title": "Casa Del Toro — Luxury 7-Bedroom Villa in Getsemaní, Cartagena",
+    "subtitle": "Seven bedrooms. Seven and a half baths. Private pool and rooftop hot tub in the heart of Cartagena's most vibrant historic neighborhood.",
+    "ctaText": "Discover",
+    "priorityImages": [
+      "/images/villas/casa-del-toro/toro-023.webp",
+      "/images/villas/casa-del-toro/toro-026.webp",
+      "/images/villas/casa-del-toro/toro-029.webp"
+    ]
+  },
+
+  "images": [
+    { "src": "/images/villas/casa-del-toro/toro-023.webp", "alt": "Private pool courtyard at Casa Del Toro villa in Getsemaní, Cartagena", "caption": "Courtyard pool area—perfect for daytime lounging and group time." },
+    { "src": "/images/villas/casa-del-toro/toro-024.webp", "alt": "Evening view of the pool courtyard at Casa Del Toro luxury villa Cartagena", "caption": "Pool courtyard at night with warm lighting and a luxury ambiance." },
+    { "src": "/images/villas/casa-del-toro/toro-025.webp", "alt": "Courtyard pool and patio at Casa Del Toro villa in Cartagena, Colombia", "caption": "Pool patio with multiple seating areas for relaxing and socializing." },
+    { "src": "/images/villas/casa-del-toro/toro-026.webp", "alt": "Nighttime pool courtyard at Casa Del Toro villa in Getsemaní, Cartagena", "caption": "Nighttime pool setting—ideal for a laid-back pregame before going out." },
+    { "src": "/images/villas/casa-del-toro/toro-027.webp", "alt": "Pool courtyard daytime view at Casa Del Toro luxury villa Cartagena", "caption": "Daytime courtyard view showing pool, patio, and colonial architecture." },
+    { "src": "/images/villas/casa-del-toro/toro-028.webp", "alt": "Rooftop hot tub at Casa Del Toro villa with Cartagena skyline views", "caption": "Rooftop hot tub with open-sky views—perfect for sunset sessions." },
+    { "src": "/images/villas/casa-del-toro/toro-029.webp", "alt": "Rooftop daybed lounge at Casa Del Toro luxury villa in Cartagena", "caption": "Rooftop daybed lounge designed for sun, breeze, and downtime." },
+    { "src": "/images/villas/casa-del-toro/toro-030.webp", "alt": "Rooftop terrace exterior at Casa Del Toro villa in Getsemaní, Cartagena", "caption": "Rooftop terrace exterior with clean lines and Cartagena city views." },
+    { "src": "/images/villas/casa-del-toro/toro-013.webp", "alt": "Living room with pool courtyard view at Casa Del Toro villa in Cartagena", "caption": "Bright living room with seating and views toward the pool courtyard." },
+    { "src": "/images/villas/casa-del-toro/toro-017.webp", "alt": "Open living area at Casa Del Toro luxury villa in Getsemaní, Cartagena", "caption": "Open living area with seating, AC, and classic Cartagena ceiling beams." },
+    { "src": "/images/villas/casa-del-toro/toro-019.webp", "alt": "Stone corridor and interior entry at Casa Del Toro villa in Getsemaní, Cartagena", "caption": "Historic stone textures and warm lighting inside the villa." },
+    { "src": "/images/villas/casa-del-toro/toro-021.webp", "alt": "Bright living room with large windows at Casa Del Toro villa Cartagena", "caption": "Light-filled living room for group gatherings and relaxation." },
+    { "src": "/images/villas/casa-del-toro/toro-022.webp", "alt": "Grand living room with stone wall at Casa Del Toro luxury villa in Getsemaní, Cartagena", "caption": "Grand living room featuring Cartagena stonework and elegant seating." },
+    { "src": "/images/villas/casa-del-toro/toro-004.webp", "alt": "Kitchen counter and prep area at Casa Del Toro luxury villa in Cartagena", "caption": "Sleek kitchen counter and prep space—ideal for chef service." },
+    { "src": "/images/villas/casa-del-toro/toro-020.webp", "alt": "Modern kitchen at Casa Del Toro luxury villa in Cartagena, Colombia", "caption": "Fully equipped kitchen with premium appliances and generous storage." },
+    { "src": "/images/villas/casa-del-toro/toro-007.webp", "alt": "Luxury bedroom suite at Casa Del Toro villa in Getsemaní, Cartagena", "caption": "Elegant bedroom suite with warm lighting and air conditioning." },
+    { "src": "/images/villas/casa-del-toro/toro-008.webp", "alt": "Canopy king bedroom at Casa Del Toro luxury villa Cartagena, Colombia", "caption": "Canopy king bedroom with soft linens and ambient lighting." },
+    { "src": "/images/villas/casa-del-toro/toro-009.webp", "alt": "King bedroom interior at Casa Del Toro villa in Cartagena, Colombia", "caption": "Comfortable king bedroom with premium bedding and tasteful décor." },
+    { "src": "/images/villas/casa-del-toro/toro-010.webp", "alt": "Canopy king bedroom with balcony access at Casa Del Toro in Getsemaní, Cartagena", "caption": "Canopy bedroom with direct access to balcony and outdoor views." },
+    { "src": "/images/villas/casa-del-toro/toro-011.webp", "alt": "Canopy bedroom facing terrace at Casa Del Toro luxury villa in Cartagena", "caption": "Spacious canopy bedroom opening to a terrace for indoor-outdoor living." },
+    { "src": "/images/villas/casa-del-toro/toro-012.webp", "alt": "Canopy king bed suite at Casa Del Toro villa in Getsemaní, Cartagena", "caption": "Canopy suite designed for comfort, privacy, and restful sleep." },
+    { "src": "/images/villas/casa-del-toro/toro-014.webp", "alt": "Cozy canopy bedroom corner at Casa Del Toro luxury villa Cartagena", "caption": "Cozy canopy bedroom corner with warm lighting and clean finishes." },
+    { "src": "/images/villas/casa-del-toro/toro-015.webp", "alt": "Bedroom suite with lounge seating at Casa Del Toro villa in Getsemaní, Cartagena", "caption": "Spacious suite with lounge seating and balcony doors for fresh air." },
+    { "src": "/images/villas/casa-del-toro/toro-016.webp", "alt": "Luxury suite with sofa at Casa Del Toro villa in Cartagena, Colombia", "caption": "Relaxing suite setup with sofa seating and high ceilings." },
+    { "src": "/images/villas/casa-del-toro/toro-018.webp", "alt": "Canopy bedroom with pool terrace view at Casa Del Toro villa Cartagena", "caption": "Canopy bedroom with views toward the courtyard and pool area." },
+    { "src": "/images/villas/casa-del-toro/toro-001.webp", "alt": "Modern en-suite bathroom at Casa Del Toro luxury villa in Getsemaní, Cartagena", "caption": "Modern en-suite bathroom with clean finishes and built-in shelving." },
+    { "src": "/images/villas/casa-del-toro/toro-002.webp", "alt": "Bathroom vanity and sink at Casa Del Toro villa in Cartagena, Colombia", "caption": "Bathroom vanity with contemporary sink and mirror." },
+    { "src": "/images/villas/casa-del-toro/toro-003.webp", "alt": "En-suite bathroom with toilet and vanity at Casa Del Toro in Getsemaní, Cartagena", "caption": "Spacious en-suite bathroom layout with vanity and natural stone details." },
+    { "src": "/images/villas/casa-del-toro/toro-005.webp", "alt": "En-suite bathroom sink and mirror at Casa Del Toro villa Cartagena", "caption": "Bright en-suite bathroom with modern sink and mirror." },
+    { "src": "/images/villas/casa-del-toro/toro-006.webp", "alt": "Bathroom double vanity at Casa Del Toro luxury villa in Getsemaní, Cartagena", "caption": "Large bathroom vanity with premium finishes and ample counter space." },
+    { "src": "/images/villas/casa-del-toro/toro-031.webp", "alt": "Elite Cartagena host in professional attire at Casa Del Toro villa", "caption": "Your dedicated host ensuring a seamless luxury experience." }
+  ],
+
+  "aboutUsImage": "/images/villas/casa-del-toro/toro-031.webp",
+
+  "headlines": {
+    "overview": "Casa Del Toro",
+    "location": "Getsemaní, Cartagena"
+  },
+
+  "specs": {
+    "guests": 14,
+    "bedrooms": 7,
+    "beds": 9,
+    "baths": 7.5
+  },
+
+  "location": {
+    "label": "Getsemaní, Cartagena, Colombia",
+    "city": "Cartagena",
+    "country": "Colombia",
+    "address": "Calle de San Juan, #25-136, Cartagena, Colombia",
+    "neighborhood": "Getsemaní"
+  },
+
+  "amenities": [
+    "Private pool (ground floor)",
+    "Rooftop terrace with lounge seating",
+    "Hot tub on rooftop",
+    "Daybeds for outdoor relaxation",
+    "High-speed Wifi (49 Mbps)",
+    "Air conditioning (all rooms)",
+    "Fully equipped kitchen",
+    "Smart TVs",
+    "7 king bedrooms with en-suite bathrooms",
+    "Premium linens & towels",
+    "Daytime cook (7 AM – 4 PM)",
+    "Daily housekeeping (7 AM – 4 PM)",
+    "Live-in administrator/security (24/7)",
+    "Dedicated concierge for dining, tours & transport"
+  ],
+
+  "seasons": [
+    {
+      "id": "standard",
+      "label": "Standard Season",
+      "priceDisplay": "Rate on request",
+      "price": null,
+      "currency": null
+    }
+  ],
+
+  "content": {
+    "overview": "Casa Del Toro was designed for guests who want space, privacy, and location without compromise. The villa's layout balances generous shared areas with quiet private suites, making it ideal for family vacations, group travel, milestone celebrations, or extended stays in Cartagena.\n\nThe first floor centers around a private pool and social living area, while the rooftop terrace offers a secluded escape with a hot tub and lounge seating — perfect for sunset drinks or relaxing between excursions. Every detail reflects thoughtful upgrades, contemporary finishes, and functionality for modern travelers.",
+    "location": "Casa Del Toro is located in Getsemaní, one of Cartagena's most sought-after historic neighborhoods. Known for its colorful streets, art scene, and vibrant dining culture, Getsemaní offers a more authentic and walkable experience while remaining steps from the Walled City's main attractions. Walking distance to Plaza de la Trinidad, Clock Tower & Old City gates, restaurants, cocktail bars, cafés, cultural landmarks and nightlife. Bocagrande's beaches and shopping districts are a short taxi ride away, and island excursions depart easily from nearby marinas.",
+    "practicalDetails": [
+      "Check-in: 1:00 PM",
+      "Check-out: 11:00 AM",
+      "Maximum occupancy: 14 guests",
+      "Smoking: Not permitted indoors",
+      "Property Registration: RNT #224527",
+      "Flexible check-in and check-out options may be available upon request"
+    ],
+    "rooms": [
+      { "name": "Bedroom 1", "description": "King-size bed, private en-suite bathroom, air conditioning, premium linens and towels." },
+      { "name": "Bedroom 2", "description": "King-size bed, private en-suite bathroom, air conditioning, premium linens and towels." },
+      { "name": "Bedroom 3", "description": "King-size bed, private en-suite bathroom, air conditioning, premium linens and towels." },
+      { "name": "Bedroom 4", "description": "King-size bed, private en-suite bathroom, air conditioning, premium linens and towels." },
+      { "name": "Bedroom 5", "description": "King-size bed, private en-suite bathroom, air conditioning, premium linens and towels." },
+      { "name": "Bedroom 6", "description": "King-size bed, private en-suite bathroom, air conditioning, premium linens and towels." },
+      { "name": "Bedroom 7", "description": "King-size bed, private en-suite bathroom, air conditioning, premium linens and towels." }
+    ],
+    "familyRecreation": [
+      "Multi-generational family trips",
+      "Group travel and reunions",
+      "Bachelor or birthday celebrations (house rules apply)",
+      "Corporate or retreat-style stays",
+      "Private spaces with secure access",
+      "Staff support for comfortable group stays"
+    ],
+    "travel": {
+      "air": [
+        "Airport: Rafael Núñez International Airport (CTG)"
+      ],
+      "rail": [],
+      "drive": [
+        "Transfer time: Approximately 15 minutes by car",
+        "Private transfers: Available upon request",
+        "No boat or special transport required — arrival is simple and direct"
+      ]
+    },
+    "hosts": {
+      "image": "/images/villas/casa-del-toro/toro-031.webp",
+      "names": "Head of Elite Cartagena Premium Hosts",
+      "bio": "Your stay at Casa Del Toro is personally overseen by the Head of Elite Cartagena Premium Hosts, responsible for managing select luxury villas and VIP guest experiences across Cartagena. With years of on-the-ground experience, this role ensures discretion, operational precision, and consistently high standards—from arrival coordination to on-site service and special requests."
+    },
+    "testimonials": [
+      {
+        "quote": "Mark's place is exactly how it's listed online but even better in person. The staff are awesome, attentive and amazing. We felt safe, well tended to and at peace. The place was clean, beautiful and felt like home. Walking distance from all shops, restaurants, and entertainment. I had the best vacation and will definitely be back!",
+        "attribution": "Yvette, New York — November 2025"
+      },
+      {
+        "quote": "We stayed here for my bachelorette trip and it was absolutely perfect! The house itself is stunning and located in the perfect area. Gilberto, our butler, was everything we didn't know we needed—attentive, thoughtful, and always one step ahead. The house maids cooked us the most delicious meals. This experience exceeded all of our expectations.",
+        "attribution": "Eliza, New Jersey — April 2025"
+      },
+      {
+        "quote": "This house was absolutely amazing—felt like a resort. It's huge with plenty of space, very clean and well kept. The location was unbeatable, close to everything within walking distance, and it comes with security that makes you feel safe. If I'm ever in Cartagena this will be the place I'm booking.",
+        "attribution": "Chance, Atlanta — November 2024"
+      }
+    ]
+  },
+
+  "policies": {
+    "cancellation": {
+      "summary": "50% deposit non-refundable. Cancellations 14+ days prior: amounts beyond deposit refunded. Less than 14 days: no refund.",
+      "fullText": "To confirm any reservation, payment of at least 50% of the total cost is required. This amount is non-refundable. For cancellations made 14 or more days prior to check-in, amounts paid beyond the 50% deposit will be refunded. For cancellations less than 14 days before check-in, no refund will be provided. Cancellation requests must be sent in writing to jc@elitecartagena.com"
+    },
+    "childProtection": {
+      "summary": "We strictly prohibit commercial sexual exploitation of children and adolescents.",
+      "fullText": "Cartagena Vacation Rentals SAS strictly prohibits any form of sexual exploitation of minors, including pornography and sex tourism, in compliance with Colombian law and international conventions."
+    },
+    "sustainability": {
+      "summary": "Committed to sustainable tourism and community support.",
+      "fullText": "Cartagena Vacation Rentals SAS promotes conservation of natural heritage, supports local communities and artisans under fair commercial conditions, and continuously works to reduce environmental impact."
+    }
+  },
+
+  "contact": {
+    "phone": "+1 516-493-6070",
+    "email": "jc@elitecartagena.com",
+    "whatsapp": "15164936070"
+  },
+
+  "legal": {
+    "propertyRNT": "224527",
+    "contactEmail": "jc@elitecartagena.com",
+    "contactPhone": "+1 516-493-6070",
+    "contactWhatsApp": "+1 516-493-6070"
+  }
+}

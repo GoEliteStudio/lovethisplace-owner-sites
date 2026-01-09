@@ -54,7 +54,7 @@ export interface VillaConfig {
 
 export const VILLAS: VillaConfig[] = [
   {
-    slug: 'domaine-des-montarels',
+    slug: 'ddm-preview-4f9p3',
     langs: ['en', 'es', 'fr'],
     defaultLang: 'en',
     domain: 'www.domaine-desmontarels.com',
@@ -69,7 +69,7 @@ export const VILLAS: VillaConfig[] = [
     ownerEmail: 'jc@elitecartagena.com'
   },
   {
-    slug: 'casa-de-la-muralla',
+    slug: 'cdm-preview-2q5n8',
     langs: ['en', 'es'],
     defaultLang: 'en',
     domain: 'villa-casa-muralla.vercel.app',
@@ -82,7 +82,7 @@ export const VILLAS: VillaConfig[] = [
     ownerEmail: 'reservations@casadelamuralla.com'
   },
   {
-    slug: 'mount-zurich',
+    slug: 'mz-preview-8x7k2',
     langs: ['en', 'es'],
     defaultLang: 'en',
     domain: 'mount-zurich.vercel.app',
@@ -119,6 +119,19 @@ export const VILLAS: VillaConfig[] = [
     region: 'europe',
     currency: 'EUR',
     ownerEmail: 'jc@elitecartagena.com'
+  },
+  {
+    slug: 'casa-del-toro',
+    langs: ['en', 'es'],
+    defaultLang: 'en',
+    domain: 'casa-del-toro.vercel.app',
+    altDomains: [],
+    updatedAt: '2025-12-31',
+    auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
+    active: true,
+    region: 'latam',
+    currency: 'USD',
+    ownerEmail: 'info@vacationcartagena.com'
   }
 ];
 
@@ -201,6 +214,7 @@ export function getVillaOwnerEmail(slug: string): string {
 const VILLA_NIGHTLY_RATES: Record<string, number> = {
   'domaine-des-montarels': 0,      // Rate on request (no auto-quote)
   'casa-de-la-muralla': 0,          // Rate on request
+  'casa-del-toro': 1700,            // $1,700 USD per night
   'mount-zurich': 875,              // $875 USD per night
   'villa-kassandra': 0,             // Rate on request
   'villa-orama': 0,                 // Rate on request (seasonal pricing)
@@ -220,6 +234,7 @@ export function getVillaNightlyRate(slug: string): number {
 const VILLA_MINIMUM_NIGHTS: Record<string, number> = {
   'domaine-des-montarels': 5,
   'casa-de-la-muralla': 3,
+  'casa-del-toro': 3,               // 3-night minimum
   'mount-zurich': 2,
   'villa-kassandra': 3,
   'villa-orama': 7,                 // 7-night minimum in high season

@@ -25,6 +25,7 @@ export interface Props {
     contactLinks: Array<{ label: string; href: string }>;
     copyrightSuffix: string;
     socialLinks?: Array<{ platform: string; url: string }>;
+    ecosystemNote?: string;
   };
   navLinks?: Array<{ label: string; href: string }>;
   navCtaLabel?: string;
@@ -518,6 +519,7 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
         contactHeading={footer?.contactHeading ?? 'Contact'}
         contactLinks={footer?.contactLinks ?? []}
         copyrightSuffix={footer?.copyrightSuffix ?? 'All rights reserved. | Luxury Villa Retreat'}
+        ecosystemNote={footer?.ecosystemNote}
       />
     </slot>
   

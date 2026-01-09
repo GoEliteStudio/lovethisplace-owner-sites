@@ -11,15 +11,28 @@ const toText = (value: unknown): string => {
   return value ? String(value) : '';
 };
 
-export function buildSearchDataset(villa: any): SearchItem[] {
+type BankFaq = { q: string; a: string; category?: string };
+
+export function buildSearchDataset(villa: any, bankFaqs?: BankFaq[]): SearchItem[] {
   if (!villa) return [];
 
-  const faqItems: SearchItem[] = Array.isArray(villa?.content?.faq)
+  // Legacy FAQs from villa.content.faq
+  const legacyFaqItems: SearchItem[] = Array.isArray(villa?.content?.faq)
     ? villa.content.faq.map((entry: any) => ({
         type: 'faq',
         title: toText(entry?.q),
         content: toText(entry?.a),
         searchText: toLower(`${toText(entry?.q)} ${toText(entry?.a)}`),
+      }))
+    : [];
+
+  // Bank FAQs (new system)
+  const bankFaqItems: SearchItem[] = Array.isArray(bankFaqs)
+    ? bankFaqs.map((entry) => ({
+        type: 'faq' as const,
+        title: toText(entry.q),
+        content: toText(entry.a),
+        searchText: toLower(`${toText(entry.q)} ${toText(entry.a)}`),
       }))
     : [];
 
@@ -35,5 +48,8 @@ export function buildSearchDataset(villa: any): SearchItem[] {
       })
     : [];
 
+  // Combine all - bank FAQs take precedence if both exist
+  const faqItems = bankFaqItems.length > 0 ? bankFaqItems : legacyFaqItems;
+  
   return [...faqItems, ...amenityItems];
 }
