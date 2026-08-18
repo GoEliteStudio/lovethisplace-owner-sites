@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import HeritageGalleryPage from '../../../../components/HeritageGalleryPage.astro';
+import { LANG_META, getVillaBySlug, getVillaCanonicalUrl, isVillaIndexable } from '../../../../config/i18n';
+import { getUIStrings } from '../../../../config/uiStrings';
+import { buildAuxPageSchema } from '../../../../lib/schema';
+
+export const prerender = true;
+
+
+export function getStaticPaths() {
+  return [{ params: { slug: 'molonta-owner-preview', lang: 'en' } }];
+}
+
+const { slug, lang } = Astro.params;
+const galleryConfig = slug === 'molonta-owner-preview' && lang === 'en';
+
+if (!slug || !lang || !galleryConfig) {
+  return Astro.redirect('/');
+}
+
+const villaConfig = getVillaBySlug(slug);
+if (!villaConfig) {
+  return Astro.redirect('/');
+}
+
+const villaModule = await import(`../../../../content/villas/${slug}.${lang}.json`);
+const galleryModule = await import(`../../../../content/galleries/${slug}.${lang}.json`);
+const villa = villaModule.default;
+const gallery = galleryModule.default;
+const langMeta = LANG_META[lang];
+const ui = getUIStrings(lang);
+const homeHref = `/villas/${slug}/${lang}/`;
+const canonical = getVillaCanonicalUrl(villaConfig, lang, 'gallery');
+const siteBase = `${villaConfig.canonicalOrigin.replace(/\/$/, '')}/`;
+const pageTitle = `${villa.name} | Complete Photo Gallery`;
+const pageDescription = `Explore ${gallery.items.length} owner-approved photographs of ${villa.name}, organized by estate setting, pool, gardens, interiors, shoreline and experiences.`;
+const firstVariant = gallery.items[0]?.variants.find((variant: any) => variant.width >= 1600)
+  ?? gallery.items[0]?.variants.at(-1);
+const ogImage = firstVariant
+  ? `/images/villas/${slug}/gallery/${firstVariant.src.split('/').at(-1)}`
+  : villa.images?.[0]?.src;
+
+const jsonLd = buildAuxPageSchema({
+  pageType: 'gallery',
+  pageTitle,
+  pageDescription,
+  canonical,
+  siteBase,
+  villaName: villa.name,
+  slug,
+  lang,
+  locale: langMeta?.locale || lang,
+});
+
+const navLinks = [
+  { label: 'Overview', href: `${homeHref}#overview` },
+  { label: 'Amenities', href: `${homeHref}#amenities` },
+  { label: 'Gallery', href: `${homeHref}gallery/` },
+  { label: 'Location', href: `${homeHref}#location` },
+  { label: 'Hosts', href: `${homeHref}#hosts` },
+  { label: 'Contact', href: `${homeHref}#contact` },
+];
+
+const footer = {
+  ...ui.footer,
+  brandDescription: villa.summary,
+  exploreLinks: [
+    { label: 'Overview', href: `${homeHref}#overview` },
+    { label: 'Amenities', href: `${homeHref}#amenities` },
+    { label: 'Complete gallery', href: `${homeHref}gallery/` },
+    { label: 'Location', href: `${homeHref}#location` },
+  ],
+  infoLinks: ui.footer.infoLinks.map((link: { label: string; href: string }) => {
+    if (link.href === '/rates') return { ...link, href: `${homeHref}rates` };
+    if (link.href === '/terms') return { ...link, href: `${homeHref}terms` };
+    if (link.href === '/privacy') return { ...link, href: `${homeHref}privacy` };
+    if (link.href === '/contact') return { ...link, href: `${homeHref}contact` };
+    return link;
+  }),
+  contactLinks: [
+    { label: villa.contact?.phone, href: `tel:${String(villa.contact?.phone || '').replace(/\s/g, '')}` },
+    { label: villa.contact?.email, href: `mailto:${villa.contact?.email}` },
+    { label: 'Contact us', href: `${homeHref}contact` },
+  ],
+};
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  noindex={!isVillaIndexable(villaConfig)}
+  jsonLd={jsonLd}
+  ogImage={ogImage}
+  villaName={villa.name}
+  homeUrl={homeHref}
+  lang={langMeta?.locale || lang}
+  footer={footer}
+  navLinks={navLinks}
+  navCtaLabel={ui.header?.inquireCta || 'Inquire'}
+  navCtaHref={`${homeHref}contact`}
+  whatsappNumber={villa.contact?.whatsapp}
+>
+  <HeritageGalleryPage
+    villa={villa}
+    slug={slug}
+    lang={lang}
+    gallery={gallery}
+  />
+</BaseLayout>

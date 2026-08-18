@@ -1,8 +1,18 @@
 # Villa Engine
 
-Multi-villa booking platform with full i18n support, Firestore backend, Stripe payments, and automated owner onboarding.
+Reusable engine for independent owner-branded property sites. It supports multiple visual themes, multilingual content, Firestore inquiries, staged payments, and controlled owner onboarding.
 
-**Production URL**: https://lovethisplace-sites.vercel.app/
+This repository is not the LoveThisPlace marketplace and is not the Elite Cartagena website. Each public owner site must have an explicit identity, domain, canonical origin, routing configuration, and publication approval.
+
+## Start here
+
+- Product architecture: `docs/OWNER_SITE_PRODUCT_V2.md`
+- Onboarding and release workflow: `docs/OWNER_SITE_ONBOARDING_RUNBOOK.md`
+- Existing platform reference: `docs/platform-documentation.md`
+
+Molonta currently exists as a private, noindex product demonstration. A preview URL is not access control and does not authorize public release.
+
+**Shared deployment project**: https://lovethisplace-sites.vercel.app/
 
 ## Features
 
@@ -37,6 +47,7 @@ npm run preview                # Preview production build
 npm run villa:onboard -- --slug=villa-name --name="Villa Name" --owner-email=owner@email.com
 npm run villa:seed             # Seed/refresh Firestore data
 npm run validate               # Validate i18n content
+npm run validate:owner-sites   # Validate publication, media, identity, and Molonta invariants
 ```
 
 ## Environment Variables

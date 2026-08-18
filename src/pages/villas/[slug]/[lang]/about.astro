@@ -10,7 +10,7 @@
  */
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getUIStrings } from '../../../../config/uiStrings';
-import { VILLA_LANGUAGES, DEFAULT_LANG, getVillaBySlug } from '../../../../config/i18n';
+import { VILLA_LANGUAGES, DEFAULT_LANG, getVillaBySlug, getVillaCanonicalUrl } from '../../../../config/i18n';
 import { buildAuxPageSchema } from '../../../../lib/schema';
 
 export const prerender = true;
@@ -63,8 +63,8 @@ const pageDescription = `Discover what's included in your ${villaName} website: 
 
 // Build schema for SEO
 const villaConfig = getVillaBySlug(slug);
-const siteBase = villaConfig?.domain ? `https://${villaConfig.domain}` : Astro.url.origin;
-const canonical = `${siteBase}/villas/${slug}/${validLang}/about`;
+const siteBase = villaConfig?.canonicalOrigin || Astro.url.origin;
+const canonical = villaConfig ? getVillaCanonicalUrl(villaConfig, validLang || 'en', 'about') : Astro.url.toString();
 const localeMap: Record<string, string> = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
 
 const jsonLd = buildAuxPageSchema({
@@ -707,6 +707,8 @@ const t = content[validLang as keyof typeof content] || content.en;
 <BaseLayout
   title={pageTitle}
   description={pageDescription}
+  canonical={canonical}
+  noindex={true}
   lang={validLang}
   villaName={villaName}
   homeUrl={langBasePath}

@@ -6,11 +6,14 @@ import GalleryGrid from '../../../components/GalleryGrid.astro';
 import Tabs from '../../../components/Tabs.astro';
 import FixedFactsPanel from '../../../components/FixedFactsPanel.astro';
 import InquiryForm from '../../../components/InquiryForm.astro';
-import { VILLA_LANGUAGES, LANG_META } from '../../../config/i18n';
+import HeritageVillaPage from '../../../components/HeritageVillaPage.astro';
+import { VILLA_LANGUAGES, LANG_META, getVillaBySlug, getVillaCanonicalUrl, isVillaIndexable } from '../../../config/i18n';
 import { getUIStrings } from '../../../config/uiStrings';
 import { buildSchemaGraph } from '../../../lib/schema';
 import { buildSearchDataset } from '../../../lib/search';
 import { resolveFaqs, injectContext, type VillaContext, type ResolvedFaq } from '../../../data/faq';
+
+export const prerender = true;
 
 // 1. DYNAMIC ROUTING & DATA LOADING
 export async function getStaticPaths() {
@@ -149,25 +152,14 @@ if (heroImages.length && heroImages.length < desiredHeroCount) {
   }
 }
 
-// Generic Google-style reviews (until real per-villa reviews are available)
-const genericGoogleReviews = [
-  {
-    quote: 'An extraordinary villa with serene views, flawless interiors and a pool guests never want to leave.',
-    attribution: 'Alexandra M. — Google Reviews'
-  },
-  {
-    quote: 'Impeccably maintained property, discreet staff and a setting that feels even better than the photos.',
-    attribution: 'James R. — Google Reviews'
-  },
-  {
-    quote: 'The kind of place you remember for years – incredible light, quiet luxury and total privacy.',
-    attribution: 'Sofia L. — Google Reviews'
-  }
-];
-// Dynamic Site Base (Replaces hardcoded domain)
-const siteBase = Astro.site?.toString() || 'https://villa-engine.vercel.app';
-const pageTitle = `${villa.name} — Luxury Villa Retreat`;
-const canonical = `${siteBase}villas/${slug}/${lang}/`;
+const villaConfig = getVillaBySlug(slug);
+if (!villaConfig) {
+  return Astro.redirect('/', 302);
+}
+
+const siteBase = `${villaConfig.canonicalOrigin.replace(/\/$/, '')}/`;
+const pageTitle = villa.seo?.title || `${villa.name} — Luxury Villa Retreat`;
+const canonical = getVillaCanonicalUrl(villaConfig, lang);
 
 const jsonLd = buildSchemaGraph({
   villa,
@@ -178,7 +170,6 @@ const jsonLd = buildSchemaGraph({
   canonical,
   pageTitle,
   heroImages,
-  genericReviews: genericGoogleReviews
 });
 
 // Content Setup
@@ -385,10 +376,11 @@ const villaFooter = {
 
 <BaseLayout 
   title={pageTitle} 
-  description={villa.summary} 
+  description={villa.seo?.description || villa.summary}
   canonical={canonical} 
+  noindex={!isVillaIndexable(villaConfig)}
   jsonLd={jsonLd} 
-  lcpImage={heroImages[0]} 
+  lcpImage={villaConfig.theme === 'classic' ? heroImages[0] : undefined}
   ogImage={heroImages[0]}
   villaName={villa.name}
   homeUrl={`/villas/${slug}/${lang}`}
@@ -400,6 +392,10 @@ const villaFooter = {
   navCtaHref={`/villas/${slug}/${lang}/contact`}
   whatsappNumber={villa.contact?.whatsapp}
 >
+  {villaConfig.theme === 'heritage-signature' ? (
+    <HeritageVillaPage villa={villa} slug={slug} lang={lang} />
+  ) : (
+    <>
   <Hero
     title={villa.hero.title}
     subtitle={villa.hero.subtitle}
@@ -463,23 +459,13 @@ const villaFooter = {
     </section>
   )}
 
-  {(villa.content?.testimonials?.length > 0 || genericGoogleReviews.length > 0) && (
+  {villa.content?.testimonials?.length > 0 && (
     <section class="container testimonials" id="testimonials">
       <h2>{ui.testimonials.heading}</h2>
       <ul class="quotes">
-        {villa.content?.testimonials?.length >= 3 ? (
-          villa.content.testimonials.map((t: any) => <li><blockquote>"{t.quote}"</blockquote><cite>— {t.attribution}</cite></li>)
-        ) : (
-          <>
-            {villa.content?.testimonials?.map((t: any) => <li><blockquote>"{t.quote}"</blockquote><cite>— {t.attribution}</cite></li>)}
-            {genericGoogleReviews.map((r) => (
-              <li>
-                <blockquote>"{r.quote}"</blockquote>
-                <cite>— {r.attribution}</cite>
-              </li>
-            ))}
-          </>
-        )}
+        {villa.content.testimonials.map((testimonial: any) => (
+          <li><blockquote>"{testimonial.quote}"</blockquote><cite>— {testimonial.attribution}</cite></li>
+        ))}
       </ul>
     </section>
   )}
@@ -704,4 +690,6 @@ const villaFooter = {
       .search-modal__content { height: 100%; border-radius: 0; max-width: none; }
     }
   </style>
+    </>
+  )}
 </BaseLayout>

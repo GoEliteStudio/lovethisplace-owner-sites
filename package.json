@@ -10,22 +10,26 @@
     "villa:create": "node scripts/create-villa.mjs",
     "villa:onboard": "node scripts/onboard-villa.mjs",
     "villa:seed": "node scripts/seed-firestore.mjs",
-    "validate": "node scripts/validate-i18n.mjs",
+    "validate": "node scripts/validate-i18n.mjs && node scripts/validate-owner-sites.mjs",
+    "validate:owner-sites": "node scripts/validate-owner-sites.mjs",
     "validate:faq": "npx astro check && echo 'FAQ validation integrated into TypeScript check'"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.5",
-    "astro": "^4.0.0",
+    "@astrojs/check": "0.9.10",
+    "astro": "7.2.2",
     "dotenv": "^17.2.3",
-    "firebase-admin": "^13.6.0",
-    "nodemailer": "^7.0.11",
-    "sharp": "^0.33.0",
+    "firebase-admin": "14.2.0",
+    "nodemailer": "9.0.5",
+    "sharp": "0.35.3",
     "stripe": "^20.0.0",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@astrojs/vercel": "^7.8.2",
+    "@astrojs/vercel": "11.0.5",
     "@types/node": "^24.10.0"
+  },
+  "engines": {
+    "node": ">=22.12.0 <25"
   }
 }

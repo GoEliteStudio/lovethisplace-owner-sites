@@ -6,7 +6,7 @@ import type { InquiryOrigin, Listing } from '../../lib/firestore/types';
 import { generateApproveUrl, generateDeclineUrl } from '../../lib/signing';
 import { calculateQuote, getDefaultPricing } from '../../lib/pricing';
 import { sendOwnerNotification } from '../../lib/emailRouting';
-import { getVillaCurrency, getVillaOwnerEmail, getVillaNightlyRate, getVillaMinimumNights } from '../../config/i18n';
+import { getVillaBySlug, getVillaCurrency, getVillaOwnerEmail, getVillaNightlyRate, getVillaMinimumNights } from '../../config/i18n';
 
 type InquireBody = {
   fullName?: string;
@@ -107,13 +107,18 @@ export const POST: APIRoute = async ({ request }) => {
       children: Number(data.children ?? '0') || 0,
       notes: (data.notes ?? '').toString().slice(0, 2000),
       occasion: (data.occasion ?? '').toString().slice(0, 500),
-      phone: (data.phone ?? '').toString().slice(0, 50),
-      userAgent: request.headers.get('user-agent') || undefined,
-      ip: request.headers.get('x-forwarded-for') || undefined
+      phone: (data.phone ?? '').toString().slice(0, 50)
     };
 
     // Villa context + language detection (do this early so we can use lang in Firestore)
     const slug = data.slug || data.villa || 'domaine-des-montarels';
+    const villaConfig = getVillaBySlug(slug);
+    if (!villaConfig || !villaConfig.active || villaConfig.visibility === 'hidden') {
+      return new Response(JSON.stringify({ ok: false, error: 'Unknown property' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
     const origin: InquiryOrigin = data.origin || 'villa_site';
     const lang = data.lang ? (data.lang as 'en' | 'fr' | 'es') : detectLang(request);
 
@@ -133,13 +138,13 @@ export const POST: APIRoute = async ({ request }) => {
         const owner = await getOwnerById(listing.ownerId);
         if (owner?.email) {
           ownerEmail = owner.email;
-          console.log('[inquire] Owner email from Firestore:', { slug, ownerEmail, ownerId: listing.ownerId });
+          console.log('[inquire] Owner routing resolved from Firestore:', { slug, ownerId: listing.ownerId });
         }
       } catch (e) {
         console.warn('[inquire] Firestore owner lookup failed, using i18n fallback:', e);
       }
     } else {
-      console.log('[inquire] No ownerId on listing, using i18n fallback:', { slug, ownerEmail });
+      console.log('[inquire] Owner routing resolved from registry fallback:', { slug });
     }
 
     // Persist inquiry to Firestore
@@ -263,7 +268,7 @@ export const POST: APIRoute = async ({ request }) => {
         data: payload as any,
         lang
       });
-      console.log('[inquire] Client receipt sent:', { to: payload.email, villa: slug, id: receiptResult.id });
+      console.log('[inquire] Client receipt sent:', { villa: slug, id: receiptResult.id });
     } catch (e) {
       console.warn('[inquire] Client receipt failed:', (e as any)?.message || e);
       // Don't fail the request if client receipt fails - owner email is more important

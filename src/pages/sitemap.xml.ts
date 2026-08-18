@@ -18,13 +18,13 @@
  */
 
 import type { APIRoute } from 'astro';
-import { getActiveVillas, getVillaByHostname, type VillaConfig } from '../config/i18n';
+import { getIndexableVillas, getVillaByHostname, isVillaIndexable, type VillaConfig } from '../config/i18n';
 
 // Maximum images to include per villa page (balance between SEO value and file size)
 const MAX_IMAGES_PER_VILLA = 15;
 
 // Pages to exclude from sitemap (not meant to be found in search)
-const EXCLUDED_AUX_PAGES = ['thank-you'];
+const EXCLUDED_AUX_PAGES = ['thank-you', 'about'];
 
 // Page priority mapping
 const PRIORITY_MAP: Record<string, string> = {
@@ -192,18 +192,19 @@ export const GET: APIRoute = async ({ request }) => {
   
   let villas: VillaConfig[];
   if (isLocalhost) {
-    // Dev mode: show all villas
-    villas = getActiveVillas();
+    // Dev mode still respects the publication boundary.
+    villas = getIndexableVillas();
   } else {
-    // Production: filter to only the villa matching this hostname
+    // Unknown and private-preview hosts publish no property URLs.
     const matchedVilla = getVillaByHostname(hostname);
-    villas = matchedVilla ? [matchedVilla] : getActiveVillas();
+    villas = isVillaIndexable(matchedVilla) ? [matchedVilla!] : [];
   }
   
   // Generate entries for each villa
   const villaEntries: string[] = [];
   for (const villa of villas) {
-    const entries = await generateVillaSitemap(villa, baseUrl);
+    const canonicalBase = villa.canonicalOrigin.replace(/\/$/, '');
+    const entries = await generateVillaSitemap(villa, canonicalBase);
     villaEntries.push(entries);
   }
   

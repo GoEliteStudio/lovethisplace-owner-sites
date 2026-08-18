@@ -22,6 +22,8 @@
 
 export type VillaRegion = 'europe' | 'latam' | 'usa' | 'caribbean' | 'asia' | 'oceania';
 export type VillaCurrency = 'EUR' | 'USD' | 'GBP' | 'CHF' | 'MXN' | 'COP' | 'BRL' | 'AUD' | 'NZD' | 'THB';
+export type VillaVisibility = 'public' | 'private-preview' | 'hidden';
+export type VillaTheme = 'classic' | 'heritage-signature';
 
 export interface VillaConfig {
   /** URL-friendly identifier (e.g., 'domaine-des-montarels') */
@@ -40,6 +42,13 @@ export interface VillaConfig {
   auxPages: string[];
   /** Whether this villa is active (false = excluded from sitemap) */
   active: boolean;
+  /** Publication boundary. Only public villas may be indexed or listed in sitemaps. */
+  visibility: VillaVisibility;
+  /** Explicit canonical origin. Never infer canonicals from a shared deployment host. */
+  canonicalOrigin: string;
+  /** Visual system used by the reusable owner-site renderer. */
+  theme?: VillaTheme;
+
   /** Geographic region (determines default currency) */
   region: VillaRegion;
   /** Currency for pricing and email quotes (EUR for Europe, USD for Americas) */
@@ -64,6 +73,9 @@ export const VILLAS: VillaConfig[] = [
     updatedAt: '2025-12-03',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
     active: true,
+    visibility: 'public',
+    canonicalOrigin: 'https://www.domaine-desmontarels.com',
+    theme: 'classic',
     region: 'europe',
     currency: 'EUR',
     ownerEmail: 'jc@elitecartagena.com'
@@ -77,6 +89,9 @@ export const VILLAS: VillaConfig[] = [
     updatedAt: '2025-12-03',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
     active: true,
+    visibility: 'private-preview',
+    canonicalOrigin: 'https://villa-casa-muralla.vercel.app',
+    theme: 'classic',
     region: 'latam',
     currency: 'USD',
     ownerEmail: 'reservations@casadelamuralla.com'
@@ -90,6 +105,9 @@ export const VILLAS: VillaConfig[] = [
     updatedAt: '2025-12-05',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
     active: true,
+    visibility: 'private-preview',
+    canonicalOrigin: 'https://mount-zurich.vercel.app',
+    theme: 'classic',
     region: 'usa',
     currency: 'USD',
     ownerEmail: 'reservations@mountzurich.com'
@@ -103,6 +121,9 @@ export const VILLAS: VillaConfig[] = [
     updatedAt: '2025-12-06',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
     active: true,
+    visibility: 'private-preview',
+    canonicalOrigin: 'https://villa-kassandra.vercel.app',
+    theme: 'classic',
     region: 'europe',
     currency: 'EUR',
     ownerEmail: 'jc@elitecartagena.com'
@@ -116,6 +137,9 @@ export const VILLAS: VillaConfig[] = [
     updatedAt: '2025-12-07',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
     active: true,
+    visibility: 'private-preview',
+    canonicalOrigin: 'https://villa-orama.vercel.app',
+    theme: 'classic',
     region: 'europe',
     currency: 'EUR',
     ownerEmail: 'jc@elitecartagena.com'
@@ -129,9 +153,28 @@ export const VILLAS: VillaConfig[] = [
     updatedAt: '2025-12-31',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
     active: true,
+    visibility: 'private-preview',
+    canonicalOrigin: 'https://casa-del-toro.vercel.app',
+    theme: 'classic',
     region: 'latam',
     currency: 'USD',
     ownerEmail: 'info@vacationcartagena.com'
+  },
+  {
+    slug: 'molonta-owner-preview',
+    langs: ['en'],
+    defaultLang: 'en',
+    domain: 'molonta-owner-preview.vercel.app',
+    altDomains: [],
+    updatedAt: '2026-08-17',
+    auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'gallery', 'thank-you'],
+    active: true,
+    visibility: 'private-preview',
+    canonicalOrigin: 'https://molonta-owner-preview.vercel.app',
+    theme: 'heritage-signature',
+    region: 'europe',
+    currency: 'EUR',
+    ownerEmail: 'jc@lovethisplace.co'
   }
 ];
 
@@ -166,6 +209,22 @@ export function getActiveVillas(): VillaConfig[] {
 /**
  * Get all villa slugs
  */
+
+/** Public, indexable villas only. Private previews never enter discovery surfaces. */
+export function getIndexableVillas(): VillaConfig[] {
+  return VILLAS.filter(v => v.active && v.visibility === 'public');
+}
+
+export function isVillaIndexable(villa: VillaConfig | undefined): boolean {
+  return Boolean(villa?.active && villa.visibility === 'public');
+}
+
+export function getVillaCanonicalUrl(villa: VillaConfig, lang: string, page?: string): string {
+  const origin = villa.canonicalOrigin.replace(/\/$/, '');
+  const suffix = page ? `/${page.replace(/^\//, '').replace(/\/$/, '')}` : '';
+  return `${origin}/villas/${villa.slug}/${lang}${suffix}/`;
+}
+
 export function getAllVillaSlugs(): string[] {
   return VILLAS.map(v => v.slug);
 }
@@ -218,6 +277,7 @@ const VILLA_NIGHTLY_RATES: Record<string, number> = {
   'mount-zurich': 875,              // $875 USD per night
   'villa-kassandra': 0,             // Rate on request
   'villa-orama': 0,                 // Rate on request (seasonal pricing)
+  'molonta-owner-preview': 2140,     // Owner-supplied 2027 starting rate
 };
 
 /**
@@ -238,6 +298,7 @@ const VILLA_MINIMUM_NIGHTS: Record<string, number> = {
   'mount-zurich': 2,
   'villa-kassandra': 3,
   'villa-orama': 7,                 // 7-night minimum in high season
+  'molonta-owner-preview': 3,        // 3 nights outside high summer
 };
 
 /**

@@ -1,0 +1,2348 @@
+{
+  "categories": [
+    {
+      "id": "estate-setting",
+      "label": "Estate & setting",
+      "description": "The stone estate, terraced land, and Adriatic landscape around it.",
+      "count": 14
+    },
+    {
+      "id": "infinity-pool",
+      "label": "Infinity pool",
+      "description": "The 14-by-5-metre infinity pool from daylight through sunset and evening.",
+      "count": 25
+    },
+    {
+      "id": "terraces-gardens",
+      "label": "Terraces & gardens",
+      "description": "Outdoor dining, shaded corners, citrus trees, and places to gather across the estate.",
+      "count": 13
+    },
+    {
+      "id": "seafront-living",
+      "label": "Seafront living",
+      "description": "Lounging terraces and quiet outdoor spaces shaped around the Adriatic view.",
+      "count": 10
+    },
+    {
+      "id": "bedrooms-baths",
+      "label": "Bedrooms & en-suites",
+      "description": "Four private suites and the quieter details of the stay.",
+      "count": 11
+    },
+    {
+      "id": "living-dining",
+      "label": "Living & dining",
+      "description": "Restored interiors, shared tables, and indoor-outdoor hospitality.",
+      "count": 16
+    },
+    {
+      "id": "private-coast",
+      "label": "Beach & sea access",
+      "description": "The estate's secluded shoreline, sea access, and surrounding bay.",
+      "count": 10
+    },
+    {
+      "id": "yacht-experiences",
+      "label": "Yacht & experiences",
+      "description": "Private days on the water and experiences arranged around the estate.",
+      "count": 4
+    },
+    {
+      "id": "heritage-press",
+      "label": "Heritage & recognition",
+      "description": "Selected material preserving the estate's story and recognition.",
+      "count": 1
+    }
+  ],
+  "items": [
+    {
+      "id": "estate-setting-01",
+      "categoryId": "estate-setting",
+      "alt": "Aerial sunset view of Molonta Heritage Estate above the Adriatic.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-01-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-01-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-01-1600.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-02",
+      "categoryId": "estate-setting",
+      "alt": "Daytime aerial view of the stone estate, infinity pool, and coastline.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-02-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-02-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-02-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-03",
+      "categoryId": "estate-setting",
+      "alt": "Twilight drone view of the estate, pool, terraced gardens, and bay.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-03-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-03-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-03-1600.webp",
+          "width": 1536,
+          "height": 1024
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-04",
+      "categoryId": "estate-setting",
+      "alt": "Infinity pool terrace framed by cypress trees and the Konavle hills.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-04-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-04-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-04-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-05",
+      "categoryId": "estate-setting",
+      "alt": "Bird's-eye evening view of the illuminated estate and terraced land.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-05-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-05-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-05-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-06",
+      "categoryId": "estate-setting",
+      "alt": "Molonta's stone houses and infinity pool illuminated after dark.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-06-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-06-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-06-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-07",
+      "categoryId": "estate-setting",
+      "alt": "Wide view of the heritage estate set among terraced Mediterranean gardens.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-07-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-07-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-07-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-08",
+      "categoryId": "estate-setting",
+      "alt": "Aerial view of the estate descending through woodland toward the sea.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-08-480.webp",
+          "width": 480,
+          "height": 328
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-08-960.webp",
+          "width": 960,
+          "height": 657
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-08-1600.webp",
+          "width": 1600,
+          "height": 1095
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-09",
+      "categoryId": "estate-setting",
+      "alt": "Drone view of Molonta's stone buildings, gardens, and waterfront setting.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-09-480.webp",
+          "width": 480,
+          "height": 355
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-09-960.webp",
+          "width": 960,
+          "height": 711
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-09-1600.webp",
+          "width": 1600,
+          "height": 1184
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-10",
+      "categoryId": "estate-setting",
+      "alt": "Elevated view across Molonta's roofs, terraces, and surrounding landscape.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-10-480.webp",
+          "width": 480,
+          "height": 360
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-10-960.webp",
+          "width": 960,
+          "height": 720
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-10-1600.webp",
+          "width": 1600,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-11",
+      "categoryId": "estate-setting",
+      "alt": "Infinity pool, hot tub, cabana, and stone house within the estate gardens.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-11-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-11-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-11-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-12",
+      "categoryId": "estate-setting",
+      "alt": "Sunset light over the Adriatic seen from Molonta Heritage Estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-12-480.webp",
+          "width": 480,
+          "height": 216
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-12-960.webp",
+          "width": 960,
+          "height": 433
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-12-1600.webp",
+          "width": 1600,
+          "height": 721
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-13",
+      "categoryId": "estate-setting",
+      "alt": "Estate buildings glowing at dusk above the surrounding gardens.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-13-480.webp",
+          "width": 480,
+          "height": 360
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-13-960.webp",
+          "width": 960,
+          "height": 721
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-13-1600.webp",
+          "width": 1600,
+          "height": 1202
+        }
+      ]
+    },
+    {
+      "id": "estate-setting-14",
+      "categoryId": "estate-setting",
+      "alt": "Molonta Heritage Estate illuminated at night above the Adriatic.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-14-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-14-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/estate-setting-14-1600.webp",
+          "width": 1600,
+          "height": 901
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-01",
+      "categoryId": "infinity-pool",
+      "alt": "Wide panorama of the infinity pool, sun terrace, and Adriatic horizon.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-01-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-01-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-01-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-02",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool and cabana at sunset above Molunat Bay.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-02-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-02-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-02-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-03",
+      "categoryId": "infinity-pool",
+      "alt": "Poolside loungers with towels beside the turquoise water.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-03-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-03-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-03-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-04",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool and loungers silhouetted against an Adriatic sunset.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-04-480.webp",
+          "width": 480,
+          "height": 305
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-04-960.webp",
+          "width": 960,
+          "height": 609
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-04-1600.webp",
+          "width": 1600,
+          "height": 1015
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-05",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool viewed from above with loungers arranged along the water.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-05-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-05-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-05-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-06",
+      "categoryId": "infinity-pool",
+      "alt": "Aerial view of the infinity pool and its line of white sun loungers.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-06-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-06-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-06-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-07",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool terrace with the estate's stone house and gardens beyond.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-07-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-07-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-07-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-08",
+      "categoryId": "infinity-pool",
+      "alt": "Pool and shaded cabana arranged above the Adriatic landscape.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-08-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-08-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-08-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-09",
+      "categoryId": "infinity-pool",
+      "alt": "Long infinity-pool view framed by loungers and Mediterranean planting.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-09-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-09-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-09-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-10",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool seen through leafy garden planting.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-10-480.webp",
+          "width": 480,
+          "height": 349
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-10-960.webp",
+          "width": 960,
+          "height": 698
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-10-1600.webp",
+          "width": 1600,
+          "height": 1163
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-11",
+      "categoryId": "infinity-pool",
+      "alt": "Molonta details arranged beside the turquoise infinity pool.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-11-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-11-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-11-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-12",
+      "categoryId": "infinity-pool",
+      "alt": "Overhead view of the infinity pool, cabana, and sun terrace.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-12-480.webp",
+          "width": 480,
+          "height": 219
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-12-960.webp",
+          "width": 960,
+          "height": 439
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-12-1600.webp",
+          "width": 1600,
+          "height": 731
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-31",
+      "categoryId": "infinity-pool",
+      "alt": "Poolside terrace with the water reflecting the surrounding greenery.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-31-480.webp",
+          "width": 480,
+          "height": 580
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-31-960.webp",
+          "width": 960,
+          "height": 1161
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-31-1600.webp",
+          "width": 1600,
+          "height": 1934
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-34",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool and surrounding sun deck under a clear Mediterranean sky.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-34-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-34-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-34-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-35",
+      "categoryId": "infinity-pool",
+      "alt": "Pool terrace with loungers, cabana, and hillside views.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-35-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-35-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-35-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-36",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity edge opening visually toward the Adriatic landscape.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-36-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-36-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-36-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-37",
+      "categoryId": "infinity-pool",
+      "alt": "Poolside loungers aligned along the water and garden wall.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-37-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-37-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-37-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-38",
+      "categoryId": "infinity-pool",
+      "alt": "Evening light across the pool terrace and surrounding stonework.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-38-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-38-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-38-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-39",
+      "categoryId": "infinity-pool",
+      "alt": "Poolside canopy and white curtains overlooking the water.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-39-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-39-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-39-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-40",
+      "categoryId": "infinity-pool",
+      "alt": "Outdoor table beside the infinity pool and Mediterranean garden.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-40-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-40-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-40-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-41",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool opening toward the forested coastline of Molunat Bay.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-41-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-41-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-41-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-43",
+      "categoryId": "infinity-pool",
+      "alt": "Sunset reflected across the infinity pool and sheltered Adriatic bay.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-43-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-43-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-43-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-45",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool and white cabana glowing in the evening light.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-45-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-45-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-45-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-47",
+      "categoryId": "infinity-pool",
+      "alt": "Infinity pool framed by white curtains and the Adriatic beyond.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-47-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-47-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-47-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-48",
+      "categoryId": "infinity-pool",
+      "alt": "Evening view across the illuminated pool and sun terrace.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-48-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-48-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-48-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-13",
+      "categoryId": "terraces-gardens",
+      "alt": "Outdoor dining table prepared beneath a shaded estate terrace.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-13-480.webp",
+          "width": 480,
+          "height": 219
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-13-960.webp",
+          "width": 960,
+          "height": 439
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-13-1600.webp",
+          "width": 1600,
+          "height": 731
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-14",
+      "categoryId": "terraces-gardens",
+      "alt": "Relaxed garden sitting area beside the stone house.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-14-480.webp",
+          "width": 480,
+          "height": 1050
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-14-960.webp",
+          "width": 960,
+          "height": 2100
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-14-1600.webp",
+          "width": 1600,
+          "height": 3501
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-15",
+      "categoryId": "terraces-gardens",
+      "alt": "Shaded garden terrace with seating beneath Mediterranean trees.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-15-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-15-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-15-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-16",
+      "categoryId": "terraces-gardens",
+      "alt": "Stone terrace with outdoor seating and views across the estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-16-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-16-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-16-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-17",
+      "categoryId": "terraces-gardens",
+      "alt": "Quiet garden seating beneath mature citrus trees.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-17-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-17-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-17-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-18",
+      "categoryId": "terraces-gardens",
+      "alt": "Sun loungers arranged on a shaded Mediterranean terrace.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-18-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-18-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-18-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-19",
+      "categoryId": "terraces-gardens",
+      "alt": "Outdoor dining terrace surrounded by stone walls and greenery.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-19-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-19-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-19-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-20",
+      "categoryId": "terraces-gardens",
+      "alt": "Garden lounge tucked beneath the estate's mature trees.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-20-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-20-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-20-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-21",
+      "categoryId": "terraces-gardens",
+      "alt": "Sun loungers set among the terraced Mediterranean gardens.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-21-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-21-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-21-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-30",
+      "categoryId": "terraces-gardens",
+      "alt": "Stone garden terrace prepared as a quiet outdoor sitting area.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-30-480.webp",
+          "width": 480,
+          "height": 363
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-30-960.webp",
+          "width": 960,
+          "height": 725
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-30-1600.webp",
+          "width": 1600,
+          "height": 1208
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-42",
+      "categoryId": "terraces-gardens",
+      "alt": "Upper terrace with a hammock and views across the estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-42-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-42-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-42-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-44",
+      "categoryId": "terraces-gardens",
+      "alt": "Terrace seating arranged for sunset above the water.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-44-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-44-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-44-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-46",
+      "categoryId": "terraces-gardens",
+      "alt": "Poolside cabana prepared as a shaded outdoor retreat.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-46-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-46-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-46-1600.webp",
+          "width": 1600,
+          "height": 1066
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-22",
+      "categoryId": "seafront-living",
+      "alt": "Stone seafront terrace overlooking the clear water of Molunat Bay.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-22-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-22-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-22-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-23",
+      "categoryId": "seafront-living",
+      "alt": "Private stone terrace furnished for relaxing above the Adriatic.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-23-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-23-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-23-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-24",
+      "categoryId": "seafront-living",
+      "alt": "Hammock and shaded seating among the estate's citrus trees.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-24-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-24-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-24-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-25",
+      "categoryId": "seafront-living",
+      "alt": "Sun loungers positioned on a quiet terrace facing the sea.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-25-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-25-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-25-1600.webp",
+          "width": 1600,
+          "height": 899
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-26",
+      "categoryId": "seafront-living",
+      "alt": "Outdoor seating framed by stone walls and Mediterranean planting.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-26-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-26-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-26-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-27",
+      "categoryId": "seafront-living",
+      "alt": "Seafront lounge terrace with uninterrupted views across Molunat Bay.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-27-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-27-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-27-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-28",
+      "categoryId": "seafront-living",
+      "alt": "Outdoor table and chairs overlooking the blue Adriatic.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-28-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-28-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-28-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-29",
+      "categoryId": "seafront-living",
+      "alt": "Stone pathway leading through the estate's waterfront terraces.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-29-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-29-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-29-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-32",
+      "categoryId": "seafront-living",
+      "alt": "White daybed overlooking the sea from a private stone terrace.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-32-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-32-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-32-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "pool-terraces-33",
+      "categoryId": "seafront-living",
+      "alt": "Shaded seafront seating framed by greenery and blue water.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-33-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-33-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/pool-terraces-33-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-01",
+      "categoryId": "bedrooms-baths",
+      "alt": "Serene double bedroom with pale linens and natural light.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-01-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-01-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-01-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-02",
+      "categoryId": "bedrooms-baths",
+      "alt": "Double bedroom with exposed beams and a softly lit en-suite entrance.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-02-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-02-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-02-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-03",
+      "categoryId": "bedrooms-baths",
+      "alt": "Air-conditioned double bedroom with white linens and garden light.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-03-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-03-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-03-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-04",
+      "categoryId": "bedrooms-baths",
+      "alt": "Private bedroom suite with restored stone-house character.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-04-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-04-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-04-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-05",
+      "categoryId": "bedrooms-baths",
+      "alt": "En-suite bedroom with white linens and warm timber details.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-05-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-05-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-05-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-06",
+      "categoryId": "bedrooms-baths",
+      "alt": "Bright double bedroom at Molonta Heritage Estate with garden views.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-06-480.webp",
+          "width": 480,
+          "height": 361
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-06-960.webp",
+          "width": 960,
+          "height": 721
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-06-1600.webp",
+          "width": 1440,
+          "height": 1082
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-07",
+      "categoryId": "bedrooms-baths",
+      "alt": "En-suite bedroom with pale stone finishes and soft natural light.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-07-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-07-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-07-1600.webp",
+          "width": 1600,
+          "height": 1066
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-08",
+      "categoryId": "bedrooms-baths",
+      "alt": "Private bedroom suite with white linens and restored architectural details.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-08-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-08-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-08-1600.webp",
+          "width": 1600,
+          "height": 1066
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-09",
+      "categoryId": "bedrooms-baths",
+      "alt": "Double bedroom with a calm neutral palette and private en-suite.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-09-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-09-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-09-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-10",
+      "categoryId": "bedrooms-baths",
+      "alt": "Peaceful bedroom suite with white furnishings and stone-house textures.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-10-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-10-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-10-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "bedrooms-baths-11",
+      "categoryId": "bedrooms-baths",
+      "alt": "En-suite bedroom with natural light and a restrained coastal palette.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-11-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-11-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/bedrooms-baths-11-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "living-dining-01",
+      "categoryId": "living-dining",
+      "alt": "Open-plan living and dining room with terracotta floors and timber beams.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-01-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-01-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-01-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-02",
+      "categoryId": "living-dining",
+      "alt": "Restored stone living room with white seating and timber ceiling beams.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-02-480.webp",
+          "width": 480,
+          "height": 269
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-02-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-02-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-03",
+      "categoryId": "living-dining",
+      "alt": "Dining area opening onto the garden at Molonta Heritage Estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-03-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-03-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-03-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-04",
+      "categoryId": "living-dining",
+      "alt": "Sunlit lounge with white seating and original stone-house details.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-04-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-04-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-04-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-05",
+      "categoryId": "living-dining",
+      "alt": "Indoor dining table prepared for guests in the estate's stone interior.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-05-480.webp",
+          "width": 480,
+          "height": 722
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-05-960.webp",
+          "width": 960,
+          "height": 1444
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-05-1600.webp",
+          "width": 1600,
+          "height": 2406
+        }
+      ]
+    },
+    {
+      "id": "living-dining-06",
+      "categoryId": "living-dining",
+      "alt": "Comfortable living room framed by plants and warm natural light.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-06-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-06-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-06-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-07",
+      "categoryId": "living-dining",
+      "alt": "Indoor dining room with a long table and garden-facing doors.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-07-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-07-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-07-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-08",
+      "categoryId": "living-dining",
+      "alt": "Dining table set beneath original beams in the main house.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-08-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-08-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-08-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-09",
+      "categoryId": "living-dining",
+      "alt": "Restored living room arranged for relaxed evenings at the estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-09-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-09-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-09-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-10",
+      "categoryId": "living-dining",
+      "alt": "Bright indoor lounge with garden access and Mediterranean plants.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-10-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-10-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-10-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-11",
+      "categoryId": "living-dining",
+      "alt": "Dining space with a long guest table and traditional stone textures.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-11-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-11-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-11-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-12",
+      "categoryId": "living-dining",
+      "alt": "Living room seating beside wide doors opening toward the garden.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-12-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-12-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-12-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-13",
+      "categoryId": "living-dining",
+      "alt": "Sunlit interior sitting area connecting the house and terrace.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-13-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-13-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-13-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "living-dining-14",
+      "categoryId": "living-dining",
+      "alt": "Glass-fronted living and dining space opening onto the garden.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-14-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-14-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-14-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "living-dining-15",
+      "categoryId": "living-dining",
+      "alt": "Entertainment room with billiards table and warm ambient lighting.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-15-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-15-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-15-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "living-dining-16",
+      "categoryId": "living-dining",
+      "alt": "Indoor games and cinema lounge for evenings at the estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-16-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-16-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/living-dining-16-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "private-coast-01",
+      "categoryId": "private-coast",
+      "alt": "Rocky bathing cove with direct steps into the Adriatic.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-01-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-01-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-01-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "private-coast-02",
+      "categoryId": "private-coast",
+      "alt": "Secluded shoreline terrace beside the clear water of Molunat Bay.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-02-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-02-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-02-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "private-coast-03",
+      "categoryId": "private-coast",
+      "alt": "Aerial view of the rocky shoreline and turquoise Adriatic water.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-03-480.webp",
+          "width": 480,
+          "height": 360
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-03-960.webp",
+          "width": 960,
+          "height": 720
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-03-1600.webp",
+          "width": 1600,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "id": "private-coast-04",
+      "categoryId": "private-coast",
+      "alt": "Stone sea-access platform sheltered within Molonta's private cove.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-04-480.webp",
+          "width": 480,
+          "height": 360
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-04-960.webp",
+          "width": 960,
+          "height": 720
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-04-1600.webp",
+          "width": 1600,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "id": "private-coast-05",
+      "categoryId": "private-coast",
+      "alt": "Direct Adriatic swimming access along the estate's rocky shoreline.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-05-480.webp",
+          "width": 480,
+          "height": 360
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-05-960.webp",
+          "width": 960,
+          "height": 720
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-05-1600.webp",
+          "width": 1600,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "id": "private-coast-06",
+      "categoryId": "private-coast",
+      "alt": "Clear Adriatic water beside the estate's rocky bathing platform.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-06-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-06-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-06-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "private-coast-07",
+      "categoryId": "private-coast",
+      "alt": "Steps and shaded seating at Molonta's secluded shoreline.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-07-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-07-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-07-1600.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "id": "private-coast-08",
+      "categoryId": "private-coast",
+      "alt": "Rocky shore and swimming platform reached directly from the estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-08-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-08-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-08-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "private-coast-09",
+      "categoryId": "private-coast",
+      "alt": "Aerial view of Molonta's secluded sea-access point and turquoise cove.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-09-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-09-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-09-1600.webp",
+          "width": 1600,
+          "height": 1067
+        }
+      ]
+    },
+    {
+      "id": "private-coast-10",
+      "categoryId": "private-coast",
+      "alt": "Aerial view of the stone bathing terrace on Molonta's shoreline.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-10-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-10-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/private-coast-10-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "yacht-experiences-01",
+      "categoryId": "yacht-experiences",
+      "alt": "Motor yacht passing the estate's rocky sea-access terrace.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-01-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-01-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-01-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "yacht-experiences-02",
+      "categoryId": "yacht-experiences",
+      "alt": "Jeanneau motor yacht cruising in the sheltered waters beside Molonta.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-02-480.webp",
+          "width": 480,
+          "height": 270
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-02-960.webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-02-1600.webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "id": "yacht-experiences-03",
+      "categoryId": "yacht-experiences",
+      "alt": "Private motor-yacht experience on the Adriatic near Molonta.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-03-480.webp",
+          "width": 480,
+          "height": 219
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-03-960.webp",
+          "width": 960,
+          "height": 439
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-03-1600.webp",
+          "width": 1600,
+          "height": 731
+        }
+      ]
+    },
+    {
+      "id": "yacht-experiences-04",
+      "categoryId": "yacht-experiences",
+      "alt": "Jeanneau Prestige 34 available for private Adriatic days from Molonta.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-04-480.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-04-960.webp",
+          "width": 960,
+          "height": 640
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/yacht-experiences-04-1600.webp",
+          "width": 1000,
+          "height": 667
+        }
+      ]
+    },
+    {
+      "id": "heritage-press-01",
+      "categoryId": "heritage-press",
+      "alt": "Condé Nast Traveler feature artwork for Molonta Heritage Estate.",
+      "variants": [
+        {
+          "src": "/images/storefronts/molonta/gallery/heritage-press-01-480.webp",
+          "width": 480,
+          "height": 477
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/heritage-press-01-960.webp",
+          "width": 960,
+          "height": 954
+        },
+        {
+          "src": "/images/storefronts/molonta/gallery/heritage-press-01-1600.webp",
+          "width": 1600,
+          "height": 1590
+        }
+      ]
+    }
+  ]
+}
