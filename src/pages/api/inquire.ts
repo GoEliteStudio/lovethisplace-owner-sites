@@ -216,7 +216,11 @@ export const POST: APIRoute = async ({ request }) => {
     let approveUrl: string | undefined;
     let declineUrl: string | undefined;
     
-    if (inquiryId) {
+    const ownerActionWorkflowReady = Boolean(
+      import.meta.env.OWNER_ACTION_SECRET && import.meta.env.STRIPE_SECRET_KEY
+    );
+
+    if (inquiryId && ownerActionWorkflowReady) {
       // Use quote amount if available, otherwise 0 (owner will set final price)
       approveUrl = generateApproveUrl(SITE_URL, inquiryId, quoteAmount || 0, currency);
       declineUrl = generateDeclineUrl(SITE_URL, inquiryId);

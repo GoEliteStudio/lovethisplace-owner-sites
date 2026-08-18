@@ -39,6 +39,13 @@ assert(sitemap.includes("['thank-you', 'about']"), 'owner-facing and transaction
 assert(ownerAbout.includes('noindex={true}'), 'the owner-facing sales page is explicitly noindex');
 assert(sitemap.includes('getIndexableVillas'), 'private previews cannot enter sitemap discovery');
 assert(inquiry.includes('getVillaBySlug(slug)'), 'inquiries reject unregistered properties');
+assert(
+  inquiry.includes('ownerActionWorkflowReady') &&
+    inquiry.includes('import.meta.env.OWNER_ACTION_SECRET') &&
+    inquiry.includes('import.meta.env.STRIPE_SECRET_KEY') &&
+    inquiry.includes('if (inquiryId && ownerActionWorkflowReady)'),
+  'owner action links require signing and payment configuration'
+);
 assert(!inquiry.includes("request.headers.get('x-forwarded-for')"), 'raw IP addresses are not added to inquiry payloads');
 assert(!inquiry.includes("request.headers.get('user-agent')"), 'user-agent strings are not added to inquiry payloads');
 
