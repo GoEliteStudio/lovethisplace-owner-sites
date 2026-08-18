@@ -1,4 +1,4 @@
-﻿import type { APIRoute } from 'astro';
+import type { APIRoute } from 'astro';
 import { sendClientReceipt } from '../../lib/clientReceipt';
 import { ownerNoticeHtml, ownerNoticeText } from '../../lib/ownerNotice';
 import { createInquiry, getListingBySlug, getOwnerById } from '../../lib/firestore/collections';
@@ -29,8 +29,15 @@ type InquireBody = {
   website?: string;     // extra honeypot
   hpt?: string;         // extra honeypot (generic)
   __ts?: string;        // client timestamp (ms)
+  consent?: string;
 };
 
+const managedInquiryRoutes: Record<string, { endpoint: string; publicSlug: string }> = {
+  'molonta-owner-preview': {
+    endpoint: 'https://www.lovethisplace.co/api/storefront/inquiries',
+    publicSlug: 'molonta-heritage-estate',
+  },
+};
 const required = (v?: string) => typeof v === 'string' && v.trim().length > 0;
 const isEmail = (v?: string) => !!v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
@@ -121,6 +128,90 @@ export const POST: APIRoute = async ({ request }) => {
     }
     const origin: InquiryOrigin = data.origin || 'villa_site';
     const lang = data.lang ? (data.lang as 'en' | 'fr' | 'es') : detectLang(request);
+
+    const managedRoute = managedInquiryRoutes[slug];
+    if (managedRoute) {
+      const proxyErrors: Record<string, string> = {};
+      if (!required(payload.phone)) proxyErrors.phone = 'Required';
+      if (data.consent !== 'yes') proxyErrors.consent = 'Required';
+      if (Object.keys(proxyErrors).length) {
+        return new Response(JSON.stringify({ ok: false, errors: proxyErrors }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      const upstream = new URL(managedRoute.endpoint);
+      const forwarded = new FormData();
+      forwarded.set('slug', managedRoute.publicSlug);
+      forwarded.set('locale', lang === 'es' ? 'es' : 'en');
+      forwarded.set('surface', 'public');
+      forwarded.set('kind', 'villa');
+      forwarded.set('idempotencyKey', crypto.randomUUID());
+      forwarded.set('checkIn', payload.checkIn);
+      forwarded.set('checkOut', payload.checkOut);
+      forwarded.set('groupSize', String(payload.adults + payload.children));
+      forwarded.set('fullName', payload.fullName);
+      forwarded.set('whatsapp', payload.phone);
+      forwarded.set('email', payload.email);
+      forwarded.set('notes', payload.notes);
+      forwarded.set('consent', 'yes');
+      forwarded.set('website', '');
+      forwarded.set('startedAt', String(data.__ts));
+      forwarded.set('utmSource', 'molonta_owner_showcase');
+      forwarded.set('utmMedium', 'owner_site');
+      forwarded.set('utmCampaign', 'molonta_launch');
+      forwarded.set('utmContent', 'inquiry_form');
+      forwarded.set(
+        'referrer',
+        new URL('/villas/' + slug + '/' + lang + '/', request.url).toString(),
+      );
+
+      const proxyHeaders: HeadersInit = {
+        Accept: 'application/json',
+        Origin: upstream.origin,
+        Referer: upstream.origin + '/en/storefront/' + managedRoute.publicSlug,
+      };
+      const clientAddress = request.headers.get('x-vercel-forwarded-for');
+      if (clientAddress) proxyHeaders['x-vercel-forwarded-for'] = clientAddress;
+
+      let proxyResponse: Response;
+      try {
+        proxyResponse = await fetch(upstream, {
+          method: 'POST',
+          headers: proxyHeaders,
+          body: forwarded,
+        });
+      } catch {
+        console.error('[inquire] Managed inquiry endpoint unavailable');
+        return new Response(JSON.stringify({ ok: false, error: 'Inquiry destination unavailable' }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (!proxyResponse.ok) {
+        console.error('[inquire] Managed inquiry rejected', { status: proxyResponse.status });
+        return new Response(JSON.stringify({ ok: false, error: 'Inquiry destination unavailable' }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      const accept = (request.headers.get('accept') || '').toLowerCase();
+      if (accept.includes('text/html')) {
+        const thankYou = new URL('/villas/' + slug + '/' + lang + '/thank-you', request.url);
+        thankYou.searchParams.set('name', payload.fullName);
+        thankYou.searchParams.set('d', payload.checkIn + ' → ' + payload.checkOut);
+        return Response.redirect(thankYou.toString(), 303);
+      }
+
+      const result = await proxyResponse.text();
+      return new Response(result, {
+        status: proxyResponse.status,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     // Look up listing ONCE (avoid duplicate Firestore reads)
     let listing: Listing | null = null;

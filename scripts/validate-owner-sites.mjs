@@ -20,6 +20,7 @@ const sitemap = read('src/pages/sitemap.xml.ts');
 const robots = read('src/pages/robots.txt.ts');
 const layout = read('src/layouts/BaseLayout.astro');
 const inquiry = read('src/pages/api/inquire.ts');
+const inquiryForm = read('src/components/InquiryForm.astro');
 const ownerAbout = read('src/pages/villas/[slug]/[lang]/about.astro');
 const heritagePage = read('src/components/HeritageVillaPage.astro');
 const molonta = JSON.parse(read('src/content/villas/molonta-owner-preview.en.json'));
@@ -48,6 +49,19 @@ assert(
 );
 assert(!inquiry.includes("request.headers.get('x-forwarded-for')"), 'raw IP addresses are not added to inquiry payloads');
 assert(!inquiry.includes("request.headers.get('user-agent')"), 'user-agent strings are not added to inquiry payloads');
+assert(
+  inquiry.includes("'molonta-owner-preview'") &&
+    inquiry.includes("https://www.lovethisplace.co/api/storefront/inquiries") &&
+    inquiry.includes("forwarded.set('kind', 'villa')") &&
+    inquiry.includes("forwarded.set('utmSource', 'molonta_owner_showcase')"),
+  'Molonta inquiries reuse the established LoveThisPlace villa pipeline with explicit attribution'
+);
+assert(
+  inquiryForm.includes('name="phone"') &&
+    inquiryForm.includes('name="consent"') &&
+    inquiryForm.includes('Privacy policy'),
+  'the owner-site inquiry form collects a response number and explicit privacy consent'
+);
 
 assert(molonta.slug === 'molonta-owner-preview', 'Molonta content matches its private slug');
 assert(Boolean(molonta.seo?.title && molonta.seo?.description), 'Molonta has property-specific SEO metadata');
