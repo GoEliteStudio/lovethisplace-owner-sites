@@ -39,6 +39,7 @@ assert(robots.includes('Disallow: /'), 'unknown and preview hosts fail closed in
 assert(sitemap.includes("['thank-you', 'about']"), 'owner-facing and transactional pages are excluded from sitemaps');
 assert(ownerAbout.includes('noindex={true}'), 'the owner-facing sales page is explicitly noindex');
 assert(sitemap.includes('getIndexableVillas'), 'private previews cannot enter sitemap discovery');
+assert(sitemap.includes('villas.length > 0 ? generateUrlEntry'), 'private hosts publish an empty sitemap rather than a root discovery URL');
 assert(inquiry.includes('getVillaBySlug(slug)'), 'inquiries reject unregistered properties');
 assert(
   inquiry.includes('ownerActionWorkflowReady') &&

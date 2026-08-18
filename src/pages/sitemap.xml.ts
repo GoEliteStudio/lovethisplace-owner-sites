@@ -209,14 +209,14 @@ export const GET: APIRoute = async ({ request }) => {
   }
   
   // Add root redirect page
-  const rootEntry = generateUrlEntry(
+  const rootEntry = villas.length > 0 ? generateUrlEntry(
     `${baseUrl}/`,
     new Date().toISOString().split('T')[0],
     'monthly',
     '0.5',
     [],
     baseUrl
-  );
+  ) : '';
   
   // Build complete sitemap XML
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
