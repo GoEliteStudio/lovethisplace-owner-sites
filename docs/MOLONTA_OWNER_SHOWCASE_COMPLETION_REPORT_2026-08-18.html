@@ -257,7 +257,7 @@
         <span class="pill">Open by URL</span>
         <span class="pill">No password</span>
         <span class="pill">Noindex</span>
-        <span class="pill">Not deployed in this step</span>
+        <span class="pill">Production deployed</span>
       </div>
     </header>
 
@@ -294,7 +294,7 @@
           <div class="item">
             <h3>What was not done</h3>
             <ul>
-              <li>No claim was made that the public deployment had occurred.</li>
+              <li>No existing LoveThisPlace or portal deployment was overwritten; Molonta was released through its own isolated Vercel project.</li>
               <li>No password wall was added.</li>
               <li>No search-indexing launch was authorized.</li>
               <li>No raw owner archive, private source folder, credentials, or runtime operational data was committed.</li>
@@ -433,7 +433,7 @@
 
       <section>
         <p class="eyebrow">09 · Verification record</p>
-        <h2>The exact committed state was tested before delivery.</h2>
+        <h2>The exact committed and deployed state was tested before delivery.</h2>
         <table>
           <thead><tr><th>Check</th><th>Result</th><th>Evidence</th></tr></thead>
           <tbody>
@@ -448,6 +448,9 @@
             <tr><td>Sitemap discovery</td><td class="pass">Excluded</td><td>Molonta does not appear in the generated sitemap while in private-preview state.</td></tr>
             <tr><td>Preview-host robots</td><td class="pass">Protected</td><td><code>User-agent: *</code> and <code>Disallow: /</code>.</td></tr>
             <tr><td>Whitespace and secret scan</td><td class="pass">Passed</td><td>No committed credentials or private runtime values identified.</td></tr>
+            <tr><td>Production deployment</td><td class="pass">Ready</td><td><code>https://molonta-owner-preview.vercel.app</code> is assigned to the isolated production project.</td></tr>
+            <tr><td>Live main and gallery</td><td class="pass">HTTP 200</td><td>Both public routes and the responsive hero asset were fetched successfully after deployment.</td></tr>
+            <tr><td>Live sitemap</td><td class="pass">Empty</td><td>The production sitemap contains no property URLs while the site remains intentionally non-indexable.</td></tr>
           </tbody>
         </table>
         <p class="muted">The production build continues to report a pre-existing set of FAQ token-declaration warnings elsewhere in the shared engine. They do not fail the build and are not caused by the Molonta work.</p>
@@ -455,30 +458,35 @@
 
       <section>
         <p class="eyebrow">10 · Git delivery</p>
-        <h2>The implementation is preserved as one intentional feature commit.</h2>
+        <h2>The implementation is preserved as an intentional feature series.</h2>
         <div class="commit">
           <strong>Branch</strong><br />
           <code>feature/owner-sites-product-v2</code><br /><br />
-          <strong>Commit</strong><br />
-          <code>da0ab49 feat(owner-sites): add Molonta showcase and complete gallery</code>
+          <strong>Commits</strong><br />
+          <code>da0ab49 feat(owner-sites): add Molonta showcase and complete gallery</code><br />
+          <code>835bb0a docs(owner-sites): record Molonta delivery report</code><br />
+          <code>c913cd1 fix(owner-sites): gate payment action links</code><br />
+          <code>01fe2a2 feat(owner-sites): route Molonta inquiries through LTP</code><br />
+          <code>07aeff0 fix(owner-sites): keep private sitemaps empty</code>
         </div>
         <p style="margin-top:18px">The commit contains the reusable owner-site architecture, Molonta content, complete gallery, responsive assets, discovery controls, privacy improvements, documentation, and automated validation. Generated Astro cache files were intentionally left out.</p>
       </section>
 
       <section>
         <p class="eyebrow">11 · Current status and next action</p>
-        <h2>Committed locally; not pushed or deployed.</h2>
-        <p>The implementation is complete in the local feature branch. The next technical action—only when Juan authorizes it—is to push the branch and deploy the open-by-URL, noindex owner showcase. After deployment, the required last-mile verification is performed against the actual public URL:</p>
+        <h2>Committed, pushed, deployed, and verified.</h2>
+        <p>The feature branch is synchronized with GitHub and the owner showcase is live through a dedicated Vercel production project at <code>https://molonta-owner-preview.vercel.app</code>. It is open by URL without authentication while remaining deliberately excluded from search discovery.</p>
         <ol>
           <li>Load the main showcase and complete gallery without authentication.</li>
           <li>Confirm both pages emit <code>noindex, nofollow</code>.</li>
           <li>Confirm the preview host returns <code>Disallow: /</code>.</li>
           <li>Confirm Molonta remains absent from the sitemap.</li>
-          <li>Submit one labeled test inquiry and verify operator receipt and source retention.</li>
-          <li>Only then share the stable presentation URL and begin measured rental promotion.</li>
+          <li>The inquiry form routes through the existing LoveThisPlace production inquiry pipeline with Molonta-specific campaign attribution.</li>
+          <li>A real labeled inquiry was intentionally not submitted during deployment because that would create an external email and production record.</li>
+          <li>The stable URL can now be shared and used for measured rental promotion.</li>
         </ol>
         <div class="decision">
-          <strong>Definition of the present finish line:</strong> the owner site is visually complete, technically validated, commercially usable, committed, and configured for frictionless viewing without search indexing. Deployment remains a separate controlled action.
+          <strong>Definition of the present finish line:</strong> the owner site is visually complete, technically validated, commercially usable, committed, deployed, and configured for frictionless viewing without search indexing. The only optional operational check is one Juan-authorized labeled inquiry to confirm inbox receipt and stored attribution end to end.
         </div>
       </section>
     </main>
