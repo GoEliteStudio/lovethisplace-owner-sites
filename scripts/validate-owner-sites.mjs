@@ -33,7 +33,9 @@ const completeGallery = JSON.parse(read('src/content/galleries/molonta-heritage-
 
 assert(registry.includes("slug: 'molonta-heritage-estate'"), 'Molonta is registered');
 assert(registry.includes("domain: 'molonta.lovethisplace.co'"), 'Molonta has the approved clean custom domain');
-assert(registry.includes("canonicalOrigin: 'https://molonta.lovethisplace.co'"), 'Molonta canonicals use the clean custom domain');
+assert(registry.includes("canonicalOrigin: 'https://molonta.lovethisplace.co'"), 'Molonta reserves the clean custom domain for public launch');
+assert(registry.includes("previewOrigin: 'https://molonta-heritage-estate.vercel.app'"), 'Molonta previews use a live share origin');
+assert(registry.includes("villa.visibility !== 'public' && villa.previewOrigin"), 'private-preview metadata never points at an unresolved custom domain');
 assert(registry.includes('rootCanonical: true'), 'Molonta is configured for root-domain presentation');
 assert(rootRoute.includes('proxyInternalOwnerRoute(Astro.request, internalTarget)'), 'root-canonical properties render without exposing the engine route');
 assert(ownerSiteRouting.includes("request.headers.get('x-forwarded-host')") && ownerSiteRouting.includes("split(':')[0].toLowerCase()"), 'owner-site routing normalizes production proxy host headers');
@@ -41,6 +43,11 @@ assert(cleanAuxRoute.includes('villa.auxPages.includes(page)') && cleanAuxRoute.
 assert(registry.includes("visibility: 'private-preview'"), 'the registry supports a private-preview state');
 assert(registry.includes("theme: 'heritage-signature'"), 'the heritage-signature theme is explicit');
 assert(registry.includes('getIndexableVillas'), 'public discovery is generated from an indexable allowlist');
+assert(
+  registry.includes('process.env.VILLA_SLUG') &&
+    registry.includes('getBuildVillas().map'),
+  'isolated deployments generate routes only for their configured villa'
+);
 assert(route.includes("villaConfig.theme === 'heritage-signature'"), 'the reusable renderer is selected by configuration');
 assert(route.includes("description={villa.seo?.description || villa.summary}"), 'property SEO descriptions feed page metadata');
 assert(

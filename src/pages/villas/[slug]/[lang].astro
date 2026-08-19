@@ -7,7 +7,7 @@ import Tabs from '../../../components/Tabs.astro';
 import FixedFactsPanel from '../../../components/FixedFactsPanel.astro';
 import InquiryForm from '../../../components/InquiryForm.astro';
 import HeritageVillaPage from '../../../components/HeritageVillaPage.astro';
-import { VILLA_LANGUAGES, LANG_META, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicPath, isVillaIndexable } from '../../../config/i18n';
+import { VILLA_LANGUAGES, LANG_META, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicOrigin, getVillaPublicPath, isVillaIndexable } from '../../../config/i18n';
 import { getUIStrings } from '../../../config/uiStrings';
 import { buildSchemaGraph } from '../../../lib/schema';
 import { buildSearchDataset } from '../../../lib/search';
@@ -157,7 +157,7 @@ if (!villaConfig) {
   return Astro.redirect('/', 302);
 }
 
-const siteBase = `${villaConfig.canonicalOrigin.replace(/\/$/, '')}/`;
+const siteBase = `${getVillaPublicOrigin(villaConfig)}/`;
 const pageTitle = villa.seo?.title || `${villa.name} — Luxury Villa Retreat`;
 const canonical = getVillaCanonicalUrl(villaConfig, lang);
 const publicHomePath = getVillaPublicPath(villaConfig, lang);

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import HeritageGalleryPage from '../../../../components/HeritageGalleryPage.astro';
-import { LANG_META, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicPath, isVillaIndexable } from '../../../../config/i18n';
+import { LANG_META, getBuildVillas, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicOrigin, getVillaPublicPath, isVillaIndexable } from '../../../../config/i18n';
 import { getUIStrings } from '../../../../config/uiStrings';
 import { buildAuxPageSchema } from '../../../../lib/schema';
 
@@ -9,7 +9,9 @@ export const prerender = true;
 
 
 export function getStaticPaths() {
-  return [{ params: { slug: 'molonta-heritage-estate', lang: 'en' } }];
+  return getBuildVillas().some((villa) => villa.slug === 'molonta-heritage-estate')
+    ? [{ params: { slug: 'molonta-heritage-estate', lang: 'en' } }]
+    : [];
 }
 
 const { slug, lang } = Astro.params;
@@ -34,7 +36,7 @@ const homeHref = getVillaPublicPath(villaConfig, lang);
 const galleryHref = getVillaPublicPath(villaConfig, lang, 'gallery');
 const assetSlug = villaConfig.assetSlug || slug;
 const canonical = getVillaCanonicalUrl(villaConfig, lang, 'gallery');
-const siteBase = `${villaConfig.canonicalOrigin.replace(/\/$/, '')}/`;
+const siteBase = `${getVillaPublicOrigin(villaConfig)}/`;
 const pageTitle = `${villa.name} | Complete Photo Gallery`;
 const pageDescription = `Explore ${gallery.items.length} owner-approved photographs of ${villa.name}, organized by estate setting, pool, gardens, interiors, shoreline and experiences.`;
 const firstVariant = gallery.items[0]?.variants.find((variant: any) => variant.width >= 1600)

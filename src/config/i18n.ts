@@ -44,8 +44,10 @@ export interface VillaConfig {
   active: boolean;
   /** Publication boundary. Only public villas may be indexed or listed in sitemaps. */
   visibility: VillaVisibility;
-  /** Explicit canonical origin. Never infer canonicals from a shared deployment host. */
+  /** Explicit canonical origin used after the property is approved for public indexing. */
   canonicalOrigin: string;
+  /** Shareable origin used while a private-preview custom domain is not yet active. */
+  previewOrigin?: string;
   /** Present this property at the canonical domain root instead of exposing the engine route. */
   rootCanonical?: boolean;
   /** Reuse an existing optimized asset directory during a safe property-slug migration. */
@@ -175,6 +177,7 @@ export const VILLAS: VillaConfig[] = [
     active: true,
     visibility: 'private-preview',
     canonicalOrigin: 'https://molonta.lovethisplace.co',
+    previewOrigin: 'https://molonta-heritage-estate.vercel.app',
     rootCanonical: true,
     assetSlug: 'molonta-owner-preview',
     theme: 'heritage-signature',
@@ -206,6 +209,22 @@ export function getVillaByHostname(hostname: string): VillaConfig | undefined {
 }
 
 /**
+ * Restrict prerendered routes to one property when an isolated owner-site
+ * deployment declares VILLA_SLUG. Unset keeps the shared development build.
+ */
+export function getBuildVillas(): VillaConfig[] {
+  const configuredSlug = process.env.VILLA_SLUG?.trim();
+  if (!configuredSlug) return VILLAS;
+
+  const villa = getVillaBySlug(configuredSlug);
+  if (!villa) {
+    throw new Error(`Unknown VILLA_SLUG: ${configuredSlug}`);
+  }
+
+  return [villa];
+}
+
+/**
  * Get all active villas
  */
 export function getActiveVillas(): VillaConfig[] {
@@ -225,8 +244,15 @@ export function isVillaIndexable(villa: VillaConfig | undefined): boolean {
   return Boolean(villa?.active && villa.visibility === 'public');
 }
 
+export function getVillaPublicOrigin(villa: VillaConfig): string {
+  const origin = villa.visibility !== 'public' && villa.previewOrigin
+    ? villa.previewOrigin
+    : villa.canonicalOrigin;
+  return origin.replace(/\/$/, '');
+}
+
 export function getVillaCanonicalUrl(villa: VillaConfig, lang: string, page?: string): string {
-  const origin = villa.canonicalOrigin.replace(/\/$/, '');
+  const origin = getVillaPublicOrigin(villa);
   if (villa.rootCanonical) {
     return page ? origin + '/' + page.replace(/^\//, '').replace(/\/$/, '') + '/' : origin + '/';
   }
@@ -335,7 +361,7 @@ export function getVillaMinimumNights(slug: string): number {
  * @deprecated Use VILLAS array and getVillaLanguages() instead
  */
 export const VILLA_LANGUAGES: Record<string, string[]> = Object.fromEntries(
-  VILLAS.map(v => [v.slug, v.langs])
+  getBuildVillas().map(v => [v.slug, v.langs])
 );
 
 /**

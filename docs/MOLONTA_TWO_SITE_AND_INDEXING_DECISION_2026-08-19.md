@@ -16,7 +16,8 @@ Molonta Heritage Estate has two complementary public-facing products with separa
 
 ### 2. Independent Molonta owner site
 
-- Intended URL: `https://molonta.lovethisplace.co/`
+- Current share URL while DNS is pending: `https://molonta-heritage-estate.vercel.app/`
+- Public-launch URL after DNS and the indexing gate: `https://molonta.lovethisplace.co/`
 - Role: full property-branded presentation and future canonical owner website.
 - Identity: Molonta Heritage Estate leads the presentation; LoveThisPlace and Go Elite Global appear only where their platform and operating roles need to be clear.
 - Conversion: inquiries enter the same established LoveThisPlace villa inquiry pipeline so leads are not fragmented.
@@ -42,12 +43,13 @@ Engine paths such as `/villas/{slug}/{language}/` and URLs containing `preview` 
 Do not change the independent site from `private-preview` to `public` until all of the following are true:
 
 1. `molonta.lovethisplace.co` resolves to the reviewed production deployment and every canonical uses that origin.
-2. The signed commercial agreement and the provider/operator roles are final.
-3. The cancellation policy, traveler terms, privacy disclosures, rates, fees, taxes, deposits, and minimum stays are final and consistent.
-4. One labeled production inquiry proves that the operator email, traveler receipt, stored lead, property identity, and source attribution all survive end to end.
-5. Juan explicitly approves the indexing launch after reviewing the live custom-domain site.
+2. The isolated Vercel project sets `VILLA_SLUG=molonta-heritage-estate`, and the post-build isolation check proves that no other villa route was generated.
+3. The signed commercial agreement and the provider/operator roles are final.
+4. The cancellation policy, traveler terms, privacy disclosures, rates, fees, taxes, deposits, and minimum stays are final and consistent.
+5. One labeled production inquiry proves that the operator email, traveler receipt, stored lead, property identity, and source attribution all survive end to end.
+6. Juan explicitly approves the indexing launch after reviewing the live custom-domain site.
 
-After all five gates pass:
+After all six gates pass:
 
 1. Change Molonta's registry visibility to `public`.
 2. Rebuild and deploy the reviewed commit.

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "npm run validate && astro build",
+    "postbuild": "node scripts/validate-build-isolation.mjs",
     "preview": "astro preview",
     "villa:create": "node scripts/create-villa.mjs",
     "villa:onboard": "node scripts/onboard-villa.mjs",

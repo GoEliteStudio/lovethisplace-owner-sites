@@ -69,6 +69,8 @@ npm run build
 npm run dev
 ```
 
+For every isolated production owner-site project, set `VILLA_SLUG` to the property's registered slug. The build must pass `validate-build-isolation.mjs`, which proves that no other property's prerendered route exists in that deployment. A policy saying engine URLs should not be shared is not an access control.
+
 Review at minimum:
 
 - desktop 1440px;
