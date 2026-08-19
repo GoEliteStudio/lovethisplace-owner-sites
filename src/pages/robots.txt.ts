@@ -11,6 +11,7 @@
 
 import type { APIRoute } from 'astro';
 import { getVillaByHostname, isVillaIndexable } from '../config/i18n';
+import { getRequestHostname } from '../lib/ownerSiteRouting';
 
 // Disable prerendering - needs to be dynamic to detect hostname
 export const prerender = false;
@@ -20,7 +21,7 @@ export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
   const baseUrl = `${url.protocol}//${url.host}`;
 
-  const matchedVilla = getVillaByHostname(url.hostname);
+  const matchedVilla = getVillaByHostname(getRequestHostname(request));
   if (!isVillaIndexable(matchedVilla)) {
     return new Response('User-agent: *\nDisallow: /', {
       status: 200,

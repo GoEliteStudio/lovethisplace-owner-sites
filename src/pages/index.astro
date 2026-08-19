@@ -17,9 +17,10 @@
 export const prerender = false;
 
 import { VILLA_LANGUAGES, DEFAULT_LANG, HOSTNAME_SLUG_MAP, getVillaBySlug, getVillaPublicPath } from '../config/i18n';
+import { getRequestHostname, proxyInternalOwnerRoute } from '../lib/ownerSiteRouting';
 
 // Step 1: Identify which villa site this is
-const hostname = (Astro.request.headers.get('host') || '').split(':')[0].toLowerCase();
+const hostname = getRequestHostname(Astro.request);
 const envSlug = import.meta.env.VILLA_SLUG as string | undefined;
 
 // Check if hostname matches a known villa
@@ -47,7 +48,7 @@ if (!matchedSlug) {
   const villaConfig = getVillaBySlug(matchedSlug);
   const internalTarget = '/villas/' + matchedSlug + '/' + targetLang + '/';
   if (villaConfig?.rootCanonical) {
-    return Astro.rewrite(internalTarget);
+    return proxyInternalOwnerRoute(Astro.request, internalTarget);
   }
 
   const targetUrl = villaConfig ? getVillaPublicPath(villaConfig, targetLang) : internalTarget;

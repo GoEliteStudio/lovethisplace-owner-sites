@@ -1,9 +1,10 @@
 ---
 import { getVillaByHostname } from '../config/i18n';
+import { getRequestHostname, proxyInternalOwnerRoute } from '../lib/ownerSiteRouting';
 
 export const prerender = false;
 
-const hostname = (Astro.request.headers.get('host') || '').split(':')[0].toLowerCase();
+const hostname = getRequestHostname(Astro.request);
 const page = Astro.params.page || '';
 const villa = getVillaByHostname(hostname);
 
@@ -12,5 +13,5 @@ if (!villa?.rootCanonical || !villa.auxPages.includes(page)) {
 }
 
 const internalTarget = `/villas/${villa.slug}/${villa.defaultLang}/${page}/`;
-return Astro.rewrite(internalTarget);
+return proxyInternalOwnerRoute(Astro.request, internalTarget);
 ---

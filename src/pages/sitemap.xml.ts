@@ -19,6 +19,7 @@
 
 import type { APIRoute } from 'astro';
 import { getIndexableVillas, getVillaByHostname, isVillaIndexable, type VillaConfig } from '../config/i18n';
+import { getRequestHostname } from '../lib/ownerSiteRouting';
 
 // Maximum images to include per villa page (balance between SEO value and file size)
 const MAX_IMAGES_PER_VILLA = 15;
@@ -180,7 +181,7 @@ async function generateVillaSitemap(
 export const GET: APIRoute = async ({ request }) => {
   // Determine base URL from request
   const url = new URL(request.url);
-  const hostname = url.host;
+  const hostname = getRequestHostname(request);
   const baseUrl = `${url.protocol}//${hostname}`;
   
   // ==========================================================================

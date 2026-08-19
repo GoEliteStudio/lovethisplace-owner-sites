@@ -1,5 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getVillaByHostname } from '../config/i18n';
+import { getRequestHostname, proxyInternalOwnerRoute } from '../lib/ownerSiteRouting';
+export const prerender = false;
+const routeVilla = getVillaByHostname(getRequestHostname(Astro.request));
+if (routeVilla?.rootCanonical && routeVilla.auxPages.includes('thank-you')) {
+  return proxyInternalOwnerRoute(Astro.request, `/villas/${routeVilla.slug}/${routeVilla.defaultLang}/thank-you/`);
+}
 const url = new URL(Astro.request.url);
 // Minimal sanitization: we only display as text, no HTML injection
 const rawName = url.searchParams.get('name') || 'your inquiry';
