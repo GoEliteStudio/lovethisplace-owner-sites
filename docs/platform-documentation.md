@@ -55,7 +55,7 @@ Only active properties with `visibility: 'public'` may be generated. If none exi
 
 ### Post-build verification
 
-`npm run build` prunes the rendered output and then runs behavioral isolation validation. For a dedicated build, the output must contain exactly the configured property route and its `assetSlug || slug` media directory. For a shared build, the output must exactly match the active public allowlist, including the valid empty-shell case. Unexpected routes or property-media directories fail the build.
+`npm run build` prunes the rendered output and then runs behavioral isolation validation. For a dedicated build, the output must contain exactly the configured property route and its `assetSlug || slug` media directory. For a shared build, the output must exactly match the active public allowlist, including the valid empty-shell case. Under the top-level image directory, only explicitly shared entries are retained; loose archives, legacy directories, and other unapproved files fail validation. Unexpected routes or media fail the build.
 
 The environment variable is necessary, but output inspection is the proof.
 

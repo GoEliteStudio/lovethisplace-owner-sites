@@ -2,6 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { ALLOWED_TOP_LEVEL_IMAGE_ENTRIES } from './asset-isolation-policy.mjs';
 import { loadVillaRegistry } from './load-villa-registry.mjs';
 
 const configuredSlug = process.env.VILLA_SLUG?.trim();
@@ -22,7 +23,6 @@ if (configuredSlug && selectedVillas.length !== 1) {
 }
 
 const allowedAssetSlugs = new Set(selectedVillas.map((villa) => villa.assetSlug || villa.slug));
-const knownLegacySlugs = new Set(villas.map((villa) => villa.slug));
 const imageRoots = [
   path.resolve('.vercel/output/static/images'),
   path.resolve('dist/client/images'),
@@ -44,11 +44,10 @@ for (const imageRoot of imageRoots) {
   }
 
   for (const entry of fs.readdirSync(imageRoot, { withFileTypes: true })) {
-    if (!entry.isDirectory() || entry.name === 'villas') continue;
-    if (!knownLegacySlugs.has(entry.name) || allowedAssetSlugs.has(entry.name)) continue;
+    if (ALLOWED_TOP_LEVEL_IMAGE_ENTRIES.has(entry.name)) continue;
     fs.rmSync(path.join(imageRoot, entry.name), { recursive: true, force: true });
     removed.push(path.relative(process.cwd(), path.join(imageRoot, entry.name)));
   }
 }
 
-console.log(`[asset-isolation] PASS: retained ${[...allowedAssetSlugs].join(', ') || '(no property media)'}; removed ${removed.length} unrelated directories.`);
+console.log(`[asset-isolation] PASS: retained ${[...allowedAssetSlugs].join(', ') || '(no property media)'}; removed ${removed.length} unrelated entries.`);

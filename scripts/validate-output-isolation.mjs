@@ -2,6 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { ALLOWED_TOP_LEVEL_IMAGE_ENTRIES } from './asset-isolation-policy.mjs';
 import { loadVillaRegistry } from './load-villa-registry.mjs';
 
 const configuredSlug = process.env.VILLA_SLUG?.trim();
@@ -42,17 +43,21 @@ const imageRoot = [
 const generatedAssetSlugs = [];
 
 if (imageRoot) {
+  const unexpectedTopLevelEntries = fs.readdirSync(imageRoot, { withFileTypes: true })
+    .map((entry) => entry.name)
+    .filter((name) => !ALLOWED_TOP_LEVEL_IMAGE_ENTRIES.has(name))
+    .sort();
+
+  if (unexpectedTopLevelEntries.length > 0) {
+    throw new Error(`[asset-isolation] Unexpected top-level image entries: ${unexpectedTopLevelEntries.join(', ')}.`);
+  }
+
   const villasImageRoot = path.join(imageRoot, 'villas');
   if (fs.existsSync(villasImageRoot)) {
     generatedAssetSlugs.push(...fs.readdirSync(villasImageRoot, { withFileTypes: true })
       .filter((entry) => entry.isDirectory())
       .map((entry) => entry.name));
   }
-
-  const knownLegacySlugs = new Set(villas.map((villa) => villa.slug));
-  generatedAssetSlugs.push(...fs.readdirSync(imageRoot, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && knownLegacySlugs.has(entry.name))
-    .map((entry) => entry.name));
 }
 
 generatedAssetSlugs.sort();
