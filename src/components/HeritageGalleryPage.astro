@@ -167,14 +167,10 @@ const gallerySrcSet = (item: GalleryItem) =>
     is:inline
     type="application/json"
     data-gallery-data
-    set:html={JSON.stringify(items.map((item) => {
-      const display = galleryVariant(item, 1600);
-      return display ? {
-        ...display,
-        srcset: gallerySrcSet(item),
-        alt: item.alt,
-      } : null;
-    }).filter(Boolean))}
+    set:html={JSON.stringify(items.map((item) => ({
+      variants: item.variants,
+      alt: item.alt,
+    })))}
   />
 </div>
 
@@ -588,46 +584,113 @@ const gallerySrcSet = (item: GalleryItem) =>
     if (!modal || !data || !image || !caption || !current) return;
 
     const items = JSON.parse(data.textContent ?? '[]') as Array<{
-      src: string;
-      srcset: string;
-      width: number;
-      height: number;
+      variants: Array<{
+        src: string;
+        width: number;
+        height: number;
+      }>;
       alt: string;
     }>;
     let active = 0;
     let opener: HTMLElement | null = null;
+    let renderRequest = 0;
+    const cachedImages = new Map<string, Promise<string>>();
 
-    const show = (index: number) => {
-      active = (index + items.length) % items.length;
+    const normalizeIndex = (index: number) => (index + items.length) % items.length;
+    const displayWidth = () => Math.min(1600, Math.ceil(window.innerWidth * Math.min(window.devicePixelRatio || 1, 1.5)));
+    const displayVariant = (index: number) => {
+      const variants = items[normalizeIndex(index)].variants;
+      return variants.find(({ width }) => width >= displayWidth()) ?? variants.at(-1);
+    };
+    const preloadVariant = (
+      variant: { src: string; width: number; height: number } | undefined,
+      priority: 'high' | 'low' | 'auto' = 'auto',
+    ) => {
+      if (!variant) return Promise.reject(new Error('No gallery image variant'));
+      if (cachedImages.has(variant.src)) return cachedImages.get(variant.src)!;
+      const pending = new Promise<string>((resolve, reject) => {
+        const loader = new Image();
+        loader.decoding = 'async';
+        loader.fetchPriority = priority;
+        loader.onload = () => resolve(variant.src);
+        loader.onerror = reject;
+        loader.src = variant.src;
+      });
+      cachedImages.set(variant.src, pending);
+      void pending.catch(() => cachedImages.delete(variant.src));
+      return pending;
+    };
+    const preload = (index: number, priority: 'high' | 'low' | 'auto' = 'auto') =>
+      preloadVariant(displayVariant(index), priority);
+    const warmNearby = (index: number) => {
+      for (const nearbyIndex of [index + 1, index - 1]) {
+        const item = items[normalizeIndex(nearbyIndex)];
+        void preloadVariant(item.variants[0], 'high').catch(() => {});
+        void preload(nearbyIndex, 'low').catch(() => {});
+      }
+    };
+
+    const show = async (index: number, immediateSrc = '') => {
+      active = normalizeIndex(index);
+      const request = ++renderRequest;
       const item = items[active];
-      image.srcset = item.srcset;
-      image.sizes = '100vw';
-      image.src = item.src;
-      image.width = item.width;
-      image.height = item.height;
+      const preview = item.variants[0];
       image.alt = item.alt;
       caption.textContent = item.alt;
       current.textContent = String(active + 1);
+      image.removeAttribute('srcset');
+      image.removeAttribute('sizes');
+      image.src = immediateSrc || preview.src;
+      image.width = preview.width;
+      image.height = preview.height;
+      warmNearby(active);
+      modal.setAttribute('aria-busy', 'true');
+      try {
+        const src = await preload(active, 'high');
+        if (request !== renderRequest) return;
+        const variant = displayVariant(active);
+        image.removeAttribute('srcset');
+        image.removeAttribute('sizes');
+        image.src = src;
+        if (variant) {
+          image.width = variant.width;
+          image.height = variant.height;
+        }
+        await image.decode().catch(() => {});
+      } catch {
+        const fallback = item.variants[0];
+        if (request === renderRequest && fallback) image.src = fallback.src;
+      } finally {
+        if (request === renderRequest) modal.removeAttribute('aria-busy');
+      }
     };
 
     gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-open]').forEach((button) => {
+      const index = Number(button.dataset.index ?? 0);
+      const warmSelection = () => {
+        void preload(index, 'low').catch(() => {});
+        warmNearby(index);
+      };
+      button.addEventListener('pointerenter', warmSelection, { once: true });
+      button.addEventListener('focus', warmSelection, { once: true });
       button.addEventListener('click', () => {
         opener = button;
-        show(Number(button.dataset.index ?? 0));
+        const preview = button.querySelector<HTMLImageElement>('img');
+        void show(index, preview?.currentSrc);
         modal.showModal();
       });
     });
 
     gallery.querySelector('[data-gallery-close]')?.addEventListener('click', () => modal.close());
-    gallery.querySelector('[data-gallery-previous]')?.addEventListener('click', () => show(active - 1));
-    gallery.querySelector('[data-gallery-next]')?.addEventListener('click', () => show(active + 1));
+    gallery.querySelector('[data-gallery-previous]')?.addEventListener('click', () => { void show(active - 1); });
+    gallery.querySelector('[data-gallery-next]')?.addEventListener('click', () => { void show(active + 1); });
     modal.addEventListener('click', (event) => {
       if (event.target === modal) modal.close();
     });
     modal.addEventListener('close', () => opener?.focus());
     modal.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') show(active - 1);
-      if (event.key === 'ArrowRight') show(active + 1);
+      if (event.key === 'ArrowLeft') void show(active - 1);
+      if (event.key === 'ArrowRight') void show(active + 1);
     });
 
     const chapterLinks = Array.from(gallery.querySelectorAll<HTMLAnchorElement>('[data-gallery-chapter-link]'));

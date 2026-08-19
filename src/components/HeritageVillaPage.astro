@@ -289,23 +289,84 @@ const srcset = (src: string) => [480, 768, 1024, 1280, 1600]
     const caption = dialog.querySelector('figcaption');
     const counter = dialog.querySelector('.lightbox__counter');
     let current = 0;
-    const render = (index) => {
-      current = (index + galleryImages.length) % galleryImages.length;
-      const item = galleryImages[current];
-      if (image) { image.src = item.src; image.alt = item.alt; }
+    let renderRequest = 0;
+    let warmAllScheduled = false;
+    const cachedImages = new Map();
+    const deliveryWidth = () => window.innerWidth <= 760 ? 768 : window.innerWidth <= 1440 ? 1280 : 1600;
+    const deliverySrc = (src) => src.replace(/\.webp$/i, `-${deliveryWidth()}.webp`);
+    const normalizeIndex = (index) => (index + galleryImages.length) % galleryImages.length;
+    const preload = (index, priority = 'auto') => {
+      const normalized = normalizeIndex(index);
+      const src = deliverySrc(galleryImages[normalized].src);
+      if (cachedImages.has(src)) return cachedImages.get(src);
+      const pending = new Promise((resolve, reject) => {
+        const loader = new Image();
+        loader.decoding = 'async';
+        loader.fetchPriority = priority;
+        loader.onload = () => resolve(src);
+        loader.onerror = reject;
+        loader.src = src;
+      });
+      cachedImages.set(src, pending);
+      void pending.catch(() => cachedImages.delete(src));
+      return pending;
+    };
+    const warmNearby = (index) => {
+      void preload(index + 1, 'high').catch(() => {});
+      void preload(index - 1, 'high').catch(() => {});
+      if (warmAllScheduled) return;
+      warmAllScheduled = true;
+      const warmRemaining = () => galleryImages.forEach((_item, itemIndex) => {
+        if (itemIndex !== index) void preload(itemIndex, 'low').catch(() => {});
+      });
+      if ('requestIdleCallback' in window) window.requestIdleCallback(warmRemaining, { timeout: 1800 });
+      else window.setTimeout(warmRemaining, 700);
+    };
+    const render = async (index) => {
+      const target = normalizeIndex(index);
+      const request = ++renderRequest;
+      const item = galleryImages[target];
+      current = target;
       if (caption) caption.textContent = item.caption || item.alt;
       if (counter) counter.textContent = `${current + 1} / ${galleryImages.length}`;
+      dialog.setAttribute('aria-busy', 'true');
+      warmNearby(target);
+      try {
+        const src = await preload(target, 'high');
+        if (request !== renderRequest) return;
+        if (image) {
+          image.src = src;
+          image.alt = item.alt;
+          await image.decode?.().catch(() => {});
+        }
+      } catch {
+        if (request === renderRequest && image) {
+          image.src = item.src;
+          image.alt = item.alt;
+        }
+      } finally {
+        if (request === renderRequest) dialog.removeAttribute('aria-busy');
+      }
     };
     document.querySelectorAll('[data-gallery-index]').forEach((button) => {
-      button.addEventListener('click', () => { render(Number(button.dataset.galleryIndex)); dialog.showModal(); });
+      button.addEventListener('click', () => {
+        const preview = button.querySelector('img');
+        const selected = galleryImages[Number(button.dataset.galleryIndex)];
+        if (image && preview?.currentSrc && selected) {
+          image.src = preview.currentSrc;
+          image.alt = selected.alt;
+        }
+        dialog.showModal();
+        void render(Number(button.dataset.galleryIndex));
+      });
     });
     dialog.querySelector('.lightbox__close')?.addEventListener('click', () => dialog.close());
-    dialog.querySelector('.lightbox__previous')?.addEventListener('click', () => render(current - 1));
-    dialog.querySelector('.lightbox__next')?.addEventListener('click', () => render(current + 1));
+    dialog.querySelector('.lightbox__previous')?.addEventListener('click', () => { void render(current - 1); });
+    dialog.querySelector('.lightbox__next')?.addEventListener('click', () => { void render(current + 1); });
     dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
     dialog.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') render(current - 1);
-      if (event.key === 'ArrowRight') render(current + 1);
+      if (event.key === 'ArrowLeft') void render(current - 1);
+      if (event.key === 'ArrowRight') void render(current + 1);
     });
   }
 </script>
