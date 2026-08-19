@@ -46,6 +46,10 @@ export interface VillaConfig {
   visibility: VillaVisibility;
   /** Explicit canonical origin. Never infer canonicals from a shared deployment host. */
   canonicalOrigin: string;
+  /** Present this property at the canonical domain root instead of exposing the engine route. */
+  rootCanonical?: boolean;
+  /** Reuse an existing optimized asset directory during a safe property-slug migration. */
+  assetSlug?: string;
   /** Visual system used by the reusable owner-site renderer. */
   theme?: VillaTheme;
 
@@ -161,16 +165,18 @@ export const VILLAS: VillaConfig[] = [
     ownerEmail: 'info@vacationcartagena.com'
   },
   {
-    slug: 'molonta-owner-preview',
+    slug: 'molonta-heritage-estate',
     langs: ['en'],
     defaultLang: 'en',
-    domain: 'molonta-owner-preview.vercel.app',
-    altDomains: [],
-    updatedAt: '2026-08-17',
+    domain: 'molonta.lovethisplace.co',
+    altDomains: ['molonta-heritage-estate.vercel.app', 'molonta-owner-preview.vercel.app'],
+    updatedAt: '2026-08-19',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'gallery', 'thank-you'],
     active: true,
     visibility: 'private-preview',
-    canonicalOrigin: 'https://molonta-owner-preview.vercel.app',
+    canonicalOrigin: 'https://molonta.lovethisplace.co',
+    rootCanonical: true,
+    assetSlug: 'molonta-owner-preview',
     theme: 'heritage-signature',
     region: 'europe',
     currency: 'EUR',
@@ -221,8 +227,19 @@ export function isVillaIndexable(villa: VillaConfig | undefined): boolean {
 
 export function getVillaCanonicalUrl(villa: VillaConfig, lang: string, page?: string): string {
   const origin = villa.canonicalOrigin.replace(/\/$/, '');
+  if (villa.rootCanonical) {
+    return page ? origin + '/' + page.replace(/^\//, '').replace(/\/$/, '') + '/' : origin + '/';
+  }
   const suffix = page ? `/${page.replace(/^\//, '').replace(/\/$/, '')}` : '';
   return `${origin}/villas/${villa.slug}/${lang}${suffix}/`;
+}
+
+export function getVillaPublicPath(villa: VillaConfig, lang: string, page?: string): string {
+  if (villa.rootCanonical) {
+    return page ? '/' + page.replace(/^\//, '').replace(/\/$/, '') + '/' : '/';
+  }
+  const suffix = page ? '/' + page.replace(/^\//, '').replace(/\/$/, '') : '';
+  return '/villas/' + villa.slug + '/' + lang + suffix + '/';
 }
 
 export function getAllVillaSlugs(): string[] {
@@ -277,7 +294,7 @@ const VILLA_NIGHTLY_RATES: Record<string, number> = {
   'mount-zurich': 875,              // $875 USD per night
   'villa-kassandra': 0,             // Rate on request
   'villa-orama': 0,                 // Rate on request (seasonal pricing)
-  'molonta-owner-preview': 2140,     // Owner-supplied 2027 starting rate
+  'molonta-heritage-estate': 2140,     // Owner-supplied 2027 starting rate
 };
 
 /**
@@ -298,7 +315,7 @@ const VILLA_MINIMUM_NIGHTS: Record<string, number> = {
   'mount-zurich': 2,
   'villa-kassandra': 3,
   'villa-orama': 7,                 // 7-night minimum in high season
-  'molonta-owner-preview': 3,        // 3 nights outside high summer
+  'molonta-heritage-estate': 3,        // 3 nights outside high summer
 };
 
 /**

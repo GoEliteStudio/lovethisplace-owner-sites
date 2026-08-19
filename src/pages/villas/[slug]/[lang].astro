@@ -7,7 +7,7 @@ import Tabs from '../../../components/Tabs.astro';
 import FixedFactsPanel from '../../../components/FixedFactsPanel.astro';
 import InquiryForm from '../../../components/InquiryForm.astro';
 import HeritageVillaPage from '../../../components/HeritageVillaPage.astro';
-import { VILLA_LANGUAGES, LANG_META, getVillaBySlug, getVillaCanonicalUrl, isVillaIndexable } from '../../../config/i18n';
+import { VILLA_LANGUAGES, LANG_META, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicPath, isVillaIndexable } from '../../../config/i18n';
 import { getUIStrings } from '../../../config/uiStrings';
 import { buildSchemaGraph } from '../../../lib/schema';
 import { buildSearchDataset } from '../../../lib/search';
@@ -160,6 +160,7 @@ if (!villaConfig) {
 const siteBase = `${villaConfig.canonicalOrigin.replace(/\/$/, '')}/`;
 const pageTitle = villa.seo?.title || `${villa.name} — Luxury Villa Retreat`;
 const canonical = getVillaCanonicalUrl(villaConfig, lang);
+const publicHomePath = getVillaPublicPath(villaConfig, lang);
 
 const jsonLd = buildSchemaGraph({
   villa,
@@ -340,35 +341,33 @@ const hostImage = villa.content?.hosts?.image ?? villa.aboutUsImage ?? villa.ima
 const hreflangs = (VILLA_LANGUAGES[slug] || []).map((l) => ({
   lang: l,
   locale: LANG_META[l]?.locale || l,
-  url: `/villas/${slug}/${l}/`
+  url: getVillaPublicPath(villaConfig, l)
 }));
 
 // Villa-specific footer with corrected links (language-aware)
-const villaBasePath = `/villas/${slug}`;
-const langBasePath = `/villas/${slug}/${lang}`;
 const villaFooter = {
   ...ui.footer,
   brandDescription: villa.summary,
   infoLinks: ui.footer.infoLinks.map((link: { label: string; href: string }) => {
     // Convert global paths to villa + language-specific paths
     if (link.href === '/rates') {
-      return { ...link, href: `${langBasePath}/rates` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'rates') };
     }
     if (link.href === '/terms') {
-      return { ...link, href: `${langBasePath}/terms` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'terms') };
     }
     if (link.href === '/privacy') {
-      return { ...link, href: `${langBasePath}/privacy` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'privacy') };
     }
     if (link.href === '/contact') {
-      return { ...link, href: `${langBasePath}/contact` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'contact') };
     }
     return link;
   }),
   contactLinks: [
     { label: villa.contact?.phone || '+57 300 123 4567', href: `tel:${(villa.contact?.phone || '+573001234567').replace(/\s/g, '')}` },
     { label: villa.contact?.email || `reservations@${slug?.replace(/-/g, '')}.com`, href: `mailto:${villa.contact?.email || `reservations@${slug?.replace(/-/g, '')}.com`}` },
-    { label: ui.footer.contactLinks?.[2]?.label || 'Contact Us', href: `${langBasePath}/contact` }
+    { label: ui.footer.contactLinks?.[2]?.label || 'Contact Us', href: getVillaPublicPath(villaConfig, lang, 'contact') }
   ]
 };
 
@@ -383,17 +382,22 @@ const villaFooter = {
   lcpImage={villaConfig.theme === 'classic' ? heroImages[0] : undefined}
   ogImage={heroImages[0]}
   villaName={villa.name}
-  homeUrl={`/villas/${slug}/${lang}`}
+  homeUrl={publicHomePath}
   lang={langMeta.locale}
   hreflangs={hreflangs}
   footer={villaFooter}
   navLinks={ui.header?.navigation}
   navCtaLabel={ui.header?.inquireCta}
-  navCtaHref={`/villas/${slug}/${lang}/contact`}
+  navCtaHref={getVillaPublicPath(villaConfig, lang, 'contact')}
   whatsappNumber={villa.contact?.whatsapp}
 >
   {villaConfig.theme === 'heritage-signature' ? (
-    <HeritageVillaPage villa={villa} slug={slug} lang={lang} />
+    <HeritageVillaPage
+      villa={villa}
+      slug={slug}
+      lang={lang}
+      completeGalleryHref={getVillaPublicPath(villaConfig, lang, 'gallery')}
+    />
   ) : (
     <>
   <Hero

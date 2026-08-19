@@ -5,11 +5,16 @@ interface Props {
   villa: any;
   slug: string;
   lang: string;
+  completeGalleryHref?: string;
 }
 
-const { villa, slug, lang } = Astro.props;
+const {
+  villa,
+  slug,
+  lang,
+  completeGalleryHref = `/villas/${slug}/${lang}/gallery/`,
+} = Astro.props;
 const completeGallery = villa.completeGallery || { imageCount: images.length, chapterCount: 1 };
-const completeGalleryHref = `/villas/${slug}/${lang}/gallery/`;
 const images = Array.isArray(villa.images) ? villa.images : [];
 const storyParagraphs = String(villa.content?.overview || '').split(/\n\s*\n/).filter(Boolean);
 const facts = villa.content?.signatureFacts || [];

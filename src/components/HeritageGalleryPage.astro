@@ -29,11 +29,19 @@ interface Props {
   slug: string;
   lang: string;
   gallery: GalleryData;
+  homeHref?: string;
+  assetSlug?: string;
 }
 
-const { villa, slug, lang, gallery } = Astro.props;
-const homeHref = `/villas/${slug}/${lang}/`;
-const galleryAssetBase = `/images/villas/${slug}/gallery`;
+const {
+  villa,
+  slug,
+  lang,
+  gallery,
+  homeHref = `/villas/${slug}/${lang}/`,
+  assetSlug = slug,
+} = Astro.props;
+const galleryAssetBase = `/images/villas/${assetSlug}/gallery`;
 
 const items = gallery.items.map((item) => ({
   ...item,

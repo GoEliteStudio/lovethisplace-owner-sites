@@ -10,7 +10,7 @@
  */
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getUIStrings } from '../../../../config/uiStrings';
-import { VILLA_LANGUAGES, DEFAULT_LANG, getVillaBySlug, getVillaCanonicalUrl } from '../../../../config/i18n';
+import { VILLA_LANGUAGES, DEFAULT_LANG, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicPath } from '../../../../config/i18n';
 import { buildAuxPageSchema } from '../../../../lib/schema';
 
 export const prerender = true;
@@ -53,7 +53,8 @@ try {
 }
 
 const ui = getUIStrings(validLang || 'en');
-const langBasePath = `/villas/${slug}/${validLang}`;
+const aboutVillaConfig = getVillaBySlug(slug);
+const langBasePath = aboutVillaConfig ? getVillaPublicPath(aboutVillaConfig, validLang).replace(/\/$/, '') : `/villas/${slug}/${validLang}`;
 const villaName = villa.name || 'Your Villa';
 const currentYear = new Date().getFullYear();
 
@@ -711,7 +712,7 @@ const t = content[validLang as keyof typeof content] || content.en;
   noindex={true}
   lang={validLang}
   villaName={villaName}
-  homeUrl={langBasePath}
+  homeUrl={langBasePath || '/'}
   footer={villaFooter}
   navCtaHref={`${langBasePath}/contact`}
   jsonLd={jsonLd}

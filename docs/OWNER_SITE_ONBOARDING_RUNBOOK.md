@@ -35,6 +35,8 @@ Use the LoveThisPlace storefront when the property is joining the platform's dis
 
 Use the independent owner site when the deliverable is a canonical property website on an owner-controlled or dedicated domain.
 
+When both products exist, record their separate roles explicitly. The LoveThisPlace storefront remains the indexed platform-discovery page. The independent site remains open by URL but `noindex` until its legal, commercial, inquiry, domain, and approval gates pass. Do not share an engine path or a URL containing `preview`; assign a clean property domain and root presentation.
+
 Select `classic` for a dense agency-led flow or `heritage-signature` for an editorial owner-led property. Both must retain conversion essentials.
 
 ## 5. Create the private implementation
@@ -43,6 +45,7 @@ Add the registry entry with:
 
 - explicit visibility;
 - explicit canonical origin;
+- clean root-domain presentation when the site is intended to become the property's standalone website;
 - explicit theme;
 - supported languages;
 - currency and routing;

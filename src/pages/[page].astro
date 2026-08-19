@@ -1,0 +1,16 @@
+---
+import { getVillaByHostname } from '../config/i18n';
+
+export const prerender = false;
+
+const hostname = (Astro.request.headers.get('host') || '').split(':')[0].toLowerCase();
+const page = Astro.params.page || '';
+const villa = getVillaByHostname(hostname);
+
+if (!villa?.rootCanonical || !villa.auxPages.includes(page)) {
+  return new Response('Not found', { status: 404 });
+}
+
+const internalTarget = `/villas/${villa.slug}/${villa.defaultLang}/${page}/`;
+return Astro.rewrite(internalTarget);
+---

@@ -9,6 +9,15 @@ The Villa Engine now supports a second commercial product alongside the LoveThis
 
 These products share verified property facts and optimized media, but they do not share identity, canonical URLs, analytics, or deployment by accident.
 
+## Two-site strategy
+
+A signed property may have both products at the same time because they serve different jobs:
+
+- The LoveThisPlace storefront is the platform discovery surface. It carries LoveThisPlace identity, can be indexed, and introduces travelers through the established LoveThisPlace inquiry pipeline.
+- The independent owner site is the property's own full presentation. It carries the property's identity and can later become its canonical public website on a clean dedicated domain.
+
+Running both is not accidental duplication. While the owner site is still in `private-preview`, it remains open by URL but `noindex`, is excluded from sitemaps, and cannot compete with the indexed LoveThisPlace storefront. The dated Molonta decision and exact launch gate are recorded in `docs/MOLONTA_TWO_SITE_AND_INDEXING_DECISION_2026-08-19.md`.
+
 ## Design system
 
 The engine exposes explicit themes in the villa registry:
@@ -55,6 +64,8 @@ The owner's existing site does not need to be linked or named as an authority. S
 - `hidden`: unavailable to discovery and inquiry routing.
 
 A public site requires an approved custom domain and canonical origin. Unknown hosts and preview hosts fail closed in `robots.txt`.
+
+Private preview is a temporary commercial state, not a permanent SEO strategy. Every owner site must have a dated decision that identifies the public-launch trigger.
 
 ## Public-release gates
 

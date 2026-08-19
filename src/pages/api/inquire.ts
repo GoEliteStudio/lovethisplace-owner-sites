@@ -33,7 +33,7 @@ type InquireBody = {
 };
 
 const managedInquiryRoutes: Record<string, { endpoint: string; publicSlug: string }> = {
-  'molonta-owner-preview': {
+  'molonta-heritage-estate': {
     endpoint: 'https://www.lovethisplace.co/api/storefront/inquiries',
     publicSlug: 'molonta-heritage-estate',
   },

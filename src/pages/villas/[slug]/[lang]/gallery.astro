@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import HeritageGalleryPage from '../../../../components/HeritageGalleryPage.astro';
-import { LANG_META, getVillaBySlug, getVillaCanonicalUrl, isVillaIndexable } from '../../../../config/i18n';
+import { LANG_META, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicPath, isVillaIndexable } from '../../../../config/i18n';
 import { getUIStrings } from '../../../../config/uiStrings';
 import { buildAuxPageSchema } from '../../../../lib/schema';
 
@@ -9,11 +9,11 @@ export const prerender = true;
 
 
 export function getStaticPaths() {
-  return [{ params: { slug: 'molonta-owner-preview', lang: 'en' } }];
+  return [{ params: { slug: 'molonta-heritage-estate', lang: 'en' } }];
 }
 
 const { slug, lang } = Astro.params;
-const galleryConfig = slug === 'molonta-owner-preview' && lang === 'en';
+const galleryConfig = slug === 'molonta-heritage-estate' && lang === 'en';
 
 if (!slug || !lang || !galleryConfig) {
   return Astro.redirect('/');
@@ -30,7 +30,9 @@ const villa = villaModule.default;
 const gallery = galleryModule.default;
 const langMeta = LANG_META[lang];
 const ui = getUIStrings(lang);
-const homeHref = `/villas/${slug}/${lang}/`;
+const homeHref = getVillaPublicPath(villaConfig, lang);
+const galleryHref = getVillaPublicPath(villaConfig, lang, 'gallery');
+const assetSlug = villaConfig.assetSlug || slug;
 const canonical = getVillaCanonicalUrl(villaConfig, lang, 'gallery');
 const siteBase = `${villaConfig.canonicalOrigin.replace(/\/$/, '')}/`;
 const pageTitle = `${villa.name} | Complete Photo Gallery`;
@@ -38,7 +40,7 @@ const pageDescription = `Explore ${gallery.items.length} owner-approved photogra
 const firstVariant = gallery.items[0]?.variants.find((variant: any) => variant.width >= 1600)
   ?? gallery.items[0]?.variants.at(-1);
 const ogImage = firstVariant
-  ? `/images/villas/${slug}/gallery/${firstVariant.src.split('/').at(-1)}`
+  ? `/images/villas/${assetSlug}/gallery/${firstVariant.src.split('/').at(-1)}`
   : villa.images?.[0]?.src;
 
 const jsonLd = buildAuxPageSchema({
@@ -56,7 +58,7 @@ const jsonLd = buildAuxPageSchema({
 const navLinks = [
   { label: 'Overview', href: `${homeHref}#overview` },
   { label: 'Amenities', href: `${homeHref}#amenities` },
-  { label: 'Gallery', href: `${homeHref}gallery/` },
+  { label: 'Gallery', href: galleryHref },
   { label: 'Location', href: `${homeHref}#location` },
   { label: 'Hosts', href: `${homeHref}#hosts` },
   { label: 'Contact', href: `${homeHref}#contact` },
@@ -68,20 +70,20 @@ const footer = {
   exploreLinks: [
     { label: 'Overview', href: `${homeHref}#overview` },
     { label: 'Amenities', href: `${homeHref}#amenities` },
-    { label: 'Complete gallery', href: `${homeHref}gallery/` },
+    { label: 'Complete gallery', href: galleryHref },
     { label: 'Location', href: `${homeHref}#location` },
   ],
   infoLinks: ui.footer.infoLinks.map((link: { label: string; href: string }) => {
-    if (link.href === '/rates') return { ...link, href: `${homeHref}rates` };
-    if (link.href === '/terms') return { ...link, href: `${homeHref}terms` };
-    if (link.href === '/privacy') return { ...link, href: `${homeHref}privacy` };
-    if (link.href === '/contact') return { ...link, href: `${homeHref}contact` };
+    if (link.href === '/rates') return { ...link, href: getVillaPublicPath(villaConfig, lang, 'rates') };
+    if (link.href === '/terms') return { ...link, href: getVillaPublicPath(villaConfig, lang, 'terms') };
+    if (link.href === '/privacy') return { ...link, href: getVillaPublicPath(villaConfig, lang, 'privacy') };
+    if (link.href === '/contact') return { ...link, href: getVillaPublicPath(villaConfig, lang, 'contact') };
     return link;
   }),
   contactLinks: [
     { label: villa.contact?.phone, href: `tel:${String(villa.contact?.phone || '').replace(/\s/g, '')}` },
     { label: villa.contact?.email, href: `mailto:${villa.contact?.email}` },
-    { label: 'Contact us', href: `${homeHref}contact` },
+    { label: 'Contact us', href: getVillaPublicPath(villaConfig, lang, 'contact') },
   ],
 };
 ---
@@ -99,7 +101,7 @@ const footer = {
   footer={footer}
   navLinks={navLinks}
   navCtaLabel={ui.header?.inquireCta || 'Inquire'}
-  navCtaHref={`${homeHref}contact`}
+  navCtaHref={getVillaPublicPath(villaConfig, lang, 'contact')}
   whatsappNumber={villa.contact?.whatsapp}
 >
   <HeritageGalleryPage
@@ -107,5 +109,7 @@ const footer = {
     slug={slug}
     lang={lang}
     gallery={gallery}
+    homeHref={homeHref}
+    assetSlug={assetSlug}
   />
 </BaseLayout>
