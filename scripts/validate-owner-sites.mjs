@@ -35,6 +35,7 @@ assert(registry.includes("domain: 'molonta.lovethisplace.co'"), 'Molonta has the
 assert(registry.includes("canonicalOrigin: 'https://molonta.lovethisplace.co'"), 'Molonta canonicals use the clean custom domain');
 assert(registry.includes('rootCanonical: true'), 'Molonta is configured for root-domain presentation');
 assert(rootRoute.includes('Astro.rewrite(internalTarget)'), 'root-canonical properties render without exposing the engine route');
+assert(rootRoute.includes("split(':')[0].toLowerCase()"), 'root routing normalizes production host headers');
 assert(cleanAuxRoute.includes('villa.auxPages.includes(page)') && cleanAuxRoute.includes('Astro.rewrite(internalTarget)'), 'clean auxiliary routes are restricted to registered property pages');
 assert(registry.includes("visibility: 'private-preview'"), 'the registry supports a private-preview state');
 assert(registry.includes("theme: 'heritage-signature'"), 'the heritage-signature theme is explicit');
@@ -70,6 +71,8 @@ assert(
     inquiryForm.includes('Privacy policy'),
   'the owner-site inquiry form collects a response number and explicit privacy consent'
 );
+assert(inquiryForm.includes('privacyHref') && heritagePage.includes('privacyHref={privacyHref}'), 'owner-site privacy links use the clean public route');
+assert(route.includes('Traveler service and booking coordination by Go Elite Global.'), 'root-canonical owner sites explain the LoveThisPlace and Go Elite Global roles');
 
 assert(molonta.slug === 'molonta-heritage-estate', 'Molonta content matches its private slug');
 assert(Boolean(molonta.seo?.title && molonta.seo?.description), 'Molonta has property-specific SEO metadata');

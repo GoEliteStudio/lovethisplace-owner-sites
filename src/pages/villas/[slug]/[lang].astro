@@ -347,6 +347,9 @@ const hreflangs = (VILLA_LANGUAGES[slug] || []).map((l) => ({
 // Villa-specific footer with corrected links (language-aware)
 const villaFooter = {
   ...ui.footer,
+  ecosystemNote: villaConfig.rootCanonical
+    ? 'A LoveThisPlace owner site. Traveler service and booking coordination by Go Elite Global.'
+    : ui.footer.ecosystemNote,
   brandDescription: villa.summary,
   infoLinks: ui.footer.infoLinks.map((link: { label: string; href: string }) => {
     // Convert global paths to villa + language-specific paths
@@ -397,6 +400,7 @@ const villaFooter = {
       slug={slug}
       lang={lang}
       completeGalleryHref={getVillaPublicPath(villaConfig, lang, 'gallery')}
+      privacyHref={getVillaPublicPath(villaConfig, lang, 'privacy')}
     />
   ) : (
     <>

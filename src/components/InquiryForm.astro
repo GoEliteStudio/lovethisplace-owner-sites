@@ -4,9 +4,11 @@ import { getVillaMinimumNights } from '../config/i18n';
 interface Props {
   slug?: string;
   lang?: string;
+  privacyHref?: string;
 }
-const { slug = 'domaine-des-montarels', lang = 'en' } = Astro.props;
+const { slug = 'domaine-des-montarels', lang = 'en', privacyHref } = Astro.props;
 const minNights = getVillaMinimumNights(slug);
+const resolvedPrivacyHref = privacyHref || '/villas/' + slug + '/' + lang + '/privacy';
 ---
 <form method="POST" action="/api/inquire" id="inquire-form" class="inquiry-form" novalidate data-min-nights={minNights}>
   <!-- Villa context for proper redirect -->
@@ -68,7 +70,7 @@ const minNights = getVillaMinimumNights(slug);
     <div class="full consent-row">
       <label class="consent-label" for="consent">
         <input id="consent" name="consent" type="checkbox" value="yes" required />
-        <span>I agree that Go Elite Global may use these details to respond to my inquiry. <a href={'/villas/' + slug + '/' + lang + '/privacy'}>Privacy policy</a>.</span>
+        <span>I agree that Go Elite Global may use these details to respond to my inquiry. <a href={resolvedPrivacyHref}>Privacy policy</a>.</span>
       </label>
     </div>
     <div class="full submit-row">

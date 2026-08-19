@@ -6,6 +6,7 @@ interface Props {
   slug: string;
   lang: string;
   completeGalleryHref?: string;
+  privacyHref?: string;
 }
 
 const {
@@ -13,9 +14,10 @@ const {
   slug,
   lang,
   completeGalleryHref = `/villas/${slug}/${lang}/gallery/`,
+  privacyHref,
 } = Astro.props;
-const completeGallery = villa.completeGallery || { imageCount: images.length, chapterCount: 1 };
 const images = Array.isArray(villa.images) ? villa.images : [];
+const completeGallery = villa.completeGallery || { imageCount: images.length, chapterCount: 1 };
 const storyParagraphs = String(villa.content?.overview || '').split(/\n\s*\n/).filter(Boolean);
 const facts = villa.content?.signatureFacts || [];
 const included = villa.content?.included || [];
@@ -268,7 +270,7 @@ const srcset = (src: string) => [480, 768, 1024, 1280, 1600]
       <p>Share your dates and group. Availability, the applicable seasonal rate, inclusions and booking terms are confirmed in one written response before payment.</p>
       <div class="inquire__promise"><strong>Personally reviewed</strong><span>No automated confirmation and no guessed availability.</span></div>
     </div>
-    <div class="inquire__form"><InquiryForm slug={slug} lang={lang} /></div>
+    <div class="inquire__form"><InquiryForm slug={slug} lang={lang} privacyHref={privacyHref} /></div>
   </section>
 </main>
 
