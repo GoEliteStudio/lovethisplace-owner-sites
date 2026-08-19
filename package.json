@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run validate && astro build",
+    "build": "npm run validate && npm run check && astro build",
+    "check": "astro check",
     "preview": "astro preview",
     "villa:create": "node scripts/create-villa.mjs",
     "villa:onboard": "node scripts/onboard-villa.mjs",
