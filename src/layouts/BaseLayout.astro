@@ -1,6 +1,6 @@
 ---
 import Footer from '../components/Footer.astro';
-import { getVillaBySlug, isVillaIndexable } from '../config/i18n';
+import { getVillaByHostname, getVillaBySlug, isVillaIndexable } from '../config/i18n';
 
 export interface Props {
   title?: string;
@@ -56,8 +56,12 @@ const {
 
 // Generate canonical URL from current request if not provided
 const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site || Astro.url.origin).toString();
-const villaSlugFromPath = new URL(canonicalUrl).pathname.match(/^\/villas\/([^/]+)/)?.[1];
-const registryNoindex = villaSlugFromPath ? !isVillaIndexable(getVillaBySlug(villaSlugFromPath)) : false;
+const canonicalUrlObject = new URL(canonicalUrl);
+const villaSlugFromPath = canonicalUrlObject.pathname.match(/^\/villas\/([^/]+)/)?.[1];
+const canonicalVilla = villaSlugFromPath
+  ? getVillaBySlug(villaSlugFromPath)
+  : getVillaByHostname(canonicalUrlObject.hostname);
+const registryNoindex = canonicalVilla ? !isVillaIndexable(canonicalVilla) : false;
 const effectiveNoindex = noindex || registryNoindex;
 
 function absUrl(path?: string) {

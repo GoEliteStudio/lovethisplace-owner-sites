@@ -43,7 +43,12 @@ assert(registry.includes("theme: 'heritage-signature'"), 'the heritage-signature
 assert(registry.includes('getIndexableVillas'), 'public discovery is generated from an indexable allowlist');
 assert(route.includes("villaConfig.theme === 'heritage-signature'"), 'the reusable renderer is selected by configuration');
 assert(route.includes("description={villa.seo?.description || villa.summary}"), 'property SEO descriptions feed page metadata');
-assert(layout.includes('registryNoindex'), 'auxiliary pages inherit registry-driven noindex protection');
+assert(
+  layout.includes('getVillaByHostname') &&
+    layout.includes('canonicalUrlObject.hostname') &&
+    layout.includes('canonicalVilla ? !isVillaIndexable(canonicalVilla)'),
+  'auxiliary pages inherit registry-driven noindex protection on clean custom domains'
+);
 assert(robots.includes('Disallow: /'), 'unknown and preview hosts fail closed in robots.txt');
 assert(sitemap.includes("['thank-you', 'about']"), 'owner-facing and transactional pages are excluded from sitemaps');
 assert(ownerAbout.includes('noindex={true}'), 'the owner-facing sales page is explicitly noindex');
