@@ -225,3 +225,4 @@ if (errors.length) {
 }
 
 console.log('\nOwner-site validation passed.');
+await import('./validate-owner-route-proxy.mjs');
