@@ -105,13 +105,35 @@ assert(heritagePage.includes('https://www.google.com/maps?'), 'the location sect
 assert(heritagePage.includes('.details__grid > div:first-child { position: sticky;'), 'the suite overview uses the approved sticky split layout');
 assert(heritagePage.includes('.lightbox[open] { display: grid; place-items: center; }'), 'the image viewer uses a stable centered frame');
 assert(heritagePage.includes('object-fit: cover; object-position: center;'), 'lightbox images share one aligned presentation frame');
-assert(
-  heritagePage.includes('preview?.currentSrc')
-    && heritagePage.includes('preload(index + 1')
-    && heritagePage.includes('preload(index - 1')
-    && heritagePage.includes('const deliverySrc ='),
-  'the curated-gallery lightbox opens immediately and preloads optimized neighboring images',
-);
+const forbiddenLightboxRuntime = [
+  'new Image(',
+  'cachedImages',
+  'renderRequest',
+  'displayVariant',
+  'deliveryWidth',
+  'deliverySrc',
+  'preloadVariant',
+  'const preload =',
+  '.decode(',
+  'requestIdleCallback',
+  'aria-busy',
+];
+for (const [source, label] of [
+  [heritagePage, 'curated gallery'],
+  [heritageGalleryPage, 'complete gallery'],
+]) {
+  for (const token of forbiddenLightboxRuntime) {
+    assert(!source.includes(token), `${label} cannot reintroduce custom lightbox runtime: ${token}`);
+  }
+  assert(
+    source.includes('image.srcset = item.srcset;')
+      && source.includes("image.sizes = '100vw';")
+      && source.includes('image.src = item.src;')
+      && source.includes('image.width = item.width;')
+      && source.includes('image.height = item.height;'),
+    `${label} delegates responsive image selection directly to the browser`,
+  );
+}
 assert(molonta.completeGallery?.imageCount === 104, 'Molonta declares the 104-image complete collection');
 assert(molonta.completeGallery?.chapterCount === 9, 'Molonta declares nine complete-gallery chapters');
 assert(heritagePage.includes('Explore complete gallery'), 'the curated main page links to the complete gallery');
@@ -124,13 +146,6 @@ assert(heritageGalleryPage.includes('content-visibility: auto'), 'off-screen gal
 assert(heritageGalleryPage.includes('position: sticky'), 'the complete gallery keeps its chapter index in reach');
 assert(heritageGalleryPage.includes('object-fit: contain'), 'the complete-gallery lightbox preserves every image composition');
 assert(heritageGalleryPage.includes('ArrowLeft') && heritageGalleryPage.includes('ArrowRight'), 'the complete-gallery lightbox supports keyboard navigation');
-assert(
-  heritageGalleryPage.includes('preview?.currentSrc')
-    && heritageGalleryPage.includes("immediateSrc || preview.src")
-    && heritageGalleryPage.includes("preloadVariant(item.variants[0], 'high')")
-    && heritageGalleryPage.includes('const displayVariant ='),
-  'the complete-gallery lightbox opens progressively and preloads neighboring preview and display images',
-);
 assert(schema.includes("'ImageGallery'"), 'gallery metadata identifies the page as an ImageGallery');
 assert(registry.includes("'about', 'gallery', 'thank-you'"), 'the complete gallery is registered for future public sitemap discovery');
 
