@@ -2,7 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { ALLOWED_TOP_LEVEL_IMAGE_ENTRIES } from './asset-isolation-policy.mjs';
+import { ALLOWED_STATIC_ROOT_ENTRIES, ALLOWED_TOP_LEVEL_IMAGE_ENTRIES } from './asset-isolation-policy.mjs';
 import { loadVillaRegistry } from './load-villa-registry.mjs';
 
 const configuredSlug = process.env.VILLA_SLUG?.trim();
@@ -36,13 +36,25 @@ if (generatedSlugs.join('|') !== expectedSlugs.join('|')) {
   throw new Error(`[build-isolation] Expected routes ${expectedSlugs.join(', ') || '(none)'}, generated ${generatedSlugs.join(', ') || '(none)'}.`);
 }
 
-const imageRoot = [
-  path.resolve('.vercel/output/static/images'),
-  path.resolve('dist/client/images'),
+const staticRoot = [
+  path.resolve('.vercel/output/static'),
+  path.resolve('dist/client'),
 ].find((candidate) => fs.existsSync(candidate));
+const imageRoot = staticRoot ? path.join(staticRoot, 'images') : undefined;
 const generatedAssetSlugs = [];
 
-if (imageRoot) {
+if (staticRoot) {
+  const unexpectedStaticEntries = fs.readdirSync(staticRoot, { withFileTypes: true })
+    .map((entry) => entry.name)
+    .filter((name) => !ALLOWED_STATIC_ROOT_ENTRIES.has(name))
+    .sort();
+
+  if (unexpectedStaticEntries.length > 0) {
+    throw new Error(`[asset-isolation] Unexpected static-root entries: ${unexpectedStaticEntries.join(', ')}.`);
+  }
+}
+
+if (imageRoot && fs.existsSync(imageRoot)) {
   const unexpectedTopLevelEntries = fs.readdirSync(imageRoot, { withFileTypes: true })
     .map((entry) => entry.name)
     .filter((name) => !ALLOWED_TOP_LEVEL_IMAGE_ENTRIES.has(name))
@@ -54,9 +66,17 @@ if (imageRoot) {
 
   const villasImageRoot = path.join(imageRoot, 'villas');
   if (fs.existsSync(villasImageRoot)) {
-    generatedAssetSlugs.push(...fs.readdirSync(villasImageRoot, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => entry.name));
+    const villaEntries = fs.readdirSync(villasImageRoot, { withFileTypes: true });
+    const unexpectedVillaEntries = villaEntries
+      .filter((entry) => !entry.isDirectory() || !expectedAssetSlugs.includes(entry.name))
+      .map((entry) => entry.name)
+      .sort();
+
+    if (unexpectedVillaEntries.length > 0) {
+      throw new Error(`[asset-isolation] Unexpected entries inside images/villas: ${unexpectedVillaEntries.join(', ')}.`);
+    }
+
+    generatedAssetSlugs.push(...villaEntries.filter((entry) => entry.isDirectory()).map((entry) => entry.name));
   }
 }
 
