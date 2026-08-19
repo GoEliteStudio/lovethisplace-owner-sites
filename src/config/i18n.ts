@@ -216,7 +216,12 @@ export function getBuildVillas(): VillaConfig[] {
   const configuredSlug = process.env.VILLA_SLUG?.trim();
   if (!configuredSlug) {
     if (process.env.VERCEL === '1') {
-      throw new Error('[build-isolation] VILLA_SLUG is required for every Vercel owner-site deployment.');
+      const publicVillas = VILLAS.filter(v => v.active && v.visibility === 'public');
+      if (publicVillas.length === 0) {
+        throw new Error('[build-isolation] Shared Vercel build has no public villas to generate.');
+      }
+
+      return publicVillas;
     }
 
     return VILLAS;

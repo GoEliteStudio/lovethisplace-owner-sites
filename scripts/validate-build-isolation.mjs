@@ -5,15 +5,6 @@ import path from 'node:path';
 
 const configuredSlug = process.env.VILLA_SLUG?.trim();
 
-if (!configuredSlug) {
-  if (process.env.VERCEL === '1') {
-    throw new Error('[build-isolation] VILLA_SLUG is required for every Vercel owner-site deployment.');
-  }
-
-  console.log('[build-isolation] SKIP: VILLA_SLUG is not set; shared development build retained.');
-  process.exit(0);
-}
-
 const candidateRoots = [
   path.resolve('.vercel/output/static/villas'),
   path.resolve('dist/client/villas'),
@@ -28,6 +19,35 @@ const generatedSlugs = fs.readdirSync(villaRoot, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .sort();
+
+if (!configuredSlug) {
+  if (process.env.VERCEL !== '1') {
+    console.log('[build-isolation] SKIP: VILLA_SLUG is not set; shared development build retained.');
+    process.exit(0);
+  }
+
+  const privateOutputs = generatedSlugs.filter((slug) => {
+    const slugRoot = path.join(villaRoot, slug);
+    const htmlFiles = [];
+    const visit = (directory) => {
+      for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        const fullPath = path.join(directory, entry.name);
+        if (entry.isDirectory()) visit(fullPath);
+        else if (entry.isFile() && entry.name === 'index.html') htmlFiles.push(fullPath);
+      }
+    };
+    visit(slugRoot);
+
+    return htmlFiles.length === 0 || htmlFiles.every((file) => /<meta[^>]+name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(fs.readFileSync(file, 'utf8')));
+  });
+
+  if (privateOutputs.length > 0) {
+    throw new Error(`[build-isolation] Shared Vercel build generated private-preview routes: ${privateOutputs.join(', ')}`);
+  }
+
+  console.log(`[build-isolation] PASS: shared Vercel build contains public villas only (${generatedSlugs.join(', ')}).`);
+  process.exit(0);
+}
 
 if (!generatedSlugs.includes(configuredSlug)) {
   throw new Error(`[build-isolation] Expected ${configuredSlug}, generated: ${generatedSlugs.join(', ') || '(none)'}`);
