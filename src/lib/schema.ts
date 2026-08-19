@@ -1,7 +1,5 @@
 import { getServicesConfig } from '../config/services';
 
-export type GenericReview = { quote: string; attribution: string };
-
 type BuildSchemaInput = {
   villa: any;
   slug: string;
@@ -11,7 +9,6 @@ type BuildSchemaInput = {
   canonical: string;
   pageTitle: string;
   heroImages: string[];
-  genericReviews: GenericReview[];
 };
 
 const ensureTrailingSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
@@ -25,7 +22,7 @@ const toAbsolute = (base: string, path?: string | null) => {
 };
 
 export function buildSchemaGraph(input: BuildSchemaInput) {
-  const { villa, slug, lang, langMeta, siteBase, canonical, pageTitle, heroImages, genericReviews } = input;
+  const { villa, slug, lang, langMeta, siteBase, canonical, pageTitle, heroImages } = input;
 
   const base = ensureTrailingSlash(siteBase);
   const images: Array<{ src: string; alt?: string; caption?: string }> = Array.isArray(villa.images) ? villa.images : [];
@@ -199,17 +196,17 @@ export function buildSchemaGraph(input: BuildSchemaInput) {
     }))
   };
 
-  const reviewNodes = genericReviews.map((review) => ({
+  const sourceReviews = Array.isArray(villa.content?.testimonials)
+    ? villa.content.testimonials.filter((review: any) => review?.quote && review?.attribution)
+    : [];
+
+  const reviewNodes = sourceReviews.map((review: any) => ({
     '@context': 'https://schema.org',
     '@type': 'Review',
     reviewBody: review.quote,
     author: {
       '@type': 'Person',
-      name: review.attribution.replace(/\s+—\s+Google Reviews$/i, '')
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Google Reviews'
+      name: review.attribution
     }
   }));
 
@@ -221,7 +218,7 @@ export function buildSchemaGraph(input: BuildSchemaInput) {
     lodgingSchema,
     {
       ...lodging,
-      review: reviewNodes
+      ...(reviewNodes.length ? { review: reviewNodes } : {})
     },
     ...(faqSchema ? [faqSchema] : []),
     offerCatalog,
