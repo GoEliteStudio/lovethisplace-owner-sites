@@ -169,7 +169,7 @@ export const VILLAS: VillaConfig[] = [
     langs: ['en'],
     defaultLang: 'en',
     domain: 'molonta.lovethisplace.co',
-    altDomains: ['molonta-heritage-estate.vercel.app', 'molonta-owner-preview.vercel.app'],
+    altDomains: ['molonta-heritage-estate.vercel.app'],
     updatedAt: '2026-08-19',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'gallery', 'thank-you'],
     active: true,
