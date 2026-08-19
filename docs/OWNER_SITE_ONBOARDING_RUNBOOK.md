@@ -290,7 +290,7 @@ Each independent property site receives one dedicated Vercel project. Configure:
 - Node version compatible with the repository;
 - no secrets copied from another property without an explicit shared-service decision.
 
-Run the remote build and read its output. It must prove only the intended slug and its `assetSlug || slug` media directory were retained. The top-level image directory is deny-by-default: loose files, archives, and legacy property directories are removed unless the shared-asset policy explicitly allows them.
+Run the remote build and read its output. It must prove only the intended slug and its `assetSlug || slug` media directory were retained. The rendered static root, top-level image directory, and `images/villas/` are deny-by-default: loose files, archives, and legacy property directories are removed unless the shared-asset policy explicitly allows them.
 
 Shared Vercel builds without `VILLA_SLUG` generate active public villas only. If none exist, they produce a neutral shell with no property routes or property media. They are not a substitute for dedicated owner-site projects.
 
