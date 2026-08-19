@@ -149,21 +149,6 @@ if (heroImages.length && heroImages.length < desiredHeroCount) {
   }
 }
 
-// Generic Google-style reviews (until real per-villa reviews are available)
-const genericGoogleReviews = [
-  {
-    quote: 'An extraordinary villa with serene views, flawless interiors and a pool guests never want to leave.',
-    attribution: 'Alexandra M. — Google Reviews'
-  },
-  {
-    quote: 'Impeccably maintained property, discreet staff and a setting that feels even better than the photos.',
-    attribution: 'James R. — Google Reviews'
-  },
-  {
-    quote: 'The kind of place you remember for years – incredible light, quiet luxury and total privacy.',
-    attribution: 'Sofia L. — Google Reviews'
-  }
-];
 // Dynamic Site Base (Replaces hardcoded domain)
 const siteBase = Astro.site?.toString() || 'https://villa-engine.vercel.app';
 const pageTitle = `${villa.name} — Luxury Villa Retreat`;
@@ -178,7 +163,6 @@ const jsonLd = buildSchemaGraph({
   canonical,
   pageTitle,
   heroImages,
-  genericReviews: genericGoogleReviews
 });
 
 // Content Setup
@@ -463,23 +447,13 @@ const villaFooter = {
     </section>
   )}
 
-  {(villa.content?.testimonials?.length > 0 || genericGoogleReviews.length > 0) && (
+  {villa.content?.testimonials?.length > 0 && (
     <section class="container testimonials" id="testimonials">
       <h2>{ui.testimonials.heading}</h2>
       <ul class="quotes">
-        {villa.content?.testimonials?.length >= 3 ? (
-          villa.content.testimonials.map((t: any) => <li><blockquote>"{t.quote}"</blockquote><cite>— {t.attribution}</cite></li>)
-        ) : (
-          <>
-            {villa.content?.testimonials?.map((t: any) => <li><blockquote>"{t.quote}"</blockquote><cite>— {t.attribution}</cite></li>)}
-            {genericGoogleReviews.map((r) => (
-              <li>
-                <blockquote>"{r.quote}"</blockquote>
-                <cite>— {r.attribution}</cite>
-              </li>
-            ))}
-          </>
-        )}
+        {villa.content.testimonials.map((testimonial: any) => (
+          <li><blockquote>"{testimonial.quote}"</blockquote><cite>— {testimonial.attribution}</cite></li>
+        ))}
       </ul>
     </section>
   )}
