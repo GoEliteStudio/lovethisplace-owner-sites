@@ -6,11 +6,14 @@ import GalleryGrid from '../../../components/GalleryGrid.astro';
 import Tabs from '../../../components/Tabs.astro';
 import FixedFactsPanel from '../../../components/FixedFactsPanel.astro';
 import InquiryForm from '../../../components/InquiryForm.astro';
-import { VILLA_LANGUAGES, LANG_META } from '../../../config/i18n';
+import HeritageVillaPage from '../../../components/HeritageVillaPage.astro';
+import { VILLA_LANGUAGES, LANG_META, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicOrigin, getVillaPublicPath, isVillaIndexable } from '../../../config/i18n';
 import { getUIStrings } from '../../../config/uiStrings';
 import { buildSchemaGraph } from '../../../lib/schema';
 import { buildSearchDataset } from '../../../lib/search';
 import { resolveFaqs, injectContext, type VillaContext, type ResolvedFaq } from '../../../data/faq';
+
+export const prerender = true;
 
 // 1. DYNAMIC ROUTING & DATA LOADING
 export async function getStaticPaths() {
@@ -149,10 +152,15 @@ if (heroImages.length && heroImages.length < desiredHeroCount) {
   }
 }
 
-// Dynamic Site Base (Replaces hardcoded domain)
-const siteBase = Astro.site?.toString() || 'https://villa-engine.vercel.app';
-const pageTitle = `${villa.name} — Luxury Villa Retreat`;
-const canonical = `${siteBase}villas/${slug}/${lang}/`;
+const villaConfig = getVillaBySlug(slug);
+if (!villaConfig) {
+  return Astro.redirect('/', 302);
+}
+
+const siteBase = `${getVillaPublicOrigin(villaConfig)}/`;
+const pageTitle = villa.seo?.title || `${villa.name} — Luxury Villa Retreat`;
+const canonical = getVillaCanonicalUrl(villaConfig, lang);
+const publicHomePath = getVillaPublicPath(villaConfig, lang);
 
 const jsonLd = buildSchemaGraph({
   villa,
@@ -333,35 +341,36 @@ const hostImage = villa.content?.hosts?.image ?? villa.aboutUsImage ?? villa.ima
 const hreflangs = (VILLA_LANGUAGES[slug] || []).map((l) => ({
   lang: l,
   locale: LANG_META[l]?.locale || l,
-  url: `/villas/${slug}/${l}/`
+  url: getVillaPublicPath(villaConfig, l)
 }));
 
 // Villa-specific footer with corrected links (language-aware)
-const villaBasePath = `/villas/${slug}`;
-const langBasePath = `/villas/${slug}/${lang}`;
 const villaFooter = {
   ...ui.footer,
+  ecosystemNote: villaConfig.rootCanonical
+    ? 'A LoveThisPlace owner site. Traveler service and booking coordination by Go Elite Global.'
+    : ui.footer.ecosystemNote,
   brandDescription: villa.summary,
   infoLinks: ui.footer.infoLinks.map((link: { label: string; href: string }) => {
     // Convert global paths to villa + language-specific paths
     if (link.href === '/rates') {
-      return { ...link, href: `${langBasePath}/rates` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'rates') };
     }
     if (link.href === '/terms') {
-      return { ...link, href: `${langBasePath}/terms` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'terms') };
     }
     if (link.href === '/privacy') {
-      return { ...link, href: `${langBasePath}/privacy` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'privacy') };
     }
     if (link.href === '/contact') {
-      return { ...link, href: `${langBasePath}/contact` };
+      return { ...link, href: getVillaPublicPath(villaConfig, lang, 'contact') };
     }
     return link;
   }),
   contactLinks: [
     { label: villa.contact?.phone || '+57 300 123 4567', href: `tel:${(villa.contact?.phone || '+573001234567').replace(/\s/g, '')}` },
     { label: villa.contact?.email || `reservations@${slug?.replace(/-/g, '')}.com`, href: `mailto:${villa.contact?.email || `reservations@${slug?.replace(/-/g, '')}.com`}` },
-    { label: ui.footer.contactLinks?.[2]?.label || 'Contact Us', href: `${langBasePath}/contact` }
+    { label: ui.footer.contactLinks?.[2]?.label || 'Contact Us', href: getVillaPublicPath(villaConfig, lang, 'contact') }
   ]
 };
 
@@ -369,21 +378,32 @@ const villaFooter = {
 
 <BaseLayout 
   title={pageTitle} 
-  description={villa.summary} 
+  description={villa.seo?.description || villa.summary}
   canonical={canonical} 
+  noindex={!isVillaIndexable(villaConfig)}
   jsonLd={jsonLd} 
-  lcpImage={heroImages[0]} 
+  lcpImage={villaConfig.theme === 'classic' ? heroImages[0] : undefined}
   ogImage={heroImages[0]}
   villaName={villa.name}
-  homeUrl={`/villas/${slug}/${lang}`}
+  homeUrl={publicHomePath}
   lang={langMeta.locale}
   hreflangs={hreflangs}
   footer={villaFooter}
   navLinks={ui.header?.navigation}
   navCtaLabel={ui.header?.inquireCta}
-  navCtaHref={`/villas/${slug}/${lang}/contact`}
+  navCtaHref={getVillaPublicPath(villaConfig, lang, 'contact')}
   whatsappNumber={villa.contact?.whatsapp}
 >
+  {villaConfig.theme === 'heritage-signature' ? (
+    <HeritageVillaPage
+      villa={villa}
+      slug={slug}
+      lang={lang}
+      completeGalleryHref={getVillaPublicPath(villaConfig, lang, 'gallery')}
+      privacyHref={getVillaPublicPath(villaConfig, lang, 'privacy')}
+    />
+  ) : (
+    <>
   <Hero
     title={villa.hero.title}
     subtitle={villa.hero.subtitle}
@@ -678,4 +698,6 @@ const villaFooter = {
       .search-modal__content { height: 100%; border-radius: 0; max-width: none; }
     }
   </style>
+    </>
+  )}
 </BaseLayout>

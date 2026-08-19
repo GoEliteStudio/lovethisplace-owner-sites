@@ -66,8 +66,7 @@ export async function sendEmail(opts: SendEmailOptions) {
 
     console.log('[emailService] Email sent', {
       messageId: info.messageId,
-      to: opts.to,
-      subject: opts.subject,
+      recipientCount: Array.isArray(opts.to) ? opts.to.length : 1,
     });
 
     return { ok: true, id: info.messageId };

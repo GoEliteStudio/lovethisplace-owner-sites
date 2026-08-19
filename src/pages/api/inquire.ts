@@ -1,4 +1,4 @@
-﻿import type { APIRoute } from 'astro';
+import type { APIRoute } from 'astro';
 import { sendClientReceipt } from '../../lib/clientReceipt';
 import { ownerNoticeHtml, ownerNoticeText } from '../../lib/ownerNotice';
 import { createInquiry, getListingBySlug, getOwnerById } from '../../lib/firestore/collections';
@@ -6,7 +6,7 @@ import type { InquiryOrigin, Listing } from '../../lib/firestore/types';
 import { generateApproveUrl, generateDeclineUrl } from '../../lib/signing';
 import { calculateQuote, getDefaultPricing } from '../../lib/pricing';
 import { sendOwnerNotification } from '../../lib/emailRouting';
-import { getVillaCurrency, getVillaOwnerEmail, getVillaNightlyRate, getVillaMinimumNights } from '../../config/i18n';
+import { getVillaBySlug, getVillaCurrency, getVillaOwnerEmail, getVillaNightlyRate, getVillaMinimumNights } from '../../config/i18n';
 
 type InquireBody = {
   fullName?: string;
@@ -29,8 +29,15 @@ type InquireBody = {
   website?: string;     // extra honeypot
   hpt?: string;         // extra honeypot (generic)
   __ts?: string;        // client timestamp (ms)
+  consent?: string;
 };
 
+const managedInquiryRoutes: Record<string, { endpoint: string; publicSlug: string }> = {
+  'molonta-heritage-estate': {
+    endpoint: 'https://www.lovethisplace.co/api/storefront/inquiries',
+    publicSlug: 'molonta-heritage-estate',
+  },
+};
 const required = (v?: string) => typeof v === 'string' && v.trim().length > 0;
 const isEmail = (v?: string) => !!v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
@@ -107,15 +114,104 @@ export const POST: APIRoute = async ({ request }) => {
       children: Number(data.children ?? '0') || 0,
       notes: (data.notes ?? '').toString().slice(0, 2000),
       occasion: (data.occasion ?? '').toString().slice(0, 500),
-      phone: (data.phone ?? '').toString().slice(0, 50),
-      userAgent: request.headers.get('user-agent') || undefined,
-      ip: request.headers.get('x-forwarded-for') || undefined
+      phone: (data.phone ?? '').toString().slice(0, 50)
     };
 
     // Villa context + language detection (do this early so we can use lang in Firestore)
     const slug = data.slug || data.villa || 'domaine-des-montarels';
+    const villaConfig = getVillaBySlug(slug);
+    if (!villaConfig || !villaConfig.active || villaConfig.visibility === 'hidden') {
+      return new Response(JSON.stringify({ ok: false, error: 'Unknown property' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
     const origin: InquiryOrigin = data.origin || 'villa_site';
     const lang = data.lang ? (data.lang as 'en' | 'fr' | 'es') : detectLang(request);
+
+    const managedRoute = managedInquiryRoutes[slug];
+    if (managedRoute) {
+      const proxyErrors: Record<string, string> = {};
+      if (!required(payload.phone)) proxyErrors.phone = 'Required';
+      if (data.consent !== 'yes') proxyErrors.consent = 'Required';
+      if (Object.keys(proxyErrors).length) {
+        return new Response(JSON.stringify({ ok: false, errors: proxyErrors }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      const upstream = new URL(managedRoute.endpoint);
+      const forwarded = new FormData();
+      forwarded.set('slug', managedRoute.publicSlug);
+      forwarded.set('locale', lang === 'es' ? 'es' : 'en');
+      forwarded.set('surface', 'public');
+      forwarded.set('kind', 'villa');
+      forwarded.set('idempotencyKey', crypto.randomUUID());
+      forwarded.set('checkIn', payload.checkIn);
+      forwarded.set('checkOut', payload.checkOut);
+      forwarded.set('groupSize', String(payload.adults + payload.children));
+      forwarded.set('fullName', payload.fullName);
+      forwarded.set('whatsapp', payload.phone);
+      forwarded.set('email', payload.email);
+      forwarded.set('notes', payload.notes);
+      forwarded.set('consent', 'yes');
+      forwarded.set('website', '');
+      forwarded.set('startedAt', String(data.__ts));
+      forwarded.set('utmSource', 'molonta_owner_showcase');
+      forwarded.set('utmMedium', 'owner_site');
+      forwarded.set('utmCampaign', 'molonta_launch');
+      forwarded.set('utmContent', 'inquiry_form');
+      forwarded.set(
+        'referrer',
+        new URL('/villas/' + slug + '/' + lang + '/', request.url).toString(),
+      );
+
+      const proxyHeaders: HeadersInit = {
+        Accept: 'application/json',
+        Origin: upstream.origin,
+        Referer: upstream.origin + '/en/storefront/' + managedRoute.publicSlug,
+      };
+      const clientAddress = request.headers.get('x-vercel-forwarded-for');
+      if (clientAddress) proxyHeaders['x-vercel-forwarded-for'] = clientAddress;
+
+      let proxyResponse: Response;
+      try {
+        proxyResponse = await fetch(upstream, {
+          method: 'POST',
+          headers: proxyHeaders,
+          body: forwarded,
+        });
+      } catch {
+        console.error('[inquire] Managed inquiry endpoint unavailable');
+        return new Response(JSON.stringify({ ok: false, error: 'Inquiry destination unavailable' }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (!proxyResponse.ok) {
+        console.error('[inquire] Managed inquiry rejected', { status: proxyResponse.status });
+        return new Response(JSON.stringify({ ok: false, error: 'Inquiry destination unavailable' }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      const accept = (request.headers.get('accept') || '').toLowerCase();
+      if (accept.includes('text/html')) {
+        const thankYou = new URL('/villas/' + slug + '/' + lang + '/thank-you', request.url);
+        thankYou.searchParams.set('name', payload.fullName);
+        thankYou.searchParams.set('d', payload.checkIn + ' → ' + payload.checkOut);
+        return Response.redirect(thankYou.toString(), 303);
+      }
+
+      const result = await proxyResponse.text();
+      return new Response(result, {
+        status: proxyResponse.status,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     // Look up listing ONCE (avoid duplicate Firestore reads)
     let listing: Listing | null = null;
@@ -133,13 +229,13 @@ export const POST: APIRoute = async ({ request }) => {
         const owner = await getOwnerById(listing.ownerId);
         if (owner?.email) {
           ownerEmail = owner.email;
-          console.log('[inquire] Owner email from Firestore:', { slug, ownerEmail, ownerId: listing.ownerId });
+          console.log('[inquire] Owner routing resolved from Firestore:', { slug, ownerId: listing.ownerId });
         }
       } catch (e) {
         console.warn('[inquire] Firestore owner lookup failed, using i18n fallback:', e);
       }
     } else {
-      console.log('[inquire] No ownerId on listing, using i18n fallback:', { slug, ownerEmail });
+      console.log('[inquire] Owner routing resolved from registry fallback:', { slug });
     }
 
     // Persist inquiry to Firestore
@@ -211,7 +307,11 @@ export const POST: APIRoute = async ({ request }) => {
     let approveUrl: string | undefined;
     let declineUrl: string | undefined;
     
-    if (inquiryId) {
+    const ownerActionWorkflowReady = Boolean(
+      import.meta.env.OWNER_ACTION_SECRET && import.meta.env.STRIPE_SECRET_KEY
+    );
+
+    if (inquiryId && ownerActionWorkflowReady) {
       // Use quote amount if available, otherwise 0 (owner will set final price)
       approveUrl = generateApproveUrl(SITE_URL, inquiryId, quoteAmount || 0, currency);
       declineUrl = generateDeclineUrl(SITE_URL, inquiryId);
@@ -263,7 +363,7 @@ export const POST: APIRoute = async ({ request }) => {
         data: payload as any,
         lang
       });
-      console.log('[inquire] Client receipt sent:', { to: payload.email, villa: slug, id: receiptResult.id });
+      console.log('[inquire] Client receipt sent:', { villa: slug, id: receiptResult.id });
     } catch (e) {
       console.warn('[inquire] Client receipt failed:', (e as any)?.message || e);
       // Don't fail the request if client receipt fails - owner email is more important

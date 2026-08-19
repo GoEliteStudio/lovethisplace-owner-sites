@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import { VILLA_LANGUAGES, DEFAULT_LANG, getVillaBySlug, getVillaMinimumNights } from '../../../../config/i18n';
+import { VILLA_LANGUAGES, DEFAULT_LANG, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicPath, getVillaMinimumNights } from '../../../../config/i18n';
 import { getUIStrings } from '../../../../config/uiStrings';
 import { buildAuxPageSchema } from '../../../../lib/schema';
 
@@ -34,8 +34,8 @@ const ui = getUIStrings(lang);
 const contactUI = ui.contact;
 
 // Villa-specific paths
-const villaBasePath = `/villas/${slug}`;
-const langBasePath = `${villaBasePath}/${lang}`;
+const routeVillaConfig = getVillaBySlug(slug);
+const langBasePath = routeVillaConfig ? getVillaPublicPath(routeVillaConfig, lang).replace(/\/$/, '') : `/villas/${slug}/${lang}`;
 
 // Header navigation (localized) - point to villa page sections
 const navLinks = ui.header.navigation.map((link: { label: string; href: string }) => ({
@@ -87,6 +87,9 @@ const contact = contactInfo[slug] || contactInfo['domaine-des-montarels'];
 
 // Get villa minimum nights requirement
 const minNights = getVillaMinimumNights(slug);
+const thankYouPath = routeVillaConfig
+  ? getVillaPublicPath(routeVillaConfig, lang, 'thank-you')
+  : `/villas/${slug}/${lang}/thank-you/`;
 
 // Generate page metadata
 const title = `${contactUI.pageTitle} — ${villa.name}`;
@@ -123,8 +126,8 @@ const trust = trustItems[lang] || trustItems.en;
 
 // Build schema for SEO
 const villaConfig = getVillaBySlug(slug);
-const siteBase = villaConfig?.domain ? `https://${villaConfig.domain}` : Astro.url.origin;
-const canonical = `${siteBase}/villas/${slug}/${lang}/contact`;
+const siteBase = villaConfig?.canonicalOrigin || Astro.url.origin;
+const canonical = villaConfig ? getVillaCanonicalUrl(villaConfig, lang, 'contact') : Astro.url.toString();
 const localeMap: Record<string, string> = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
 
 const jsonLd = buildAuxPageSchema({
@@ -144,7 +147,7 @@ const jsonLd = buildAuxPageSchema({
   description={description} 
   canonical={canonical}
   villaName={villa.name}
-  homeUrl={langBasePath}
+  homeUrl={langBasePath || '/'}
   navLinks={navLinks}
   jsonLd={jsonLd}
   navCtaLabel={navCtaLabel}
@@ -643,7 +646,7 @@ const jsonLd = buildAuxPageSchema({
     }
   </style>
 
-  <script is:inline define:vars={{ lang, slug }}>
+  <script is:inline define:vars={{ lang, slug, thankYouPath }}>
     (function() {
       // Set timing token immediately on page load
       var tsEl = document.getElementById('__ts');
@@ -726,7 +729,7 @@ const jsonLd = buildAuxPageSchema({
           
           if (result.ok) {
             // Redirect to localized thank you page
-            window.location.href = `/villas/${slug}/${lang}/thank-you/`;
+            window.location.href = thankYouPath;
           } else {
             alert(msg.error);
             submitBtn.textContent = originalText;

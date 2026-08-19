@@ -1,0 +1,190 @@
+{
+  "slug": "molonta-heritage-estate",
+  "language": "en",
+  "name": "Molonta Heritage Estate",
+  "summary": "Molonta Heritage Estate is a private four-bedroom luxury waterfront villa in Molunat near Dubrovnik, set across 4.8 hectares with an infinity pool, direct Adriatic sea access and third-generation family hospitality.",
+  "listingType": "rental",
+  "seo": {
+    "title": "Molonta Heritage Estate | Private Waterfront Villa near Dubrovnik",
+    "description": "Discover Molonta Heritage Estate, a four-bedroom private waterfront villa in Molunat near Dubrovnik with an infinity pool, private rocky beach, yacht access and personal family hospitality."
+  },
+  "hero": {
+    "eyebrow": "Molunat · Dubrovnik Riviera · Croatia",
+    "title": "Sixty years above the Adriatic",
+    "subtitle": "A family-held waterfront estate where terraced gardens descend to the sea and every stay remains personal.",
+    "ctaText": "Explore the estate",
+    "priorityImages": [
+      "/images/villas/molonta-owner-preview/hero-estate-twilight.webp",
+      "/images/villas/molonta-owner-preview/hero-pool-panorama.webp",
+      "/images/villas/molonta-owner-preview/hero-infinity-pool.webp"
+    ]
+  },
+  "images": [
+    { "src": "/images/villas/molonta-owner-preview/hero-estate-twilight.webp", "alt": "Molonta Heritage Estate illuminated at twilight among its terraced Mediterranean gardens above the Adriatic", "caption": "The estate at twilight, held within 4.8 hectares of Mediterranean landscape." },
+    { "src": "/images/villas/molonta-owner-preview/hero-pool-panorama.webp", "alt": "Panoramic view across Molonta Heritage Estate's infinity pool to the Adriatic Sea and surrounding hills", "caption": "A 14 by 5 metre infinity pool opening toward the Adriatic." },
+    { "src": "/images/villas/molonta-owner-preview/hero-infinity-pool.webp", "alt": "Infinity pool, sun terrace and Adriatic view at Molonta Heritage Estate near Dubrovnik", "caption": "Private outdoor living shaped around the water and the view." },
+    { "src": "/images/villas/molonta-owner-preview/hero-sunset-pool.webp", "alt": "Sunset reflected across the infinity pool and Adriatic bay at Molonta Heritage Estate", "caption": "Evening settles across the bay." },
+    { "src": "/images/villas/molonta-owner-preview/hero-poolside.webp", "alt": "Poolside loungers prepared beside the infinity pool at Molonta Heritage Estate", "caption": "Quiet mornings and long afternoons beside the pool." },
+    { "src": "/images/villas/molonta-owner-preview/hero-private-yacht.webp", "alt": "Private motor yacht cruising beside Molonta Heritage Estate's Adriatic coastline", "caption": "A Jeanneau Prestige 34 with skipper can be arranged for estate guests." },
+    { "src": "/images/villas/molonta-owner-preview/hero-living-room.webp", "alt": "Light-filled living room, dining room and kitchen inside Molonta Heritage Estate", "caption": "Restored character and comfortable shared living." },
+    { "src": "/images/villas/molonta-owner-preview/hero-estate-night.webp", "alt": "Molonta Heritage Estate residences, terraces and infinity pool illuminated at night", "caption": "The houses and terraces after dark." },
+    { "src": "/images/villas/molonta-owner-preview/private-beach.webp", "alt": "Rocky private beach and direct swimming access at Molonta Heritage Estate", "caption": "A path through the estate leads to its rocky beach and sea access." },
+    { "src": "/images/villas/molonta-owner-preview/shoreline.webp", "alt": "Clear Adriatic water along the secluded shoreline below Molonta Heritage Estate", "caption": "Approximately 300 metres of Adriatic shoreline." },
+    { "src": "/images/villas/molonta-owner-preview/estate-detail-01.webp", "alt": "Stone residence and Mediterranean garden at Molonta Heritage Estate in Molunat", "caption": "Family architecture restored with restraint." },
+    { "src": "/images/villas/molonta-owner-preview/estate-detail-02.webp", "alt": "Mediterranean interior at Molonta Heritage Estate near Dubrovnik", "caption": "Natural materials and collected details throughout the estate." },
+    { "src": "/images/villas/molonta-owner-preview/estate-detail-03.webp", "alt": "Private guest bedroom at Molonta Heritage Estate in Croatia", "caption": "Four double bedrooms, each with a private en-suite bathroom." },
+    { "src": "/images/villas/molonta-owner-preview/estate-detail-04.webp", "alt": "Indoor and outdoor living space at Molonta Heritage Estate", "caption": "Spaces designed for gathering and withdrawing in equal measure." },
+    { "src": "/images/villas/molonta-owner-preview/estate-detail-05.webp", "alt": "Renovated heritage details at Molonta Heritage Estate in Molunat", "caption": "A home renewed without erasing its history." }
+  ],
+  "completeGallery": {
+    "imageCount": 104,
+    "chapterCount": 9
+  },
+  "headlines": {
+    "overview": "A family estate, not a rental invention",
+    "location": "Molunat, Konavle, Croatia"
+  },
+  "specs": {
+    "guests": 8,
+    "bedrooms": 4,
+    "beds": 4,
+    "baths": 4,
+    "size": "4.8 hectares",
+    "poolLabel": "Infinity pool",
+    "poolSize": "14 × 5 metres"
+  },
+  "location": {
+    "label": "Molunat, Konavle, Dubrovnik Region, Croatia",
+    "city": "Molunat",
+    "country": "Croatia",
+    "neighborhood": "Konavle"
+  },
+  "amenities": [
+    "Private 14 × 5 metre infinity pool",
+    "Private hot tub for five guests",
+    "Direct Adriatic sea access",
+    "Private rocky beach and mooring",
+    "Four double bedrooms with private en-suite bathrooms",
+    "Full air conditioning",
+    "Complimentary Wi-Fi",
+    "Daily housekeeping and towel service",
+    "Regular linen changes",
+    "Entertainment house with cinema, billiards, games and karaoke",
+    "Outdoor gym",
+    "Covered outdoor dining terrace",
+    "Private on-site parking",
+    "Complimentary concierge support"
+  ],
+  "seasons": [
+    { "id": "spring-late", "label": "May and October 2027", "price": "2140", "currency": "EUR", "priceDisplay": "From €2,140 per night · 3-night minimum" },
+    { "id": "shoulder", "label": "June and September 2027", "price": "2550", "currency": "EUR", "priceDisplay": "From €2,550 per night · 3-night minimum" },
+    { "id": "summer", "label": "July and August 2027", "price": "3400", "currency": "EUR", "priceDisplay": "From €3,400 per night · 7-night minimum" },
+    { "id": "peak", "label": "24 July to 21 August 2027", "price": "3850", "currency": "EUR", "priceDisplay": "From €3,850 per night · Saturday arrivals" }
+  ],
+  "content": {
+    "overviewLead": "The Metković family has cared for this land across three generations, preserving a kind of Adriatic hospitality that cannot be manufactured.",
+    "overview": "The family's roots in Molunat reach back to the early eighteenth century. The stone house was built in the 1930s and became known as Villa Palma in 1966. More than sixty years later, Nikša and Sanja continue that story as the third generation of family hosts.\n\nAcross approximately 4.8 hectares, centuries-old olive trees, citrus groves, stone terraces and gardens descend toward roughly 300 metres of Adriatic coastline. The estate welcomes only eight guests, allowing the landscape, the sea and the hosts to remain part of the experience.\n\nMolonta was featured in Condé Nast Traveler in 2025 for its family hospitality and waterfront setting. The estate is approximately 20 minutes from Dubrovnik Airport and 40 minutes from Dubrovnik Old Town.",
+    "experienceStatement": "This is privacy with a human presence: Nikša and Sanja live nearby, remain available when needed and give guests the freedom to make the estate their own.",
+    "signatureFacts": [
+      { "value": "8", "label": "guests" },
+      { "value": "4", "label": "en-suite bedrooms" },
+      { "value": "4.8 ha", "label": "private estate" },
+      { "value": "300 m", "label": "Adriatic shoreline" },
+      { "value": "20 min", "label": "Dubrovnik Airport" }
+    ],
+    "included": [
+      "Exclusive use of the estate and grounds",
+      "Daily housekeeping and towel service",
+      "Regular linen changes and final cleaning",
+      "Pool and garden care",
+      "Wi-Fi, air conditioning and private parking",
+      "Complimentary concierge support",
+      "Direct sea access, rocky beach and mooring",
+      "Entertainment house, outdoor gym and hot tub"
+    ],
+    "addOns": [
+      "Private chef, catering and grocery pre-stocking",
+      "In-villa massage, yoga and Pilates",
+      "Airport transfers, private drivers and car rental",
+      "Jeanneau Prestige 34 motor yacht with skipper",
+      "Boat excursions, diving and fishing",
+      "Wine, olive-oil, culinary and cultural experiences",
+      "Babysitting and family support",
+      "Restaurant reservations and tailored itineraries"
+    ],
+    "bookingNotes": [
+      "A 30% deposit confirms the booking; the remaining 70% is due 60 days before arrival.",
+      "A refundable €2,000 security deposit applies.",
+      "Availability, taxes, cancellation terms and the final total are confirmed in writing before payment."
+    ],
+    "practicalDetails": [
+      "Maximum occupancy: 8 guests",
+      "Four double bedrooms with private en-suite shower bathrooms",
+      "Three-night minimum in May, June, September and October",
+      "Seven-night minimum with Saturday arrivals in July and August",
+      "Dubrovnik Airport: approximately 20 minutes by road",
+      "Dubrovnik Old Town: approximately 40 minutes by road",
+      "Private transfers and drivers available on request"
+    ],
+    "rooms": [
+      { "name": "Bedroom one", "description": "Double bedroom with private en-suite shower bathroom and air conditioning." },
+      { "name": "Bedroom two", "description": "Double bedroom with private en-suite shower bathroom and air conditioning." },
+      { "name": "Bedroom three", "description": "Double bedroom with private en-suite shower bathroom and air conditioning." },
+      { "name": "Bedroom four", "description": "Double bedroom with private en-suite shower bathroom and air conditioning." }
+    ],
+    "familyRecreation": [
+      "Natural sea pool and direct swimming access",
+      "Entertainment house with cinema, billiards, games and karaoke",
+      "Infinity pool, hot tub and outdoor gym",
+      "Private yacht days and tailored Adriatic excursions",
+      "Family support and babysitting available on request",
+      "Small retreats and carefully planned celebrations considered on request"
+    ],
+    "travel": {
+      "air": ["Dubrovnik Airport is approximately 20 minutes away, depending on traffic."],
+      "rail": [],
+      "drive": ["Dubrovnik Old Town is approximately 40 minutes away.", "Private transfers, drivers and car rental can be arranged."]
+    },
+    "hosts": {
+      "image": "/images/villas/molonta-owner-preview/hero-estate-twilight.webp",
+      "names": "Nikša & Sanja Metković",
+      "subtitle": "Third-generation family hosts",
+      "bio": "Nikša and Sanja live nearby and care for Molonta as both a family inheritance and a living place of hospitality. They remain personally available throughout the stay while respecting complete guest privacy.",
+      "highlights": ["Local knowledge and personal arrival support", "Concierge help before and during the stay", "A direct relationship with the people who care for the estate"]
+    },
+    "testimonials": [],
+    "faq": [
+      { "q": "What is Molonta Heritage Estate, and was it formerly Villa Palma?", "a": "Molonta Heritage Estate is the current name of the Metković family's historic waterfront property in Molunat. The family house was built in the 1930s and became known as Villa Palma in 1966; today it is cared for by the third generation." },
+      { "q": "How many guests can stay at Molonta Heritage Estate?", "a": "Molonta welcomes up to eight guests in four double bedrooms. Each bedroom has its own private en-suite bathroom with a shower." },
+      { "q": "Does Molonta have direct access to the Adriatic Sea?", "a": "Yes. A private path crosses the grounds to the estate's rocky beach, direct swimming access, a natural sea pool for children, an outdoor shower and a private mooring." },
+      { "q": "How private is the estate?", "a": "Guests have exclusive use of the villa and approximately 4.8 hectares of Mediterranean grounds. Nikša and Sanja live nearby and remain available while respecting guest privacy." },
+      { "q": "What pool and wellness facilities are available?", "a": "The estate has a private 14 by 5 metre infinity pool, a hot tub for five guests and an outdoor gym. In-villa massage, yoga and Pilates can be arranged at additional cost." },
+      { "q": "What is included in the nightly rate?", "a": "The stay includes exclusive use of the estate, Wi-Fi, full air conditioning, private parking, daily housekeeping, towel service, regular linen changes, pool and garden care, final cleaning and complimentary concierge support." },
+      { "q": "Can a private chef or grocery pre-stocking be arranged?", "a": "Yes. Private chefs, catering and grocery pre-stocking can be arranged on request at additional cost, together with restaurant reservations and locally tailored dining suggestions." },
+      { "q": "Is a private yacht available for guests?", "a": "A Jeanneau Prestige 34 motor yacht with skipper can be arranged at additional cost for estate guests. Other boat excursions, diving and fishing can also be coordinated." },
+      { "q": "How far is Molonta from Dubrovnik Airport?", "a": "Molonta is approximately 20 minutes from Dubrovnik Airport by road, depending on traffic. Private airport transfers and pre-arrival coordination can be arranged." },
+      { "q": "How far is Molonta from Dubrovnik Old Town?", "a": "Dubrovnik Old Town is approximately 40 minutes from the estate by road, depending on traffic and season. Private transfers or a tailored yacht excursion can be arranged." },
+      { "q": "Do guests need to rent a car in Molunat?", "a": "A rental car is useful but not essential. Airport transfers, drivers and tailored excursions can be arranged, while restaurants and everyday services are available in and around Molunat." },
+      { "q": "Is Molonta suitable for families with children?", "a": "Yes. Families have extensive private grounds, a natural sea pool, an entertainment house and family support that can be arranged. A cot, high chair and babysitting can be requested before arrival." },
+      { "q": "Can the estate host retreats, celebrations or small weddings?", "a": "Private retreats, wellness stays, small weddings and carefully planned celebrations may be considered. Guest count, suppliers, timing and use of the estate are reviewed before confirmation." },
+      { "q": "What are the 2027 rates and minimum stays?", "a": "Owner-supplied 2027 rates begin at €2,140 per night in May and October. Minimum stays are three nights outside high summer and seven nights with Saturday arrivals in July and August. A written quote confirms the applicable rate and total." },
+      { "q": "How is availability confirmed?", "a": "Availability is checked personally for every request. The written quote confirms dates, rate, inclusions, applicable taxes, security deposit and booking terms before payment." }
+    ]
+  },
+  "policies": {
+    "cancellation": {
+      "summary": "Cancellation and refund terms are confirmed in writing before payment.",
+      "fullText": "The written booking terms supplied with the quote govern cancellation and refunds. No payment should be made until the traveler has reviewed and accepted those terms."
+    }
+  },
+  "contact": {
+    "phone": "+1 516-493-6070",
+    "email": "jc@lovethisplace.co",
+    "whatsapp": "15164936070"
+  },
+  "legal": {
+    "contactEmail": "jc@lovethisplace.co",
+    "contactPhone": "+1 516-493-6070",
+    "contactWhatsApp": "+1 516-493-6070"
+  }
+}

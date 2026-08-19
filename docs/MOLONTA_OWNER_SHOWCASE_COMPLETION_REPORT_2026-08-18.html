@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Molonta Owner Showcase — Completion Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #161512;
+      --muted: #6b675f;
+      --paper: #f4f0e8;
+      --card: #fffdf8;
+      --line: #d9d1c2;
+      --gold: #9b7743;
+      --green: #315a4a;
+      --red: #8e3f35;
+      --shadow: 0 24px 70px rgba(47, 39, 26, .09);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 32px auto 80px;
+      background: var(--card);
+      border: 1px solid rgba(155, 119, 67, .22);
+      box-shadow: var(--shadow);
+    }
+
+    header {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(48px, 8vw, 104px);
+      color: white;
+      background:
+        radial-gradient(circle at 82% 0%, rgba(193, 153, 89, .34), transparent 35%),
+        linear-gradient(145deg, #191813, #332d23 68%, #55452f);
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -150px;
+      width: 380px;
+      height: 380px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 50%;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: #d8ba86;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      line-height: 1.08;
+    }
+
+    h1 {
+      max-width: 820px;
+      margin: 0;
+      font-size: clamp(46px, 7vw, 86px);
+      letter-spacing: -.045em;
+    }
+
+    .lede {
+      max-width: 720px;
+      margin: 28px 0 0;
+      color: rgba(255,255,255,.76);
+      font-size: clamp(17px, 2vw, 21px);
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 34px;
+    }
+
+    .pill {
+      padding: 8px 13px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      font-size: 13px;
+    }
+
+    main { padding: clamp(30px, 6vw, 76px); }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 62px;
+    }
+
+    .metric {
+      min-height: 140px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .metric span { color: var(--muted); font-size: 14px; }
+
+    section {
+      padding: 44px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    section:first-of-type { border-top: 0; }
+
+    h2 {
+      max-width: 780px;
+      margin: 0 0 22px;
+      font-size: clamp(32px, 4vw, 52px);
+      letter-spacing: -.025em;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 23px;
+    }
+
+    p { margin: 0 0 16px; }
+
+    .muted { color: var(--muted); }
+
+    .decision {
+      margin: 24px 0 0;
+      padding: 22px 24px;
+      border-left: 3px solid var(--gold);
+      background: #f8f4ec;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .item {
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    ul, ol { margin: 12px 0 0; padding-left: 22px; }
+    li + li { margin-top: 8px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .pass { color: var(--green); font-weight: 750; }
+    .hold { color: var(--red); font-weight: 750; }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #eee8dd;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: .88em;
+    }
+
+    .commit {
+      padding: 24px;
+      color: white;
+      background: #1c1b18;
+    }
+
+    .commit code {
+      display: inline-block;
+      margin-top: 8px;
+      color: #f1d4a2;
+      background: transparent;
+      padding: 0;
+    }
+
+    footer {
+      padding: 26px clamp(30px, 6vw, 76px);
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .shell { width: 100%; margin: 0; border: 0; }
+      .summary-grid, .two-col { grid-template-columns: 1fr; }
+      .summary-grid { gap: 8px; }
+      .metric { min-height: 0; }
+      table, thead, tbody, tr, th, td { display: block; }
+      thead { display: none; }
+      tr { padding: 12px 0; border-bottom: 1px solid var(--line); }
+      td { border: 0; padding: 4px 0; }
+    }
+
+    @media print {
+      body { background: white; }
+      .shell { width: 100%; margin: 0; border: 0; box-shadow: none; }
+      section, .item, .metric { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <article class="shell">
+    <header>
+      <p class="eyebrow">LoveThisPlace · Owner Sites Product</p>
+      <h1>Molonta Heritage Estate completion report</h1>
+      <p class="lede">A complete record of the commercial decisions, owner-site engine work, editorial design, imagery, discovery controls, privacy safeguards, validation, and Git delivery completed through 18 August 2026.</p>
+      <div class="status-row" aria-label="Project status">
+        <span class="pill">Owner-authorized presentation</span>
+        <span class="pill">Open by URL</span>
+        <span class="pill">No password</span>
+        <span class="pill">Noindex</span>
+        <span class="pill">Production deployed</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="summary-grid" aria-label="Delivery summary">
+        <div class="metric"><strong>104</strong><span>owner-authorized photographs in the complete gallery</span></div>
+        <div class="metric"><strong>9</strong><span>organized gallery chapters for fast browsing</span></div>
+        <div class="metric"><strong>402</strong><span>optimized WebP files in the public Molonta asset tree</span></div>
+        <div class="metric"><strong>100%</strong><span>repository validation and production build passed</span></div>
+      </div>
+
+      <section>
+        <p class="eyebrow">01 · Final operating decision</p>
+        <h2>Ready to show, deliberately invisible to search engines.</h2>
+        <p>The Molonta presentation is treated as an owner-authorized commercial showcase. It can be shared directly and used while LoveThisPlace searches for qualified rental business. It does not require a password, access code, login, or authentication gate.</p>
+        <div class="decision">
+          <strong>Current publication boundary:</strong> anyone with the URL may view it, but the pages emit <code>noindex, nofollow</code>, the preview host blocks crawling through <code>robots.txt</code>, and Molonta is excluded from generated sitemap discovery. This gives Juan a frictionless presentation link without deliberately asking search engines to rank it yet.
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">02 · Commercial context</p>
+        <h2>The site is now a sales asset, not a speculative mockup.</h2>
+        <div class="two-col">
+          <div class="item">
+            <h3>What was established</h3>
+            <ul>
+              <li>The owners authorized use of the property materials for presentation and promotion.</li>
+              <li>The 2027 pricing shown was supplied by the owners.</li>
+              <li>The working commercial model accepted for this founding partner is commission-led rather than the prepaid founding storefront fee.</li>
+              <li>The immediate objective is to introduce qualified travelers and convert rental inquiries.</li>
+            </ul>
+          </div>
+          <div class="item">
+            <h3>What was not done</h3>
+            <ul>
+              <li>No existing LoveThisPlace or portal deployment was overwritten; Molonta was released through its own isolated Vercel project.</li>
+              <li>No password wall was added.</li>
+              <li>No search-indexing launch was authorized.</li>
+              <li>No raw owner archive, private source folder, credentials, or runtime operational data was committed.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">03 · Owner-site product architecture</p>
+        <h2>A reusable owner-site engine now supports a distinct heritage presentation.</h2>
+        <p>The existing villa engine was extended rather than bypassed. Molonta is registered as a real property configuration with a dedicated <code>heritage-signature</code> theme. The shared engine now distinguishes public, private-preview, and hidden inventory, giving future owner sites a controlled path from presentation to public launch.</p>
+        <div class="two-col">
+          <div class="item">
+            <h3>Reusable behavior</h3>
+            <ul>
+              <li>Explicit property visibility state.</li>
+              <li>Explicit canonical origin instead of guessing from a shared host.</li>
+              <li>Theme selection through property configuration.</li>
+              <li>EUR pricing and villa-specific minimum-night support.</li>
+              <li>Registered auxiliary gallery route.</li>
+              <li>Future public sitemap eligibility without enabling it now.</li>
+            </ul>
+          </div>
+          <div class="item">
+            <h3>Reusable documentation</h3>
+            <ul>
+              <li>Owner Site Product V2 specification.</li>
+              <li>Owner Site Onboarding Runbook.</li>
+              <li>Two-layer gallery operating pattern.</li>
+              <li>Automated owner-site validation script.</li>
+              <li>Publication-boundary and source-material rules.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">04 · Design and conversion work</p>
+        <h2>Molonta received its own visual system rather than a cosmetic copy of Casa Del Toro.</h2>
+        <ul>
+          <li>A refined heritage-led editorial design was created around the estate’s family history, Adriatic setting, architecture, hosts, and land.</li>
+          <li>The hero sequence begins with the estate at twilight and continues through the pool, coastline, sunset, yacht, interior, and night views.</li>
+          <li>The story section centers the Metković family, the house’s 1930s origin, Villa Palma history, and third-generation stewardship.</li>
+          <li>Desktop story and suite sections use controlled sticky layouts so long copy does not leave large dead areas.</li>
+          <li>The location module was changed from a decorative image into a compact, useful map presentation.</li>
+          <li>The amenities navigation now lands on a real section.</li>
+          <li>Rates, inclusions, available services, booking notes, and inquiry paths are separated clearly.</li>
+          <li>The FAQ was redesigned as a refined split accordion instead of a full-width wall of text.</li>
+          <li>The image viewer uses a stable centered frame so horizontal and vertical photographs remain aligned.</li>
+          <li>No invented testimonials or generic reviews are used.</li>
+        </ul>
+      </section>
+
+      <section>
+        <p class="eyebrow">05 · Complete image system</p>
+        <h2>Editorial curation on the main page; complete evidence in the gallery.</h2>
+        <p>The main showcase deliberately retains 15 high-impact photographs for conversion speed. A separate complete gallery makes all 104 selected photographs available without turning the sales page into an image dump.</p>
+        <table>
+          <thead><tr><th>Gallery chapter</th><th>Images</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Estate &amp; setting</td><td>14</td><td>Architecture, land, aerial context, and arrival.</td></tr>
+            <tr><td>Infinity pool</td><td>25</td><td>The primary outdoor amenity across light and viewpoints.</td></tr>
+            <tr><td>Terraces &amp; gardens</td><td>13</td><td>Outdoor living, stonework, citrus, olives, and landscape.</td></tr>
+            <tr><td>Seafront living</td><td>10</td><td>The relationship between the estate and Adriatic water.</td></tr>
+            <tr><td>Bedrooms &amp; en-suites</td><td>11</td><td>Private-suite evidence and practical accommodation detail.</td></tr>
+            <tr><td>Living &amp; dining</td><td>16</td><td>Interior quality, shared spaces, dining, and hospitality.</td></tr>
+            <tr><td>Beach &amp; sea access</td><td>10</td><td>Shoreline, direct access, swimming, and coastal privacy.</td></tr>
+            <tr><td>Yacht &amp; experiences</td><td>4</td><td>On-water experiences and the estate’s wider stay proposition.</td></tr>
+            <tr><td>Heritage &amp; recognition</td><td>1</td><td>Editorial and historical context.</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">Each complete-gallery photograph has 480px, 960px, and source-faithful large WebP delivery variants. Four smaller originals stop below 1600px rather than being artificially enlarged. The source archive remains outside Git.</p>
+      </section>
+
+      <section>
+        <p class="eyebrow">06 · Gallery experience and performance</p>
+        <h2>All photographs are available without making the page heavy or chaotic.</h2>
+        <div class="two-col">
+          <div class="item">
+            <h3>Navigation</h3>
+            <ul>
+              <li>Sticky chapter index on desktop.</li>
+              <li>Horizontal sticky chapter navigation on mobile.</li>
+              <li>Three-column editorial mosaic on desktop.</li>
+              <li>Two-column mobile gallery.</li>
+              <li>Full-screen lightbox with arrows and keyboard navigation.</li>
+              <li>Focus restoration when the viewer closes.</li>
+            </ul>
+          </div>
+          <div class="item">
+            <h3>Performance</h3>
+            <ul>
+              <li>Only the first complete-gallery image loads eagerly.</li>
+              <li>Remaining images use native lazy loading.</li>
+              <li>Off-screen chapters defer rendering with <code>content-visibility</code>.</li>
+              <li>Responsive sources prevent mobile devices from downloading desktop masters.</li>
+              <li>Every public image is WebP and checked against delivery-size budgets.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">07 · Search and AI-discovery foundations</p>
+        <h2>The foundations are built now; deliberate discovery remains switched off.</h2>
+        <ul>
+          <li>Property-specific page title and meta description.</li>
+          <li>Consistent Molonta Heritage Estate identity and location language.</li>
+          <li>Semantic headings and crawlable traveler information.</li>
+          <li>Expanded practical FAQ content with <code>FAQPage</code> structured data.</li>
+          <li>Property schema, offers, services, image information, and gallery <code>ImageGallery</code> metadata.</li>
+          <li>Meaningful image descriptions instead of repeated “view N” alt text.</li>
+          <li>Canonical URLs controlled through the property registry.</li>
+          <li>Search-language coverage for waterfront luxury villa, Molunat, Dubrovnik proximity, direct sea access, infinity pool, family stewardship, amenities, and booking questions.</li>
+        </ul>
+        <div class="decision">
+          These foundations do not override the present hold. Search engines are explicitly told not to index the Molonta owner site until Juan authorizes the public-discovery launch.
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">08 · Inquiry, privacy, and operational safeguards</p>
+        <h2>The presentation can generate business without exposing unnecessary data.</h2>
+        <ul>
+          <li>Molonta is a registered inquiry property; unknown or hidden properties are rejected.</li>
+          <li>Inquiry storage no longer adds raw IP addresses or user-agent strings to the payload.</li>
+          <li>Operational logs no longer print customer or owner email addresses.</li>
+          <li>No authentication screen or access-code form is present on the presentation.</li>
+          <li>Owner routing remains configuration-driven.</li>
+          <li>Raw source images and the owner-supplied archive are excluded from public assets and Git.</li>
+          <li>Only curated, resized, metadata-stripped delivery derivatives enter the public asset tree.</li>
+          <li>No secrets were found in the committed change set.</li>
+        </ul>
+      </section>
+
+      <section>
+        <p class="eyebrow">09 · Verification record</p>
+        <h2>The exact committed and deployed state was tested before delivery.</h2>
+        <table>
+          <thead><tr><th>Check</th><th>Result</th><th>Evidence</th></tr></thead>
+          <tbody>
+            <tr><td>Owner-site validator</td><td class="pass">Passed</td><td>Registration, theme, noindex, sitemap, inquiry, gallery, schema, responsive images, layout, and privacy assertions.</td></tr>
+            <tr><td>Internationalization validator</td><td class="pass">Passed</td><td>All seven registered villas validated successfully.</td></tr>
+            <tr><td>Production build</td><td class="pass">Passed</td><td><code>npm run build</code> completed with the Vercel adapter.</td></tr>
+            <tr><td>Main page rendering</td><td class="pass">Passed</td><td>Local route returned successfully with 15 curated images and complete-gallery link.</td></tr>
+            <tr><td>Complete gallery rendering</td><td class="pass">Passed</td><td>104 image triggers and 9 gallery chapters rendered.</td></tr>
+            <tr><td>Sample gallery asset</td><td class="pass">Passed</td><td>Optimized WebP returned HTTP 200 from the local server.</td></tr>
+            <tr><td>Password/access code</td><td class="pass">Absent</td><td>No password form, access-code field, or private-preview label in the owner-site presentation source.</td></tr>
+            <tr><td>Robots meta</td><td class="pass">Protected</td><td>Main and gallery pages emit <code>noindex, nofollow</code>.</td></tr>
+            <tr><td>Sitemap discovery</td><td class="pass">Excluded</td><td>Molonta does not appear in the generated sitemap while in private-preview state.</td></tr>
+            <tr><td>Preview-host robots</td><td class="pass">Protected</td><td><code>User-agent: *</code> and <code>Disallow: /</code>.</td></tr>
+            <tr><td>Whitespace and secret scan</td><td class="pass">Passed</td><td>No committed credentials or private runtime values identified.</td></tr>
+            <tr><td>Production deployment</td><td class="pass">Ready</td><td><code>https://molonta-owner-preview.vercel.app</code> is assigned to the isolated production project.</td></tr>
+            <tr><td>Live main and gallery</td><td class="pass">HTTP 200</td><td>Both public routes and the responsive hero asset were fetched successfully after deployment.</td></tr>
+            <tr><td>Live sitemap</td><td class="pass">Empty</td><td>The production sitemap contains no property URLs while the site remains intentionally non-indexable.</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">The production build continues to report a pre-existing set of FAQ token-declaration warnings elsewhere in the shared engine. They do not fail the build and are not caused by the Molonta work.</p>
+      </section>
+
+      <section>
+        <p class="eyebrow">10 · Git delivery</p>
+        <h2>The implementation is preserved as an intentional feature series.</h2>
+        <div class="commit">
+          <strong>Branch</strong><br />
+          <code>feature/owner-sites-product-v2</code><br /><br />
+          <strong>Commits</strong><br />
+          <code>da0ab49 feat(owner-sites): add Molonta showcase and complete gallery</code><br />
+          <code>835bb0a docs(owner-sites): record Molonta delivery report</code><br />
+          <code>c913cd1 fix(owner-sites): gate payment action links</code><br />
+          <code>01fe2a2 feat(owner-sites): route Molonta inquiries through LTP</code><br />
+          <code>07aeff0 fix(owner-sites): keep private sitemaps empty</code>
+        </div>
+        <p style="margin-top:18px">The commit contains the reusable owner-site architecture, Molonta content, complete gallery, responsive assets, discovery controls, privacy improvements, documentation, and automated validation. Generated Astro cache files were intentionally left out.</p>
+      </section>
+
+      <section>
+        <p class="eyebrow">11 · Current status and next action</p>
+        <h2>Committed, pushed, deployed, and verified.</h2>
+        <p>The feature branch is synchronized with GitHub and the owner showcase is live through a dedicated Vercel production project at <code>https://molonta-owner-preview.vercel.app</code>. It is open by URL without authentication while remaining deliberately excluded from search discovery.</p>
+        <ol>
+          <li>Load the main showcase and complete gallery without authentication.</li>
+          <li>Confirm both pages emit <code>noindex, nofollow</code>.</li>
+          <li>Confirm the preview host returns <code>Disallow: /</code>.</li>
+          <li>Confirm Molonta remains absent from the sitemap.</li>
+          <li>The inquiry form routes through the existing LoveThisPlace production inquiry pipeline with Molonta-specific campaign attribution.</li>
+          <li>A real labeled inquiry was intentionally not submitted during deployment because that would create an external email and production record.</li>
+          <li>The stable URL can now be shared and used for measured rental promotion.</li>
+        </ol>
+        <div class="decision">
+          <strong>Definition of the present finish line:</strong> the owner site is visually complete, technically validated, commercially usable, committed, deployed, and configured for frictionless viewing without search indexing. The only optional operational check is one Juan-authorized labeled inquiry to confirm inbox receipt and stored attribution end to end.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Prepared 18 August 2026 · LoveThisPlace / Go Elite Global · Internal completion record · No secrets or owner-source archive included
+    </footer>
+  </article>
+</body>
+</html>

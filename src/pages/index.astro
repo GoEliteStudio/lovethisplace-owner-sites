@@ -16,10 +16,11 @@
 // Must be server-side rendered to read headers
 export const prerender = false;
 
-import { VILLA_LANGUAGES, DEFAULT_LANG, HOSTNAME_SLUG_MAP } from '../config/i18n';
+import { VILLA_LANGUAGES, DEFAULT_LANG, HOSTNAME_SLUG_MAP, getVillaBySlug, getVillaPublicPath } from '../config/i18n';
+import { getRequestHostname, proxyInternalOwnerRoute } from '../lib/ownerSiteRouting';
 
 // Step 1: Identify which villa site this is
-const hostname = Astro.request.headers.get('host') || '';
+const hostname = getRequestHostname(Astro.request);
 const envSlug = import.meta.env.VILLA_SLUG as string | undefined;
 
 // Check if hostname matches a known villa
@@ -43,8 +44,14 @@ if (!matchedSlug) {
     targetLang = preferredLang;
   }
 
-  // Step 5: Execute permanent redirect (301)
-  const targetUrl = `/villas/${matchedSlug}/${targetLang}/`;
+  // Step 5: Keep root-canonical owner sites on their clean public URL.
+  const villaConfig = getVillaBySlug(matchedSlug);
+  const internalTarget = '/villas/' + matchedSlug + '/' + targetLang + '/';
+  if (villaConfig?.rootCanonical) {
+    return proxyInternalOwnerRoute(Astro.request, internalTarget);
+  }
+
+  const targetUrl = villaConfig ? getVillaPublicPath(villaConfig, targetLang) : internalTarget;
   return Astro.redirect(targetUrl, 301);
 }
 ---

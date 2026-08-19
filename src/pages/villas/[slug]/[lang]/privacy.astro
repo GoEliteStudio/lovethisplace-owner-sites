@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import { VILLA_LANGUAGES, getVillaBySlug } from '../../../../config/i18n';
+import { VILLA_LANGUAGES, getVillaBySlug, getVillaCanonicalUrl, getVillaPublicPath } from '../../../../config/i18n';
 import { getUIStrings } from '../../../../config/uiStrings';
 import { buildAuxPageSchema } from '../../../../lib/schema';
 
@@ -33,8 +33,8 @@ const ui = getUIStrings(lang);
 const privacyUI = ui.privacy;
 
 // Villa-specific paths
-const villaBasePath = `/villas/${slug}`;
-const langBasePath = `${villaBasePath}/${lang}`;
+const routeVillaConfig = getVillaBySlug(slug);
+const langBasePath = routeVillaConfig ? getVillaPublicPath(routeVillaConfig, lang).replace(/\/$/, '') : `/villas/${slug}/${lang}`;
 
 // Header navigation
 const navLinks = ui.header.navigation.map((link: { label: string; href: string }) => ({
@@ -78,8 +78,8 @@ const description = privacyUI.intro.replace('{villaName}', villa.name);
 
 // Build schema for SEO
 const villaConfig = getVillaBySlug(slug);
-const siteBase = villaConfig?.domain ? `https://${villaConfig.domain}` : Astro.url.origin;
-const canonical = `${siteBase}/villas/${slug}/${lang}/privacy`;
+const siteBase = villaConfig?.canonicalOrigin || Astro.url.origin;
+const canonical = villaConfig ? getVillaCanonicalUrl(villaConfig, lang, 'privacy') : Astro.url.toString();
 const localeMap: Record<string, string> = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
 
 const jsonLd = buildAuxPageSchema({
@@ -99,7 +99,7 @@ const jsonLd = buildAuxPageSchema({
   description={description} 
   canonical={canonical}
   villaName={villa.name}
-  homeUrl={langBasePath}
+  homeUrl={langBasePath || '/'}
   navLinks={navLinks}
   navCtaLabel={navCtaLabel}
   navCtaHref={`${langBasePath}/contact`}

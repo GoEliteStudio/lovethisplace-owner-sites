@@ -1,5 +1,6 @@
 import { getServicesConfig } from '../config/services';
 
+
 type BuildSchemaInput = {
   villa: any;
   slug: string;
@@ -234,7 +235,7 @@ export function buildSchemaGraph(input: BuildSchemaInput) {
 // Auxiliary Page Schema (for contact, rates, terms, privacy, about pages)
 // ============================================================================
 
-type AuxPageType = 'contact' | 'rates' | 'terms' | 'privacy' | 'about' | 'thank-you';
+type AuxPageType = 'contact' | 'rates' | 'terms' | 'privacy' | 'about' | 'gallery' | 'thank-you';
 
 type BuildAuxPageSchemaInput = {
   pageType: AuxPageType;
@@ -296,13 +297,18 @@ export function buildAuxPageSchema(input: BuildAuxPageSchemaInput) {
     terms: { en: 'Terms & Conditions', es: 'Términos y Condiciones', fr: 'Conditions Générales' },
     privacy: { en: 'Privacy Policy', es: 'Política de Privacidad', fr: 'Politique de Confidentialité' },
     about: { en: 'About', es: 'Acerca de', fr: 'À propos' },
-    'thank-you': { en: 'Thank You', es: 'Gracias', fr: 'Merci' }
+    'thank-you': { en: 'Thank You', es: 'Gracias', fr: 'Merci' },
+    gallery: { en: 'Complete Gallery', es: 'Galeria Completa', fr: 'Galerie Complete' },
   };
 
   const pageLabel = pageLabels[pageType]?.[lang] || pageLabels[pageType]?.en || pageType;
 
   // WebPage (with ContactPage for contact page)
-  const webPageType = pageType === 'contact' ? ['WebPage', 'ContactPage'] : 'WebPage';
+  const webPageType = pageType === 'contact'
+    ? ['WebPage', 'ContactPage']
+    : pageType === 'gallery'
+      ? ['WebPage', 'CollectionPage', 'ImageGallery']
+      : 'WebPage';
   const webPage = {
     '@context': 'https://schema.org',
     '@type': webPageType,

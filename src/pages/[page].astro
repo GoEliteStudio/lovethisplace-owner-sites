@@ -1,0 +1,17 @@
+---
+import { getVillaByHostname } from '../config/i18n';
+import { getRequestHostname, proxyInternalOwnerRoute } from '../lib/ownerSiteRouting';
+
+export const prerender = false;
+
+const hostname = getRequestHostname(Astro.request);
+const page = Astro.params.page || '';
+const villa = getVillaByHostname(hostname);
+
+if (!villa?.rootCanonical || !villa.auxPages.includes(page)) {
+  return new Response('Not found', { status: 404 });
+}
+
+const internalTarget = `/villas/${villa.slug}/${villa.defaultLang}/${page}/`;
+return proxyInternalOwnerRoute(Astro.request, internalTarget);
+---

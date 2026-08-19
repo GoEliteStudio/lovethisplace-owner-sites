@@ -1,0 +1,516 @@
+---
+import InquiryForm from './InquiryForm.astro';
+
+interface Props {
+  villa: any;
+  slug: string;
+  lang: string;
+  completeGalleryHref?: string;
+  privacyHref?: string;
+}
+
+const {
+  villa,
+  slug,
+  lang,
+  completeGalleryHref = `/villas/${slug}/${lang}/gallery/`,
+  privacyHref,
+} = Astro.props;
+const images = Array.isArray(villa.images) ? villa.images : [];
+const completeGallery = villa.completeGallery || { imageCount: images.length, chapterCount: 1 };
+const storyParagraphs = String(villa.content?.overview || '').split(/\n\s*\n/).filter(Boolean);
+const facts = villa.content?.signatureFacts || [];
+const included = villa.content?.included || [];
+const addOns = villa.content?.addOns || [];
+const bookingNotes = villa.content?.bookingNotes || [];
+const faqs = villa.content?.faq || [];
+const rates = villa.seasons || [];
+const galleryPreviewIndexes = [1, 3, 8, 6, 5].filter((index) => images[index]);
+const galleryPreview = galleryPreviewIndexes.map((galleryIndex) => ({
+  ...images[galleryIndex],
+  galleryIndex
+}));
+
+const variant = (src: string, width: number) => src.replace(/\.webp$/i, `-${width}.webp`);
+const srcset = (src: string) => [480, 768, 1024, 1280, 1600]
+  .map((width) => `${variant(src, width)} ${width}w`)
+  .join(', ');
+---
+
+<main class="heritage-site" id="overview">
+  <section class="heritage-hero" aria-labelledby="property-title">
+    <picture class="heritage-hero__media">
+      <source media="(max-width: 720px)" srcset={variant(images[0].src, 768)} />
+      <img
+        src={variant(images[0].src, 1600)}
+        srcset={srcset(images[0].src)}
+        sizes="100vw"
+        alt={images[0].alt}
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <div class="heritage-hero__scrim"></div>
+    <div class="heritage-hero__content">
+      <p class="eyebrow">{villa.hero.eyebrow}</p>
+      <h1 id="property-title">{villa.hero.title}</h1>
+      <p class="heritage-hero__subtitle">{villa.hero.subtitle}</p>
+      <div class="heritage-hero__actions">
+        <a href="#story" class="button button--light">{villa.hero.ctaText}</a>
+        <a href="#inquire" class="button button--ghost">Check availability</a>
+      </div>
+    </div>
+    <a class="heritage-hero__scroll" href="#story" aria-label="Continue to the estate story">
+      <span>Scroll</span><i aria-hidden="true"></i>
+    </a>
+  </section>
+
+  <section class="fact-ribbon" aria-label="Property facts">
+    {facts.map((fact: any) => (
+      <div class="fact-ribbon__item">
+        <strong>{fact.value}</strong>
+        <span>{fact.label}</span>
+      </div>
+    ))}
+  </section>
+
+  <section class="story section-shell" id="story">
+    <div class="section-marker"><span>01</span><i></i></div>
+    <div class="story__grid">
+      <div class="story__heading">
+        <p class="eyebrow eyebrow--ink">The experience</p>
+        <h2>{villa.headlines.overview}</h2>
+        <p class="story__lead">{villa.content.overviewLead}</p>
+      </div>
+      <div class="story__copy">
+        {storyParagraphs.map((paragraph: string) => <p>{paragraph}</p>)}
+        <blockquote>{villa.content.experienceStatement}</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="editorial-pair" aria-label="Molonta setting">
+    <figure class="editorial-pair__large">
+      <img src={variant(images[1].src, 1280)} srcset={srcset(images[1].src)} sizes="(max-width: 850px) 100vw, 64vw" alt={images[1].alt} loading="lazy" decoding="async" />
+      <figcaption>{images[1].caption}</figcaption>
+    </figure>
+    <figure class="editorial-pair__small">
+      <img src={variant(images[8].src, 768)} srcset={srcset(images[8].src)} sizes="(max-width: 850px) 100vw, 30vw" alt={images[8].alt} loading="lazy" decoding="async" />
+      <figcaption>{images[8].caption}</figcaption>
+    </figure>
+  </section>
+
+  <section class="stay section-shell" id="amenities">
+    <div class="section-marker"><span>02</span><i></i></div>
+    <header class="section-intro">
+      <p class="eyebrow eyebrow--ink">The stay</p>
+      <h2>Everything needed.<br />Nothing imposed.</h2>
+      <p>Molonta is fully private and personally supported. The essentials are included; the rest is shaped around the people who are actually coming.</p>
+    </header>
+    <div class="service-grid">
+      <article class="service-card service-card--light">
+        <span class="service-card__number">Included</span>
+        <ul>{included.map((item: string) => <li>{item}</li>)}</ul>
+      </article>
+      <article class="service-card service-card--dark">
+        <span class="service-card__number">Available on request</span>
+        <ul>{addOns.map((item: string) => <li>{item}</li>)}</ul>
+      </article>
+    </div>
+    <aside class="booking-note">
+      <span>Booking notes</span>
+      <ul>{bookingNotes.map((item: string) => <li>{item}</li>)}</ul>
+    </aside>
+  </section>
+
+  <section class="gallery section-shell" id="gallery">
+    <div class="section-marker"><span>03</span><i></i></div>
+    <header class="section-intro section-intro--row">
+      <div>
+        <p class="eyebrow eyebrow--ink">The estate</p>
+        <h2>From the terraces<br />to the water</h2>
+      </div>
+      <p>A curated introduction to the landscape, living spaces, shoreline and life around the estate.</p>
+    </header>
+    <div class="gallery-showcase">
+      {galleryPreview[0] && (
+        <button class="gallery-card gallery-card--feature" type="button" data-gallery-index={galleryPreview[0].galleryIndex} aria-label={`Open image ${galleryPreview[0].galleryIndex + 1}: ${galleryPreview[0].alt}`}>
+          <img src={variant(galleryPreview[0].src, 1280)} srcset={srcset(galleryPreview[0].src)} sizes="(max-width: 760px) 100vw, 92vw" alt={galleryPreview[0].alt} loading="lazy" decoding="async" />
+          <span class="gallery-card__caption">{galleryPreview[0].caption}</span>
+        </button>
+      )}
+      <div class="gallery-strip" aria-label="Selected views of Molonta Heritage Estate">
+        {galleryPreview.slice(1).map((image: any) => (
+          <button class="gallery-card gallery-card--support" type="button" data-gallery-index={image.galleryIndex} aria-label={`Open image ${image.galleryIndex + 1}: ${image.alt}`}>
+            <img src={variant(image.src, 768)} srcset={srcset(image.src)} sizes="(max-width: 560px) 82vw, (max-width: 900px) 50vw, 24vw" alt={image.alt} loading="lazy" decoding="async" />
+            <span class="gallery-card__caption">{image.caption}</span>
+          </button>
+        ))}
+      </div>
+      <div class="gallery-showcase__footer">
+        <p><strong>{completeGallery.imageCount}</strong> photographs across {completeGallery.chapterCount} chapters, from the family estate to the Adriatic shoreline.</p>
+        <a href={completeGalleryHref} class="gallery-open-all">Explore complete gallery <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="rates section-shell" id="rates">
+    <div class="section-marker"><span>04</span><i></i></div>
+    <header class="section-intro section-intro--row">
+      <div>
+        <p class="eyebrow eyebrow--ink">2027 seasonal rates</p>
+        <h2>A clear starting point</h2>
+      </div>
+      <p>Owner-supplied rates are shown before any optional services. Every booking is confirmed personally and in writing.</p>
+    </header>
+    <div class="rate-grid">
+      {rates.map((rate: any) => (
+        <article class="rate-card">
+          <span>{rate.label}</span>
+          <strong>{rate.priceDisplay.split(' · ')[0]}</strong>
+          <p>{rate.priceDisplay.split(' · ')[1]}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="details section-shell" id="details">
+    <div class="section-marker"><span>05</span><i></i></div>
+    <div class="details__grid">
+      <div>
+        <p class="eyebrow eyebrow--ink">Sleeping & practical details</p>
+        <h2>Four private suites.<br />One shared estate.</h2>
+        <p>Molonta sleeps up to eight guests across four air-conditioned double bedrooms. Each has its own private en-suite shower bathroom, giving every pair privacy while keeping the group together.</p>
+      </div>
+      <div class="detail-summary">
+        <p class="eyebrow eyebrow--ink">At a glance</p>
+        <div class="detail-summary__facts" aria-label="Sleeping arrangement">
+          <div><strong>4</strong><span>double bedrooms</span></div>
+          <div><strong>4</strong><span>private en-suite bathrooms</span></div>
+          <div><strong>8</strong><span>guests maximum</span></div>
+          <div><strong>AC</strong><span>in every bedroom</span></div>
+        </div>
+        <div class="detail-list">
+          <p class="eyebrow eyebrow--ink">Planning notes</p>
+          {villa.content.practicalDetails.slice(2).map((detail: string) => <p class="detail-list__line">{detail}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="location-panel" id="location">
+    <div class="location-panel__media">
+      <iframe
+        src="https://www.google.com/maps?q=Molonta%20Heritage%20Estate%2C%20Molunat%206%2C%2020218%20Molunat%2C%20Croatia&output=embed"
+        title="Map showing Molonta Heritage Estate in Molunat, Croatia"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <div class="location-panel__copy">
+      <p class="eyebrow">Molunat · Konavle</p>
+      <h2>On the Adriatic.<br />Near Dubrovnik.</h2>
+      <p>A quiet base on Croatia's southern Adriatic coast. Exact directions are shared privately before travel.</p>
+      <dl>
+        <div><dt>Dubrovnik Airport</dt><dd>Approx. 20 minutes</dd></div>
+        <div><dt>Dubrovnik Old Town</dt><dd>Approx. 40 minutes</dd></div>
+        <div><dt>Sea access</dt><dd>Inside the estate</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="hosts section-shell" id="hosts">
+    <div class="hosts__legacy" aria-label="More than sixty years of family stewardship">
+      <span class="hosts__legacy-kicker">Family stewardship</span>
+      <strong>60+</strong>
+      <p>years above<br />the Adriatic</p>
+      <div class="hosts__legacy-line"></div>
+      <small>Villa Palma, 1966<br />Molonta Heritage Estate, today</small>
+    </div>
+    <div class="hosts__copy">
+      <p class="eyebrow eyebrow--ink">Your hosts</p>
+      <h2>{villa.content.hosts.names}</h2>
+      <span>{villa.content.hosts.subtitle}</span>
+      <p>{villa.content.hosts.bio}</p>
+      <ul>{villa.content.hosts.highlights.map((item: string) => <li>{item}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="faq section-shell" id="faq">
+    <div class="section-marker"><span>06</span><i></i></div>
+    <div class="faq__layout">
+      <header class="faq__intro">
+        <p class="eyebrow eyebrow--ink">Planning Molonta</p>
+        <h2>Questions, answered clearly</h2>
+        <p>Practical answers for guests comparing waterfront villas near Dubrovnik and planning a stay in Molunat.</p>
+        <ul class="faq__topics" aria-label="Frequently asked question topics">
+          <li>The stay</li><li>Location</li><li>Sea access</li><li>Services</li><li>Booking</li>
+        </ul>
+      </header>
+      <div class="faq-list">
+        {faqs.map((faq: any, index: number) => (
+          <details class="faq-item" open={index === 0}>
+            <summary>
+              <span class="faq-list__index">{String(index + 1).padStart(2, '0')}</span>
+              <span class="faq-list__question">{faq.q}</span>
+              <span class="faq-list__toggle" aria-hidden="true"></span>
+            </summary>
+            <p>{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="inquire section-shell" id="inquire">
+    <div class="inquire__intro">
+      <p class="eyebrow">A personal beginning</p>
+      <h2>Tell us how you imagine the stay.</h2>
+      <p>Share your dates and group. Availability, the applicable seasonal rate, inclusions and booking terms are confirmed in one written response before payment.</p>
+      <div class="inquire__promise"><strong>Personally reviewed</strong><span>No automated confirmation and no guessed availability.</span></div>
+    </div>
+    <div class="inquire__form"><InquiryForm slug={slug} lang={lang} privacyHref={privacyHref} /></div>
+  </section>
+</main>
+
+<dialog class="lightbox" id="heritage-lightbox" aria-label="Property image viewer">
+  <button type="button" class="lightbox__close" aria-label="Close image viewer">×</button>
+  <button type="button" class="lightbox__previous" aria-label="Previous image">&larr;</button>
+  <figure><img src={variant(images[0].src, 1600)} alt={images[0].alt} /><figcaption></figcaption></figure>
+  <output class="lightbox__counter" aria-live="polite"></output>
+  <button type="button" class="lightbox__next" aria-label="Next image">&rarr;</button>
+</dialog>
+
+<script define:vars={{ galleryImages: images }}>
+  const dialog = document.querySelector('#heritage-lightbox');
+  if (dialog instanceof HTMLDialogElement) {
+    const image = dialog.querySelector('img');
+    const caption = dialog.querySelector('figcaption');
+    const counter = dialog.querySelector('.lightbox__counter');
+    let current = 0;
+    const render = (index) => {
+      current = (index + galleryImages.length) % galleryImages.length;
+      const item = galleryImages[current];
+      if (image) { image.src = item.src; image.alt = item.alt; }
+      if (caption) caption.textContent = item.caption || item.alt;
+      if (counter) counter.textContent = `${current + 1} / ${galleryImages.length}`;
+    };
+    document.querySelectorAll('[data-gallery-index]').forEach((button) => {
+      button.addEventListener('click', () => { render(Number(button.dataset.galleryIndex)); dialog.showModal(); });
+    });
+    dialog.querySelector('.lightbox__close')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('.lightbox__previous')?.addEventListener('click', () => render(current - 1));
+    dialog.querySelector('.lightbox__next')?.addEventListener('click', () => render(current + 1));
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') render(current - 1);
+      if (event.key === 'ArrowRight') render(current + 1);
+    });
+  }
+</script>
+
+<style>
+  .heritage-site { --ink: #171512; --paper: #f4f0e8; --warm: #9a7652; --line: rgba(23, 21, 18, .16); background: #fff; color: var(--ink); }
+  .heritage-hero { min-height: min(880px, 92vh); position: relative; display: grid; align-items: end; overflow: hidden; background: #171512; color: #fff; }
+  .heritage-hero__media, .heritage-hero__media img, .heritage-hero__scrim { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .heritage-hero__media img { object-fit: cover; object-position: 50% 52%; }
+  .heritage-hero__scrim { background: linear-gradient(90deg, rgba(7, 8, 7, .78) 0%, rgba(7, 8, 7, .34) 54%, rgba(7, 8, 7, .05) 100%), linear-gradient(0deg, rgba(7, 8, 7, .55), transparent 55%); }
+  .heritage-hero__content { width: min(1380px, calc(100% - 64px)); margin: 0 auto; padding: 140px 0 105px; position: relative; z-index: 1; }
+  .eyebrow { margin: 0 0 22px; color: rgba(255,255,255,.82); font: 600 .74rem/1.3 var(--font-sans); letter-spacing: .25em; text-transform: uppercase; }
+  .eyebrow--ink { color: var(--warm); }
+  .heritage-hero h1 { max-width: 860px; margin: 0; font-size: clamp(4.1rem, 8.6vw, 9.1rem); font-weight: 400; line-height: .8; letter-spacing: -.055em; text-wrap: balance; }
+  .heritage-hero__subtitle { max-width: 650px; margin: 34px 0 0; color: rgba(255,255,255,.9); font: 400 clamp(1.12rem, 1.45vw, 1.45rem)/1.55 var(--font-serif); }
+  .heritage-hero__actions { display: flex; gap: 14px; margin-top: 38px; flex-wrap: wrap; }
+  .button { min-height: 50px; padding: 0 24px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.72); font: 600 .72rem/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; }
+  .button--light { background: #fff; color: var(--ink); }
+  .button--ghost { color: #fff; background: rgba(0,0,0,.12); backdrop-filter: blur(10px); }
+  .heritage-hero__scroll { position: absolute; z-index: 2; right: 32px; bottom: 42px; display: grid; justify-items: center; gap: 12px; color: rgba(255,255,255,.7); font: 600 .62rem/1 var(--font-sans); letter-spacing: .18em; text-transform: uppercase; }
+  .heritage-hero__scroll i { width: 1px; height: 52px; background: rgba(255,255,255,.58); }
+  .fact-ribbon { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--line); }
+  .fact-ribbon__item { min-height: 150px; padding: 36px 26px; display: grid; align-content: center; justify-items: center; border-right: 1px solid var(--line); text-align: center; }
+  .fact-ribbon__item:last-child { border-right: 0; }
+  .fact-ribbon strong { font: 400 clamp(2rem, 3vw, 3.4rem)/1 var(--font-serif); }
+  .fact-ribbon span { margin-top: 10px; color: #6e675f; font: 600 .68rem/1.2 var(--font-sans); letter-spacing: .13em; text-transform: uppercase; }
+  .section-shell { width: min(1420px, calc(100% - 64px)); margin: 0 auto; padding: clamp(74px, 6vw, 108px) 0; }
+  .section-marker { display: flex; gap: 18px; align-items: center; margin-bottom: 42px; color: var(--warm); font: 600 .68rem/1 var(--font-sans); letter-spacing: .16em; }
+  .section-marker i { width: 54px; height: 1px; background: var(--warm); }
+  .story__grid { display: grid; grid-template-columns: minmax(0, .88fr) minmax(460px, 1.12fr); gap: clamp(70px, 9vw, 160px); align-items: start; }
+  .story h2, .section-intro h2, .details h2, .hosts h2 { margin: 0; font-size: clamp(3.6rem, 6.2vw, 7rem); font-weight: 400; line-height: .9; letter-spacing: -.045em; }
+  .story__lead { max-width: 500px; margin-top: 34px; color: #4f4942; font: 400 1.25rem/1.55 var(--font-serif); }
+  .story__copy { padding-top: 58px; }
+  .story__copy > p { margin: 0 0 24px; color: #4d4842; font-size: 1rem; line-height: 1.9; }
+  .story__copy blockquote { margin: 44px 0 0; padding: 28px 0 0 30px; border-top: 1px solid var(--warm); border-left: 0; color: var(--ink); font: 400 clamp(1.6rem, 2.4vw, 2.45rem)/1.3 var(--font-serif); }
+  .editorial-pair { display: grid; grid-template-columns: 1.9fr 1fr; gap: 12px; padding: 0 12px; background: #fff; }
+  .editorial-pair figure { margin: 0; position: relative; overflow: hidden; background: #ddd; }
+  .editorial-pair__large { aspect-ratio: 1.55; }
+  .editorial-pair__small { aspect-ratio: .82; }
+  .editorial-pair img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
+  .editorial-pair figure:hover img { transform: scale(1.02); }
+  .editorial-pair figcaption { position: absolute; left: 22px; right: 22px; bottom: 18px; color: #fff; font: 500 .76rem/1.45 var(--font-sans); text-shadow: 0 2px 16px rgba(0,0,0,.75); }
+  .stay { padding-bottom: clamp(80px, 8vw, 125px); }
+  .section-intro { max-width: 760px; }
+  .section-intro > p:last-child { margin: 30px 0 0; max-width: 610px; color: #59534c; line-height: 1.8; }
+  .section-intro--row { max-width: none; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: 80px; align-items: end; }
+  .section-intro--row > p:last-child { margin: 0; }
+  .service-grid { margin-top: 70px; display: grid; grid-template-columns: 1fr 1fr; }
+  .service-card { padding: clamp(42px, 5vw, 70px); }
+  .service-card--light { background: var(--paper); }
+  .service-card--dark { background: var(--ink); color: #fff; }
+  .service-card__number { display: block; margin-bottom: 36px; color: var(--warm); font: 600 .7rem/1 var(--font-sans); letter-spacing: .17em; text-transform: uppercase; }
+  .service-card ul { list-style: none; padding: 0; margin: 0; }
+  .service-card li { padding: 16px 0; border-bottom: 1px solid currentColor; border-color: rgba(23,21,18,.14); font: 400 clamp(1.1rem, 1.55vw, 1.45rem)/1.35 var(--font-serif); }
+  .service-card--dark li { border-color: rgba(255,255,255,.16); }
+  .booking-note { padding: 28px 36px; border: 1px solid var(--line); border-top: 0; display: grid; grid-template-columns: 170px 1fr; gap: 30px; }
+  .booking-note > span { color: var(--warm); font: 600 .68rem/1.5 var(--font-sans); letter-spacing: .15em; text-transform: uppercase; }
+  .booking-note ul { margin: 0; padding-left: 18px; color: #565049; }
+  .gallery-showcase { margin-top: 58px; }
+  .gallery-card { width: 100%; position: relative; display: block; padding: 0; border: 0; overflow: hidden; background: #ddd; color: #fff; cursor: zoom-in; text-align: left; }
+  .gallery-card--feature { aspect-ratio: 16 / 9; }
+  .gallery-strip { margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .gallery-card--support { aspect-ratio: 16 / 10; }
+  .gallery-card::after { content: ''; position: absolute; inset: 42% 0 0; background: linear-gradient(0deg, rgba(9,8,7,.62), transparent); pointer-events: none; }
+  .gallery-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .65s ease, filter .65s ease; }
+  .gallery-card:hover img { transform: scale(1.018); filter: brightness(.94); }
+  .gallery-card__caption { position: absolute; z-index: 1; left: 20px; right: 20px; bottom: 17px; color: #fff; font: 500 .75rem/1.45 var(--font-sans); text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+  .gallery-showcase__footer { margin-top: 26px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+  .gallery-showcase__footer p { margin: 0; color: #6a635b; font-size: .9rem; }
+  .gallery-showcase__footer strong { color: var(--ink); font-family: var(--font-serif); font-size: 1.35rem; font-weight: 400; }
+  .gallery-open-all { padding: 12px 0; border: 0; border-bottom: 1px solid var(--warm); background: transparent; color: var(--ink); cursor: pointer; font: 600 .68rem/1 var(--font-sans); letter-spacing: .14em; text-decoration: none; text-transform: uppercase; }
+  .gallery-open-all span { margin-left: 10px; color: var(--warm); }
+  .rate-grid { margin-top: 68px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .rate-card { min-height: 240px; padding: 34px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; }
+  .rate-card > span { color: var(--warm); font: 600 .68rem/1.4 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; }
+  .rate-card strong { margin-top: auto; font: 400 clamp(1.8rem, 2.4vw, 2.8rem)/1 var(--font-serif); }
+  .rate-card p { margin: 11px 0 0; color: #625c55; font-size: .8rem; }
+  .details__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(70px, 9vw, 150px); }
+  .details__grid > div:first-child { position: sticky; top: 110px; align-self: start; }
+  .details__grid > div:first-child > p:last-child { max-width: 560px; margin-top: 30px; color: #58524a; line-height: 1.8; }
+  .detail-list article { padding: 0 0 25px; margin-bottom: 25px; border-bottom: 1px solid var(--line); }
+  .detail-summary > .eyebrow { margin-bottom: 20px; }
+  .detail-summary__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .detail-summary__facts div { min-height: 150px; padding: 26px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .detail-summary__facts strong { font: 400 clamp(2.6rem, 4vw, 4.4rem)/.9 var(--font-serif); letter-spacing: -.04em; }
+  .detail-summary__facts span { max-width: 170px; color: #5d574f; font-size: .76rem; line-height: 1.45; text-transform: uppercase; letter-spacing: .08em; }
+  .detail-summary .detail-list { margin-top: 54px; }
+  .detail-summary .detail-list > .eyebrow { margin-bottom: 10px; color: var(--ink); }
+  .detail-summary .detail-list__line { line-height: 1.6; }
+  .detail-list h3 { margin: 0 0 6px; font-size: 1.5rem; }
+  .detail-list p { margin: 0; color: #5d574f; }
+  .detail-list__line { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .location-panel { width: min(calc(100% - 64px), 1420px); min-height: 500px; margin-inline: auto; display: grid; grid-template-columns: 1.05fr .95fr; overflow: hidden; background: var(--ink); color: #fff; }
+  .location-panel__media iframe { width: 100%; height: 100%; min-height: 500px; display: block; border: 0; }
+  .location-panel__copy { padding: clamp(40px, 4vw, 64px); display: grid; align-content: center; }
+  .location-panel h2 { margin: 0; font-size: clamp(2.8rem, 3.2vw, 4rem); font-weight: 400; line-height: .94; }
+  .location-panel__copy > p:not(.eyebrow) { margin: 24px 0; color: rgba(255,255,255,.72); line-height: 1.7; }
+  .location-panel dl { margin: 0; }
+  .location-panel dl div { padding: 13px 0; display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid rgba(255,255,255,.15); }
+  .location-panel dt { color: rgba(255,255,255,.58); }
+  .location-panel dd { margin: 0; }
+  .hosts { display: grid; grid-template-columns: minmax(360px, .82fr) minmax(0, 1.18fr); gap: clamp(60px, 8vw, 128px); align-items: center; }
+  .hosts__legacy { min-height: 540px; padding: clamp(42px, 5vw, 70px); display: flex; flex-direction: column; background: radial-gradient(circle at 85% 10%, rgba(154,118,82,.22), transparent 36%), var(--ink); color: #fff; }
+  .hosts__legacy-kicker { color: #c7a985; font: 600 .67rem/1 var(--font-sans); letter-spacing: .18em; text-transform: uppercase; }
+  .hosts__legacy strong { margin-top: auto; font: 400 clamp(6.5rem, 11vw, 10rem)/.72 var(--font-serif); letter-spacing: -.06em; }
+  .hosts__legacy p { margin: 28px 0 0; color: rgba(255,255,255,.9); font: 400 clamp(1.85rem, 3vw, 3.25rem)/1.02 var(--font-serif); }
+  .hosts__legacy-line { width: 100%; height: 1px; margin: 42px 0 20px; background: rgba(255,255,255,.2); }
+  .hosts__legacy small { color: rgba(255,255,255,.58); font: 500 .72rem/1.6 var(--font-sans); letter-spacing: .08em; text-transform: uppercase; }
+  .hosts__copy > span { display: block; margin-top: 20px; color: var(--warm); font: 600 .7rem/1 var(--font-sans); letter-spacing: .15em; text-transform: uppercase; }
+  .hosts__copy > p:not(.eyebrow) { margin: 30px 0; color: #575149; line-height: 1.85; }
+  .hosts__copy ul { list-style: none; padding: 0; }
+  .hosts__copy li { padding: 13px 0; border-top: 1px solid var(--line); }
+  .faq__layout { display: grid; grid-template-columns: minmax(320px, .78fr) minmax(520px, 1.22fr); gap: clamp(70px, 9vw, 150px); align-items: start; }
+  .faq__intro { position: sticky; top: 110px; }
+  .faq__intro h2 { margin: 0; max-width: 620px; font-size: clamp(3.5rem, 5.3vw, 6.4rem); font-weight: 400; line-height: .9; letter-spacing: -.045em; }
+  .faq__intro > p:not(.eyebrow) { max-width: 480px; margin: 30px 0 0; color: #5b554e; line-height: 1.8; }
+  .faq__topics { margin: 38px 0 0; padding: 20px 0 0; display: flex; flex-wrap: wrap; gap: 10px 18px; border-top: 1px solid var(--line); list-style: none; }
+  .faq__topics li { color: #746b62; font: 600 .64rem/1 var(--font-sans); letter-spacing: .13em; text-transform: uppercase; }
+  .faq-list { width: 100%; max-width: 780px; border-top: 1px solid var(--line); }
+  .faq-list details { border-bottom: 1px solid var(--line); }
+  .faq-list summary { padding: 25px 0; cursor: pointer; list-style: none; display: grid; grid-template-columns: 38px minmax(0, 1fr) 22px; gap: 18px; align-items: center; font: 400 clamp(1.18rem, 1.45vw, 1.5rem)/1.35 var(--font-serif); }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list__index { align-self: start; padding-top: 5px; color: var(--warm); font: 600 .62rem/1 var(--font-sans); }
+  .faq-list__toggle { width: 18px; height: 18px; position: relative; }
+  .faq-list__toggle::before, .faq-list__toggle::after { content: ''; position: absolute; top: 8px; left: 2px; width: 14px; height: 1px; background: var(--ink); transition: transform .25s ease; }
+  .faq-list__toggle::after { transform: rotate(90deg); }
+  .faq-list details[open] .faq-list__toggle::after { transform: rotate(0); }
+  .faq-list details p { max-width: 650px; margin: 0 40px 30px 56px; color: #5b554e; line-height: 1.82; }
+  .inquire { width: 100%; max-width: none; margin-inline: 0; box-sizing: border-box; padding: clamp(80px, 10vw, 145px) max(32px, calc((100vw - 1420px) / 2)); display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(60px, 8vw, 130px); background: var(--ink); color: #fff; }
+  .inquire h2 { margin: 0; max-width: 560px; font-size: clamp(3.5rem, 5.8vw, 6.6rem); line-height: .88; }
+  .inquire__intro > p:not(.eyebrow) { max-width: 550px; margin-top: 30px; color: rgba(255,255,255,.7); line-height: 1.8; }
+  .inquire__promise { margin-top: 44px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.2); display: grid; gap: 5px; }
+  .inquire__promise strong { font-family: var(--font-serif); font-size: 1.3rem; }
+  .inquire__promise span { color: rgba(255,255,255,.58); font-size: .85rem; }
+  .inquire__form { background: #fff; color: var(--ink); padding: clamp(28px, 4vw, 54px); }
+  .inquire :global(.inquiry-form label) { color: #4d4842; }
+  .inquire :global(.inquiry-form input), .inquire :global(.inquiry-form textarea) { border-radius: 0; border-color: rgba(23,21,18,.22); }
+  .inquire :global(.btn-submit) { border-radius: 0; background: var(--ink); }
+  .lightbox { width: 100vw; height: 100vh; max-width: none; max-height: none; padding: 0; border: 0; background: rgba(8,8,7,.96); color: #fff; }
+  .lightbox::backdrop { background: rgba(0,0,0,.78); }
+  .lightbox[open] { display: grid; place-items: center; }
+  .lightbox figure { width: min(90vw, 1500px); height: min(84vh, 920px); margin: 0; padding: 36px; display: grid; grid-template-rows: minmax(0, 1fr) 54px; gap: 14px; background: #0e0d0c; box-sizing: border-box; }
+  .lightbox img { width: 100%; height: 100%; min-height: 0; object-fit: cover; object-position: center; background: #0e0d0c; }
+  .lightbox figcaption { margin: 0; overflow: hidden; color: rgba(255,255,255,.68); font-size: .8rem; line-height: 1.45; }
+  .lightbox__counter { position: fixed; left: 28px; bottom: 24px; color: rgba(255,255,255,.62); font: 600 .68rem/1 var(--font-sans); letter-spacing: .12em; }
+  .lightbox button { position: fixed; z-index: 2; border: 0; background: transparent; color: #fff; cursor: pointer; }
+  .lightbox__close { top: 22px; right: 28px; font-size: 2.2rem; }
+  .lightbox__previous, .lightbox__next { top: 50%; font-size: 2rem; }
+  .lightbox__previous { left: 28px; } .lightbox__next { right: 28px; }
+  @media (max-width: 900px) {
+    .heritage-hero { min-height: 760px; }
+    .heritage-hero__content, .section-shell { width: min(100% - 36px, 1420px); }
+    .heritage-hero__content { padding-bottom: 70px; }
+    .heritage-hero h1 { font-size: clamp(3.7rem, 16vw, 6.2rem); }
+    .heritage-hero__scroll { display: none; }
+    .fact-ribbon { grid-template-columns: repeat(2, 1fr); }
+    .fact-ribbon__item { min-height: 120px; border-bottom: 1px solid var(--line); }
+    .fact-ribbon__item:last-child { grid-column: span 2; }
+    .story__grid, .details__grid, .hosts, .section-intro--row, .inquire, .faq__layout { grid-template-columns: 1fr; gap: 48px; }
+    .story__copy { padding-top: 0; }
+    .editorial-pair, .location-panel { grid-template-columns: 1fr; }
+    .details__grid > div:first-child { position: static; }
+    .editorial-pair__large, .editorial-pair__small { aspect-ratio: 4 / 3; }
+    .service-grid { grid-template-columns: 1fr; }
+    .service-card { min-height: 0; }
+    .booking-note { grid-template-columns: 1fr; }
+    .gallery-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .faq__intro { position: static; max-width: 720px; }
+    .faq-list { max-width: none; }
+    .hosts__legacy { min-height: 480px; }
+    .rate-grid { grid-template-columns: repeat(2, 1fr); }
+    .location-panel { width: calc(100% - 36px); min-height: 0; }
+    .location-panel__media { height: 300px; min-height: 0; }
+    .location-panel__media iframe { min-height: 0; }
+    .hosts { padding-top: 78px; padding-bottom: 78px; }
+    .inquire { width: 100%; padding-left: 18px; padding-right: 18px; }
+  }
+  @media (max-width: 560px) {
+    .heritage-hero__content { width: calc(100% - 32px); }
+    .heritage-hero h1 { max-width: 100%; font-size: clamp(3.05rem, 13.4vw, 4.35rem); line-height: .84; letter-spacing: -.045em; text-wrap: wrap; }
+    .heritage-hero .eyebrow { max-width: 100%; font-size: .63rem; line-height: 1.55; letter-spacing: .17em; overflow-wrap: anywhere; }
+    .heritage-hero__scrim { background: linear-gradient(0deg, rgba(7,8,7,.82), rgba(7,8,7,.12) 80%); }
+    .heritage-hero__subtitle { margin-top: 24px; }
+    .fact-ribbon strong { font-size: 2.2rem; }
+    .section-shell { width: calc(100% - 32px); padding: 78px 0; }
+    .story h2, .section-intro h2, .details h2, .hosts h2 { font-size: 3.4rem; }
+    .gallery-card--feature { aspect-ratio: 4 / 3; }
+    .gallery-strip { grid-template-columns: 1fr; gap: 10px; }
+    .gallery-card--support { width: 100%; aspect-ratio: 4 / 3; }
+    .gallery-showcase__footer { align-items: flex-start; flex-direction: column; }
+    .gallery-card__caption { left: 16px; right: 16px; bottom: 14px; }
+    .rate-grid { grid-template-columns: 1fr; }
+    .rate-card { min-height: 190px; }
+    .location-panel { width: calc(100% - 32px); }
+    .location-panel__media { height: 220px; min-height: 0; }
+    .location-panel__copy { padding: 32px 24px; }
+    .location-panel h2 { font-size: 2.2rem; line-height: .96; }
+    .location-panel dl div { display: flex; font-size: .88rem; }
+    .faq-list summary { grid-template-columns: 30px minmax(0, 1fr) 20px; gap: 12px; }
+    .faq-list details p { margin: 0 20px 26px 42px; }
+    .faq__topics { gap: 10px 14px; }
+    .hosts__legacy { min-height: 430px; }
+    .lightbox figure { width: calc(100vw - 24px); height: min(78vh, 680px); padding: 12px; grid-template-rows: minmax(0, 1fr) 58px; gap: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .heritage-site *, .heritage-site *::before, .heritage-site *::after { scroll-behavior: auto !important; transition: none !important; }
+  }
+</style>
