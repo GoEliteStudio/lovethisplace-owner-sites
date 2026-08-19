@@ -2,98 +2,149 @@
 
 ## Product decision
 
-The Villa Engine now supports a second commercial product alongside the LoveThisPlace storefront:
+LoveThisPlace supports two complementary products:
 
-1. **LoveThisPlace storefront**: platform-led discovery, curated marketplace context, and LoveThisPlace/Go Elite routing.
-2. **Independent owner site**: a property-branded canonical website that can live on the owner's own domain and work beside every booking channel.
+1. **LoveThisPlace storefront**: platform-led discovery, LoveThisPlace identity, approved Go Elite Global operating context, and attributable inquiries.
+2. **Independent owner site**: a property-branded website on a dedicated domain that gives the property a durable home on the open web.
 
-These products share verified property facts and optimized media, but they do not share identity, canonical URLs, analytics, or deployment by accident.
+These products may share verified facts and approved optimized media. They must not share identity, canonical URLs, analytics, credentials, deployment configuration, or commercial terms by accident.
+
+## Commercial purpose
+
+The storefront is not merely a listing and the independent site is not merely a brochure.
+
+Together they can provide:
+
+- a durable property identity beyond any single booking platform;
+- direct inquiry and client-relationship ownership;
+- transparent attribution of LoveThisPlace-introduced demand;
+- modern search and AI-discovery foundations;
+- a clear traveler journey from discovery to human confirmation;
+- a cleaner commercial structure around commission and responsibility.
+
+Fair tourism is the operating philosophy. The product must still solve a concrete owner problem and produce qualified traveler action.
 
 ## Two-site strategy
 
-A signed property may have both products at the same time because they serve different jobs:
+A signed property may use both products when their jobs are documented:
 
-- The LoveThisPlace storefront is the platform discovery surface. It carries LoveThisPlace identity, can be indexed, and introduces travelers through the established LoveThisPlace inquiry pipeline.
-- The independent owner site is the property's own full presentation. It carries the property's identity and can later become its canonical public website on a clean dedicated domain.
+- The LoveThisPlace storefront is the platform discovery surface and may be indexed first.
+- The independent owner site is the full property presentation and may remain `private-preview` until its launch gate passes.
 
-Running both is not accidental duplication. While the owner site is still in `private-preview`, it remains open by URL but `noindex`, is excluded from sitemaps, and cannot compete with the indexed LoveThisPlace storefront. The dated Molonta decision and exact launch gate are recorded in `docs/MOLONTA_TWO_SITE_AND_INDEXING_DECISION_2026-08-19.md`.
+This is not accidental duplicate content while only one canonical discovery surface is indexable. Every dual-site property requires a dated decision stating which page is canonical, how inquiries are attributed, and what triggers public indexing of the independent site.
 
-## Design system
+## Themes
 
-The engine exposes explicit themes in the villa registry:
+- `classic`: information-dense, agency-style conversion flow. Best when rates, logistics, trust signals, and fast comparison dominate.
+- `heritage-signature`: cinematic, owner-led presentation. Best when place, history, hosts, land, and original photography create the commercial distinction.
 
-- `classic`: information-dense, agency-style conversion flow. Useful when rates, trust signals, availability, and operational details must be visible quickly.
-- `heritage-signature`: cinematic owner-site presentation with the same conversion essentials. It leads with place, history, hosts, and original photography without sacrificing rates, FAQs, practical details, or inquiry capture.
+Themes can differ visually, but neither may omit conversion essentials.
 
-Molonta is the first hybrid implementation. It combines Casa-style commercial density with a more distinctive editorial presentation.
+## Required product layers
 
-## What every owner site includes
+Every independent owner site includes:
 
-- Property-specific identity and navigation
-- Responsive hero and curated image narrative
-- Optional two-layer media: a tightly curated sales-page gallery plus a chaptered complete collection when the owner supplies enough approved photography
-- Verified specifications, inclusions, add-ons, rates, and booking notes
-- Owner/host story using approved facts
-- Practical details and location guidance
-- Crawlable traveler FAQs
-- Direct inquiry flow with human review
-- Property-specific title, description, canonical URL, Open Graph data, and structured data
-- Responsive, optimized WebP media
-- Accessibility and reduced-motion behavior
-- Explicit public/private publication state
+- property-specific identity and clean navigation;
+- responsive hero and curated image narrative;
+- optional chaptered complete gallery;
+- verified specifications, rates, inclusions, add-ons, and booking notes;
+- owner/host story using approved facts;
+- practical location and arrival guidance;
+- crawlable traveler FAQs;
+- direct inquiry flow with human review;
+- property-specific metadata, canonical URL, Open Graph data, and structured data;
+- responsive WebP media with stable dimensions;
+- accessibility and reduced-motion behavior;
+- explicit publication state;
+- dedicated deployment isolation.
+
+## World-class quality standard
+
+The result should feel commissioned for that property, not populated from a template. Reuse the engine, spacing system, media pipeline, validators, and components. Do not reuse another property's identity or copy.
+
+A finished page must have:
+
+- balanced desktop composition without accidental empty areas;
+- deliberate mobile composition, not a compressed desktop page;
+- consistent gallery frames and a stable lightbox;
+- distinctive but readable typography;
+- concise sections with no repeated facts;
+- concrete decision information where the traveler needs it;
+- clear operator/provider identity;
+- no broken navigation anchors;
+- no invented social proof;
+- no image added merely to fill space.
+
+## Media standard
+
+The main page is selective. A large approved archive belongs in a separate complete gallery when it adds confidence.
+
+Public media must be:
+
+- authorized and traceable to a private source record;
+- metadata-stripped;
+- delivered as responsive WebP derivatives;
+- dimensioned to prevent layout shift;
+- source-faithful, never gratuitously upscaled;
+- uniquely described with useful alt text;
+- lazy-loaded except for the true first/LCP image;
+- checked for exact and near duplicates.
 
 ## Search and AI-discovery standard
 
-No ranking or AI citation is guaranteed. The engine provides the foundations search engines and AI systems can evaluate:
+No ranking or AI citation is guaranteed. We provide foundations that search engines and AI systems can evaluate:
 
 - one consistent property entity and canonical origin;
-- accurate, useful, property-specific copy;
+- accurate property-specific language;
 - semantic headings and crawlable answers;
+- visible facts aligned with structured data;
+- useful destination and traveler information;
 - descriptive image alternatives;
-- consistent facts across visible copy and structured data;
 - fast responsive media;
-- useful location and traveler information;
-- no fabricated reviews, awards, rates, or affiliations.
+- genuine press and reviews described precisely;
+- internal links that serve a real user journey.
 
-The owner's existing site does not need to be linked or named as an authority. Source provenance and factual verification remain in private operating records.
+The owner's existing website does not need to be cited publicly. Source provenance remains in private operating records.
+
+## Inquiry and attribution standard
+
+Every inquiry must carry the correct property identity and source. The traveler receives a clear acknowledgment, and the approved operator receives the lead. Nothing is considered proven until one labeled end-to-end production test confirms the stored lead, operator notification, traveler receipt, and attribution.
+
+The platform may support personalized referral links, but referral attribution is not the same as a complete commission ledger. Do not claim automated reconciliation or payout capability unless it exists and has been tested.
 
 ## Publication states
 
-- `private-preview`: always noindex; excluded from sitemaps; preview URLs are not a substitute for authentication.
-- `public`: eligible for indexing only after the release gates below pass.
+- `private-preview`: open by approved URL, always `noindex`, excluded from sitemaps.
+- `public`: eligible for indexing only after the launch gate passes.
 - `hidden`: unavailable to discovery and inquiry routing.
 
-A public site requires an approved custom domain and canonical origin. Unknown hosts and preview hosts fail closed in `robots.txt`.
-
-Private preview is a temporary commercial state, not a permanent SEO strategy. Every owner site must have a dated decision that identifies the public-launch trigger.
+Private preview is temporary. Each property needs a dated launch or retirement decision.
 
 ## Public-release gates
 
-Do not publish merely because a page looks finished. Confirm:
+Do not publish because the design looks finished. Confirm:
 
-- written authorization to use the content and media;
-- final property identity and operator/provider roles;
-- verified rates, taxes, deposits, minimum stays, and cancellation terms;
+- authorization to use content and media;
 - signed commercial agreement;
-- correct legal, privacy, and traveler-facing terms;
-- approved owner and guest email routing;
-- durable rate limiting and origin validation for public inquiry endpoints;
-- production inquiry test with no secrets or private data exposed;
-- owner visual/content approval;
-- production canonical, sitemap, robots, analytics, and search-console checks.
-
-## Complete-gallery standard
-
-The main page remains editorial: it shows only the images needed to establish the property and support a decision. A substantial approved archive may also support a dedicated owner-branded gallery route. That route uses meaningful chapters, descriptive alt text, responsive WebP variants, stable image dimensions, lazy loading after the first image, and a contained full-screen viewer.
-
-Do not upscale small originals merely to hit a nominal breakpoint. Preserve the source-faithful largest rendition, keep raw originals out of the public directory, and validate every public derivative against the private approval record.
+- final property, provider, and operator identities;
+- verified rates, taxes, fees, deposits, minimum stays, and cancellation terms;
+- approved legal and privacy disclosures;
+- custom domain and canonical origin;
+- dedicated `VILLA_SLUG` deployment isolation;
+- approved email, analytics, Firebase, and payment environments;
+- production inquiry test;
+- owner approval when required;
+- Juan's explicit indexing approval.
 
 ## Technical source of truth
 
+- Portfolio state: `docs/PORTFOLIO_STATUS.md`
+- Operating workflow: `docs/OWNER_SITE_ONBOARDING_RUNBOOK.md`
 - Registry: `src/config/i18n.ts`
-- Property content: `src/content/villas/{slug}.{lang}.json`
-- Themes: `src/pages/villas/[slug]/[lang].astro`
+- Content: `src/content/villas/{slug}.{lang}.json`
+- Themes and routes: `src/pages/villas/[slug]/[lang].astro`
 - Heritage renderer: `src/components/HeritageVillaPage.astro`
 - Inquiry handler: `src/pages/api/inquire.ts`
-- Discovery boundaries: `src/pages/sitemap.xml.ts`, `src/pages/robots.txt.ts`, and `src/layouts/BaseLayout.astro`
-- Automated checks: `npm run validate:owner-sites`
+- Structured data: `src/lib/schema.ts`
+- Discovery boundaries: `src/pages/sitemap.xml.ts`, `src/pages/robots.txt.ts`, `src/layouts/BaseLayout.astro`
+- Validation: `scripts/validate-owner-sites.mjs`, `scripts/validate-build-isolation.mjs`, and `npm run check`

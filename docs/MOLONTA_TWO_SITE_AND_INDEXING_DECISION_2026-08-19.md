@@ -2,6 +2,8 @@
 
 Decision date: 2026-08-19
 
+Last verified: 2026-08-19
+
 ## Decision
 
 Molonta Heritage Estate has two complementary public-facing products with separate responsibilities.
@@ -59,4 +61,18 @@ After all six gates pass:
 
 ## Current status
 
-The indexing gate has not passed. The independent site must remain `noindex`. The LoveThisPlace storefront remains the live indexed discovery surface.
+The independent owner site is deployed from reviewed commit `5225c4d7dd49c7ed1d96660d67d12f0688cf43dc` to its dedicated Vercel project.
+
+Verified at `https://molonta-heritage-estate.vercel.app/`:
+
+- root, gallery, contact, rates, terms, and privacy resolve;
+- unrelated Casa Del Toro, Villa Kassandra, and Villa Orama routes return `404`;
+- the dedicated build uses `VILLA_SLUG=molonta-heritage-estate`;
+- private-preview metadata and Open Graph media resolve;
+- `noindex`, restrictive robots behavior, and exclusion from the public sitemap are active;
+- the fabricated Google-review fallback is absent; and
+- one labeled production inquiry reached the established workflow with the intended property and attribution.
+
+The custom hostname `molonta.lovethisplace.co` is assigned in Vercel but did not resolve publicly at the last verification. DNS must use the exact record shown by Vercel and be verified from the public internet before that URL is shared or made canonical.
+
+The indexing gate has not passed. The site must remain `noindex`. The LoveThisPlace storefront remains the indexed discovery surface. Prior approval of the presentation does not by itself approve indexing, legal terms, payment handling, or the custom-domain launch.

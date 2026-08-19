@@ -1,143 +1,95 @@
-# Villa Engine
+# LoveThisPlace Owner Sites
 
-Reusable engine for independent owner-branded property sites. It supports multiple visual themes, multilingual content, Firestore inquiries, staged payments, and controlled owner onboarding.
+Reusable engine for independent, owner-branded villa and yacht websites. It supports isolated per-property deployments, multiple visual themes, multilingual content, optimized media, structured data, inquiry routing, and controlled publication.
 
-This repository is not the LoveThisPlace marketplace and is not the Elite Cartagena website. Each public owner site must have an explicit identity, domain, canonical origin, routing configuration, and publication approval.
+This repository is not the LoveThisPlace marketplace and is not the Elite Cartagena website. A property may have both a LoveThisPlace storefront and an independent owner site, but their identity, canonical URL, analytics, deployment, and indexing state must remain explicit.
 
 ## Start here
 
-- Product architecture: `docs/OWNER_SITE_PRODUCT_V2.md`
-- Onboarding and release workflow: `docs/OWNER_SITE_ONBOARDING_RUNBOOK.md`
-- Existing platform reference: `docs/platform-documentation.md`
+Read these files in order before changing a property or deployment:
 
-Molonta currently exists as a private, noindex product demonstration. A preview URL is not access control and does not authorize public release.
+1. `docs/PORTFOLIO_STATUS.md` - which properties are active, retained, or retired.
+2. `docs/OWNER_SITE_PRODUCT_V2.md` - product boundaries and quality standard.
+3. `docs/OWNER_SITE_ONBOARDING_RUNBOOK.md` - canonical intake, build, release, and offboarding workflow.
+4. `docs/platform-documentation.md` - current technical architecture and deployment model.
+5. `MULTI-LANGUAGE-GUIDE.md` - language-specific implementation and QA.
 
-**Shared deployment project**: https://lovethisplace-sites.vercel.app/
+Property-specific decisions belong in dated documents such as `docs/MOLONTA_TWO_SITE_AND_INDEXING_DECISION_2026-08-19.md`. They do not override the canonical runbook unless the runbook is updated deliberately.
 
-## Features
+## Current commercial portfolio
 
-- **Multi-Villa Support**: 5 villas configured (Domaine des Montarels, Casa de la Muralla, Mount Zurich, Villa Kassandra, Villa Orama)
-- **Rental & Sale Listings**: Support for both short-term rentals and property sale listings
-- **Full i18n**: EN/ES/FR/EL/RU with localized content, emails, and UI
-- **Inquiry System**: Honeypot + timing gate protection, owner notifications
-- **Payment Flow**: Stripe Checkout with owner approve/decline workflow
-- **Email System**: Brevo SMTP with branded HTML templates
-- **SEO**: 8+ JSON-LD schemas per page (LodgingBusiness, FAQPage, OfferCatalog, etc.)
-- **Accessibility**: ARIA tabs, keyboard navigation, semantic HTML
+- Molonta Heritage Estate: active partner; LoveThisPlace storefront is public, independent owner site is shareable but remains `private-preview` and `noindex`.
+- Casa Del Toro: retained Go Elite showcase/inventory; also represented through LoveThisPlace.
+- Old speculative owner demos: retired. Do not rebuild, deploy, contact, or present them as active inventory. See `docs/PORTFOLIO_STATUS.md`.
 
-## Villas Configured
+## Non-negotiable deployment rule
 
-| Villa | Languages | Type | Images | Owner Email |
-|-------|-----------|------|--------|-------------|
-| Domaine des Montarels | EN, ES, FR | Rental | 80 | jc@elitecartagena.com |
-| Casa de la Muralla | EN, ES | Rental | 27 | reservations@casadelamuralla.com |
-| Mount Zurich | EN, ES | Rental | 40+ | — |
-| Villa Kassandra | EN, EL, RU | **For Sale** | 60+ | jc@elitecartagena.com |
-| Villa Orama | EN, EL | Rental | 40+ | — |
+Every dedicated owner-site Vercel project must set:
 
-## Dev Commands
+```text
+VILLA_SLUG=<registered-property-slug>
+```
+
+The production build and `scripts/validate-build-isolation.mjs` must prove that only that property's routes were generated.
+
+When `VILLA_SLUG` is absent on Vercel, the shared build generates public properties only. Private previews must never appear in a shared deployment. Locally, an unset value may still be used intentionally for shared development.
+
+## Standard commands
 
 ```powershell
-npm install                    # Install dependencies
-npm run dev                    # Start dev server (http://localhost:4321)
-npm run build                  # Build for production
-npm run preview                # Preview production build
-
-# Villa Management
-npm run villa:onboard -- --slug=villa-name --name="Villa Name" --owner-email=owner@email.com
-npm run villa:seed             # Seed/refresh Firestore data
-npm run validate               # Validate i18n content
-npm run validate:owner-sites   # Validate publication, media, identity, and Molonta invariants
+npm ci
+npm run validate
+npm run check
+npm run build
+npm run dev
 ```
 
-## Environment Variables
-
-Create `.env` file:
-
-```env
-# Brevo SMTP (required for emails)
-BREVO_SMTP_HOST=smtp-relay.brevo.com
-BREVO_SMTP_PORT=587
-BREVO_SMTP_USER=<brevo-user>
-BREVO_SMTP_PASS=<brevo-key>
-
-# Email Routing
-FROM_EMAIL=bookings@lovethisplace.co
-FROM_NAME=LoveThisPlace
-GOELITE_INBOX=your@email.com
-OWNER_FALLBACK_EMAIL=your@email.com
-
-# Firebase (required for Firestore)
-FIREBASE_PROJECT_ID=go-elite-studio
-FIREBASE_CLIENT_EMAIL=<service-account-email>
-FIREBASE_PRIVATE_KEY="<private-key>"
-
-# Stripe (required for payments)
-STRIPE_SECRET_KEY=sk_xxx
-STRIPE_WEBHOOK_SECRET=whsec_xxx
-
-# Security
-OWNER_ACTION_SECRET=<random-string>
-```
-
-## Adding a New Villa
-
-Use the CLI:
+Production-style isolated build:
 
 ```powershell
-npm run villa:onboard -- --slug=villa-serenity --name="Villa Serenity" --owner-email=owner@villa.com --langs=en,es --region=europe --currency=EUR
+$env:VILLA_SLUG='property-slug'
+$env:VERCEL='1'
+npm run build
 ```
 
-This will:
-1. Create Firestore owner & listing documents
-2. Add villa to `src/config/i18n.ts`
-3. Create content JSON templates
-4. Create image folder
+Do not deploy if the build, type check, owner-site validator, or isolation validator fails.
 
-Then:
-1. Add images to `public/images/villas/{slug}/`
-2. Fill in content JSON files
-3. Deploy
+## Core source files
 
-## Sale Listings (Property For Sale)
+- `src/config/i18n.ts` - registry, visibility, domains, languages, currencies, and deployment selection.
+- `src/content/villas/{slug}.{lang}.json` - property-specific content.
+- `src/pages/villas/[slug]/[lang].astro` - route and renderer selection.
+- `src/components/HeritageVillaPage.astro` - heritage-signature renderer.
+- `src/lib/schema.ts` - structured-data graph from verified content.
+- `src/pages/api/inquire.ts` - inquiry entry point.
+- `src/pages/robots.txt.ts` and `src/pages/sitemap.xml.ts` - discovery boundaries.
+- `scripts/validate-owner-sites.mjs` - product and content invariants.
+- `scripts/validate-build-isolation.mjs` - rendered-route isolation check.
 
-To configure a villa as a **sale listing** instead of a rental:
+## Publication states
 
-1. Add `"listingType": "sale"` to the villa JSON file(s):
+- `private-preview`: open only by its intended URL, always `noindex`, excluded from sitemaps.
+- `public`: indexable only after every commercial, legal, domain, inquiry, and QA gate passes.
+- `hidden`: unavailable to public discovery and inquiry routing.
 
-```json
-{
-  "slug": "villa-example",
-  "language": "en",
-  "listingType": "sale",
-  "name": "Villa Example – For Sale",
-  ...
-}
-```
+A preview URL is not authorization. A finished design is not authorization. Publication requires the release gates in the runbook.
 
-2. Update content for sale context:
-   - `hero.title`: Include "FOR SALE" prefix
-   - `hero.ctaText`: "View Investment Details"
-   - `content.practicalDetails`: Ownership type, zoning, documentation status
-   - `content.hosts`: Sales contact info
-   - `seasons`: Asking price instead of nightly rates
+## Security and privacy
 
-3. The UI will automatically show:
-   - Sale-specific trust bar ("YOUR PURCHASE GUARANTEES")
-   - Buyer-focused hosts section ("Acquisition & Due Diligence Contact")
-   - Legal/viewing bullets instead of concierge bullets
+- Never commit raw owner archives, credentials, private rates, guest information, or operating records.
+- Keep originals in the ignored private source area.
+- Publish only approved, resized, metadata-stripped derivatives.
+- Never invent reviews, awards, affiliations, rates, or owner identities.
+- Never test production inquiries with a real traveler without approval. Use one labeled test and reconcile it.
 
-**To revert to rental:** Remove `listingType` field or set to `null`.
+## Repository hygiene
 
-## Key Files
-
-- `src/config/i18n.ts` — Villa registry (languages, region, owner email)
-- `src/config/uiStrings.ts` — UI translations (EN/ES/FR/EL/RU) + sale-specific strings
-- `src/content/villas/*.json` — Villa content data
-- `src/pages/api/inquire.ts` — Inquiry form handler
-- `src/pages/api/owner-action.ts` — Approve/decline handler
-- `scripts/onboard-villa.mjs` — Villa onboarding CLI
+- Work from a clean branch or isolated worktree.
+- Do not combine unrelated properties or tasks in one commit.
+- Do not commit `.astro` build artifacts, `.vercel`, `.env*`, raw media, or local audit output.
+- Use a reviewed PR for changes to `main`.
+- Verify the actual public URL after deployment. Localhost and preview checks are not production evidence.
 
 ## License
 
-Proprietary — GoEliteStudio
+Proprietary - GoEliteStudio / Go-Elite LLC.

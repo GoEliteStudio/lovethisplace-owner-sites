@@ -1,131 +1,408 @@
-# Owner-Site Onboarding Runbook
+# Owner-Site and Storefront Onboarding Runbook
 
-Use this sequence for every independent villa or yacht site.
+This is the canonical operating procedure for every new villa or yacht. It exists to make the next property faster without sacrificing authorization, identity, design quality, privacy, search integrity, or deployment isolation.
 
-## 1. Commercial and identity intake
+## 0. Preflight and ownership
 
-Record the approved commercial model, the contracting parties, who markets the property, who confirms availability, who receives traveler funds, and who handles the guest. Do not infer these roles from a listing.
+Before touching code:
 
-Create the property as `private-preview`. Public indexing is never the default.
+1. Read `PORTFOLIO_STATUS.md`, `OWNER_SITE_PRODUCT_V2.md`, and this runbook.
+2. Confirm the repository and product boundary:
+   - LoveThisPlace storefront work belongs in the LoveThisPlace storefront repository.
+   - Independent property-site work belongs in this repository.
+   - Elite Cartagena work belongs in the Elite repository and requires Juan's explicit approval.
+3. Start from a clean branch or isolated worktree.
+4. Record the task type and risk. Deployment, email, payments, analytics, indexing, privacy, and legal identity are high risk.
+5. Do not run two modifying agents or processes against the same repository.
 
-## 2. Secure owner materials immediately
+One property, one branch, one commercial decision record, and one reviewed PR.
 
-Download expiring owner transfers the day they arrive. Keep originals in the private source area, record the archive hash and authorization boundary, and never copy the source archive into public assets or Git.
+## 1. Qualify the commercial relationship
 
-Only curated, resized, metadata-stripped derivatives enter `public/images/villas/{slug}/`.
+No code should imply a partnership that does not exist. Record:
 
-## 3. Build the factual matrix
+- property and owner/operator identity;
+- authorization to use images, copy, rates, and branding;
+- commercial model and commission;
+- whether a setup or annual fee applies;
+- who owns the traveler relationship;
+- who confirms availability and price;
+- who contracts with the traveler;
+- who collects funds;
+- who delivers the stay and handles issues;
+- cancellation, refund, chargeback, tax, and deposit responsibilities;
+- term, attribution window, and termination rules.
 
-Before writing copy, reconcile:
+Add the property to `PORTFOLIO_STATUS.md` only after Juan approves its status. New properties begin as `private-preview`.
 
-- official property name and any former name;
-- exact location and travel times;
-- capacity, bedrooms, beds, bathrooms, and en-suites;
-- land, waterfront, pool, and amenity measurements;
-- inclusions and optional services;
-- rates, currencies, date bands, minimum stays, taxes, fees, deposit, and cancellation policy;
-- owner/host names and the verified family/property story;
-- press mentions and awards, described precisely.
+## 2. Decide the product before building
 
-Public sources may fill practical gaps. Never copy reseller prose and never create a new fact by averaging conflicting listings.
+Choose one or both:
 
-## 4. Choose the product and theme
+### LoveThisPlace storefront
 
-Use the LoveThisPlace storefront when the property is joining the platform's discovery experience.
+Use when the property joins LoveThisPlace discovery and inquiry routing. The storefront carries LoveThisPlace platform identity and the approved Go Elite Global operating role.
 
-Use the independent owner site when the deliverable is a canonical property website on an owner-controlled or dedicated domain.
+### Independent owner site
 
-When both products exist, record their separate roles explicitly. The LoveThisPlace storefront remains the indexed platform-discovery page. The independent site remains open by URL but `noindex` until its legal, commercial, inquiry, domain, and approval gates pass. Do not share an engine path or a URL containing `preview`; assign a clean property domain and root presentation.
+Use when the property needs a full property-branded website on a dedicated domain. It may complement or eventually replace the owner's existing website.
 
-Select `classic` for a dense agency-led flow or `heritage-signature` for an editorial owner-led property. Both must retain conversion essentials.
+### Both products
 
-## 5. Create the private implementation
+Record the distinct jobs in a dated decision file:
 
-Add the registry entry with:
+- which page is indexed first;
+- which URL is canonical;
+- how inquiries are attributed;
+- whether the independent site is temporarily `noindex`;
+- what event changes that state.
 
-- explicit visibility;
-- explicit canonical origin;
-- clean root-domain presentation when the site is intended to become the property's standalone website;
+Never let two pages accidentally compete for the same canonical identity.
+
+## 3. Secure source materials immediately
+
+Owner transfers can expire. Download them the day they arrive.
+
+Store originals only in an ignored private source directory. Record:
+
+- archive filename and size;
+- receipt date and expiry date;
+- SHA-256 for the archive and important attachments;
+- file count and media types;
+- image dimensions;
+- authorization received;
+- restrictions or unanswered questions.
+
+Security rules:
+
+- reject unsafe archive paths before extraction;
+- never commit the archive or originals;
+- never expose private filenames, EXIF, credentials, rates, or owner correspondence;
+- only approved, resized, metadata-stripped derivatives enter `public/`;
+- do not use OneDrive unless Juan explicitly authorizes the exact folder.
+
+## 4. Build the factual source matrix
+
+Create one private factual record before writing copy. Reconcile:
+
+- canonical property name, former names, and reseller aliases;
+- location, coordinates, access, airport and destination times;
+- capacity, bedrooms, beds, bathrooms, en-suites, and accessibility;
+- land, coastline, beach/sea access, pool, and amenity measurements;
+- included services and optional services;
+- seasonal rates, currency, taxes, fees, deposits, minimum stays, and validity dates;
+- cancellation and refund policy;
+- owner/host names and verified story;
+- press coverage, awards, reviews, and their exact attribution;
+- inquiry, payment, and guest-service roles.
+
+Source rules:
+
+- owner-supplied written facts are primary;
+- official public pages may fill practical gaps;
+- reseller pages may corroborate but do not become authority on our public page;
+- never copy reseller prose;
+- never average conflicting facts;
+- label unresolved items internally and omit them publicly until verified;
+- never fabricate reviews or imply an award that was only editorial coverage.
+
+## 5. Create the implementation record
+
+For an independent owner site, add one registry entry in `src/config/i18n.ts` with:
+
+- unique stable `slug`;
+- languages and default language;
+- `private-preview` visibility;
+- dedicated domain and any approved aliases;
+- canonical origin and temporary share origin;
+- `rootCanonical` when clean root paths are required;
+- region and currency;
 - explicit theme;
-- supported languages;
-- currency and routing;
-- no public indexing.
+- owner/operator notification address;
+- auxiliary pages;
+- asset slug only when a documented migration requires it.
 
-Add structured content, optimized image derivatives, descriptive alt text, rates, details, FAQs, and an inquiry path. Do not invent testimonials to fill an empty section.
+Do not silently reuse another property's analytics, credentials, owner email, schema identity, rates, or commercial model.
 
-### Large approved photo archives
+For a LoveThisPlace storefront, create its record in the storefront repository and use the established storefront engine. Do not place storefront code in this repository.
 
-Preserve both media layers: curate the main sales page and build the complete gallery separately. Confirm chapter counts, duplicate removal, descriptive alt text, responsive WebP variants, lazy loading, stable lightbox geometry, and that every published derivative can be traced to the approved source archive.
+## 6. Design and conversion standard
 
-The complete gallery is optional; it should not make the main page longer or less decisive. When used, register it as an auxiliary page so a future public property can include it in discovery while a private preview remains excluded.
+Select the visual system intentionally:
 
-## 6. Verify locally
+- `classic`: denser commercial presentation for fast comparison and direct action.
+- `heritage-signature`: editorial owner-led presentation for properties where history, place, hosts, and photography are central.
 
-Run:
+Every finished property surface must still answer:
+
+- What is it?
+- Where is it?
+- Who is it for?
+- Why is it distinctive?
+- What does it include?
+- What does it cost or how is price confirmed?
+- Who handles the inquiry?
+- What happens next?
+
+Quality requirements:
+
+- no dead whitespace caused by mismatched columns or stacked section padding;
+- consistent image frames and stable aspect ratios;
+- no stretched, upscaled, or visibly degraded media;
+- clear mobile hierarchy at 390px;
+- keyboard-accessible menus, accordions, and lightbox;
+- reduced-motion support;
+- readable type and contrast;
+- one clear primary CTA per decision stage;
+- no decorative section that provides no traveler value;
+- no repeated specification paragraph where a fact strip already does the job.
+
+## 7. Media production standard
+
+Maintain two layers when the owner provides a large approved archive:
+
+1. Curated sales-page sequence: normally 12 to 20 exceptional images.
+2. Complete gallery: optional, chaptered, searchable by section, and separate from the main conversion flow.
+
+For each public image:
+
+- generate responsive WebP derivatives appropriate to its display size;
+- keep the source-faithful master within the established image budget;
+- declare width and height to prevent layout shift;
+- write unique, useful alt text based on what the image actually shows;
+- load only the true LCP/first image eagerly;
+- lazy-load off-screen media;
+- preserve composition in the lightbox;
+- remove exact and near duplicates;
+- exclude low-quality images even if that reduces the total count;
+- verify every derivative traces to an authorized source.
+
+Do not upscale a small source merely to satisfy a nominal breakpoint.
+
+## 8. Content, search, and structured-data standard
+
+Write for travelers first and machines second. Use the language real guests use naturally: property type, destination, nearby landmark, capacity, defining amenity, and direct-booking intent.
+
+Every page needs:
+
+- one consistent property entity;
+- useful title and meta description;
+- intentional canonical URL;
+- semantic headings;
+- crawlable practical answers and FAQs;
+- consistent visible facts and structured data;
+- original descriptions grounded in verified facts;
+- descriptive image alternatives;
+- relevant internal links only;
+- no artificial keyword repetition.
+
+Structured data must reflect visible, verified content. Reviews are emitted only from genuine testimonials with a quote and attribution. Empty or invented review arrays are prohibited.
+
+No ranking, rich result, or AI citation is guaranteed. Do not sell schema, FAQs, `llms.txt`, or any other tactic as a guarantee.
+
+## 9. Inquiry and commercial routing
+
+Before deployment, document and configure:
+
+- property identity sent with the lead;
+- operator notification recipient;
+- traveler receipt sender and reply-to;
+- source and campaign attribution;
+- rate limiting and origin validation;
+- privacy consent;
+- minimum stay and date validation;
+- whether price is fixed, seasonal, or request-only;
+- human review before any payment or confirmation.
+
+Never assume a form works because it renders. The release requires one labeled end-to-end test after deployment. Confirm:
+
+- form success state;
+- stored lead ID;
+- property slug and source attribution;
+- operator email;
+- traveler receipt;
+- no duplicate or unintended email;
+- no secrets or private data in browser events.
+
+Do not repeat a production test after it passes unless the route or environment changes.
+
+## 10. Local verification
+
+Install from the lockfile and run the full gates:
 
 ```powershell
+npm ci
 npm run validate
-npm run build
-npm run dev
+npm run check
 ```
 
-For every isolated production owner-site project, set `VILLA_SLUG` to the property's registered slug. The build must pass `validate-build-isolation.mjs`, which proves that no other property's prerendered route exists in that deployment. A policy saying engine URLs should not be shared is not an access control.
+Run the production-style isolated build:
 
-Dedicated Vercel owner-site projects must set `VILLA_SLUG`. When it is absent, the shared Vercel build generates public villas only, and the post-build validator fails if any private-preview route appears. An unset value remains available locally for intentional shared development.
+```powershell
+$env:VILLA_SLUG='property-slug'
+$env:VERCEL='1'
+npm run build
+```
+
+The build must end with:
+
+```text
+[build-isolation] PASS: only property-slug was generated.
+```
 
 Review at minimum:
 
-- desktop 1440px;
-- mobile 390px;
-- keyboard navigation;
-- reduced motion;
+- desktop 1440px and a common laptop viewport;
+- mobile 390px and landscape mobile;
+- navigation anchors;
+- sticky sections and their release points;
+- all gallery chapters and lightbox controls;
+- no broken `srcset` candidates;
 - no horizontal overflow;
-- image loading and lightbox behavior;
-- form labels and error states;
-- metadata, canonical, noindex, and structured data;
-- sitemap and robots behavior;
-- no private source files, secrets, or personal operating data in the build.
+- forms, errors, consent, and thank-you state;
+- canonical, Open Graph, robots, sitemap, and structured data;
+- no raw sources or internal notes in output;
+- no other property's routes in the generated deployment.
 
-## 7. Owner review
+## 11. Owner review and authorization
 
-Send a private preview only after internal QA. Ask the owner to approve:
+Send the clean share URL, not an engine path. The owner reviews:
 
-- name, story, photos, captions, and amenities;
-- rates, inclusions, fees, deposit, and cancellation terms;
-- inquiry and booking flow;
-- operator/provider identity;
+- property identity and story;
+- facts, images, and captions;
+- rates and terms;
+- inclusions and add-ons;
+- inquiry and booking roles;
+- legal and privacy identity;
 - publication domain.
 
-Track corrections as facts, commercial decisions, or design preferences. Do not silently make commercial changes.
+Classify corrections as factual, commercial, legal, or aesthetic. Factual and commercial changes require written confirmation. Do not let owner review silently change the agreed business model.
 
-## 8. Public-release preparation
+## 12. Dedicated Vercel project
 
-Before changing visibility to `public`:
+Each independent property site receives one dedicated Vercel project. Configure:
 
-- complete the signed agreement;
-- obtain legal entity and signatory details;
-- finish privacy, terms, and traveler disclosures;
-- configure the production domain and canonical origin;
-- configure approved email, Firebase, analytics, and payment environments;
-- add durable abuse protection and origin validation;
-- perform one labeled end-to-end inquiry test;
-- receive explicit owner and Juan approval.
+- repository and reviewed branch/commit;
+- `VILLA_SLUG=<property-slug>` in every environment that builds the owner site;
+- approved runtime secrets and public configuration;
+- dedicated production domain;
+- preview/deployment protection consistent with the sharing decision;
+- Node version compatible with the repository;
+- no secrets copied from another property without an explicit shared-service decision.
 
-## 9. Release and verify the live artifact
+Run the remote build and read its output. It must prove only the intended slug was generated.
 
-Deploy the reviewed commit. Then fetch the actual public URL, not localhost or a preview alias, and verify:
+Shared Vercel builds without `VILLA_SLUG` generate public villas only. They are not a substitute for dedicated owner-site projects.
 
-- HTTP 200;
-- correct custom domain and canonical;
-- index/follow only on the approved public property;
-- sitemap contains the property and excludes owner-facing/transactional pages;
-- robots rules match the publication state;
-- responsive images resolve;
-- inquiry reaches the approved operator and client receipt works;
-- attribution survives through the lead record.
+## 13. DNS and domain activation
 
-Submit the canonical public URL to the relevant search console only after these checks pass.
+Use the exact DNS record requested by the Vercel Domains screen for that domain. Do not rely on a generic remembered value when Vercel provides property-specific instructions.
 
-## 10. Preserve the template
+Verify:
 
-After release, update this runbook with any new reusable lesson. Keep property-specific source records private. Reuse the engine and QA, not another property's copy, identity, analytics, credentials, or commercial terms.
+- DNS resolves publicly;
+- Vercel shows the domain as valid;
+- HTTPS is active;
+- both intended host variants behave consistently;
+- canonical and Open Graph URLs use a working origin;
+- obsolete share aliases point to the current production deployment.
+
+Until DNS resolves, use the approved Vercel share alias and keep metadata on a working origin.
+
+## 14. Publication and indexing gate
+
+`private-preview` remains `noindex` and excluded from the sitemap. Change to `public` only when all are true:
+
+- authorization and signed commercial agreement are complete;
+- identity and operating roles are final;
+- rates, taxes, fees, deposits, minimum stays, and cancellation terms are final;
+- privacy and traveler terms are final;
+- custom domain and canonical resolve correctly;
+- inquiry flow passed end to end;
+- analytics and consent behavior are approved;
+- owner approval is recorded when required;
+- Juan explicitly approves indexing.
+
+After changing visibility, rebuild and verify the actual custom domain for `index,follow`, canonical, robots, sitemap inclusion, structured data, and form routing. Submit only the canonical URL to search tools.
+
+## 15. Production verification
+
+Never report production success from localhost or a Vercel dashboard alone. Fetch the actual public artifact.
+
+Verify and record:
+
+- deployment ID and commit;
+- production alias points at that deployment;
+- expected pages return 200;
+- forbidden cross-property routes return 404;
+- metadata uses working URLs;
+- publication state matches robots and sitemap;
+- images return successfully;
+- no fabricated review or stale property identity appears;
+- inquiry attribution remains correct if the route changed.
+
+If the custom domain and share alias point to different deployments, fix the aliases before sharing.
+
+## 16. Source control and handoff
+
+Before committing:
+
+- inspect `git status` and `git diff --check`;
+- exclude `.astro`, `.vercel`, `.env*`, private archives, raw assets, and audit output;
+- keep the commit property-specific;
+- update `PORTFOLIO_STATUS.md` and any dated decision record;
+- update this runbook only for reusable lessons.
+
+Use a reviewed PR. Before merging, audit every Vercel project affected by shared engine changes. A correct code change can still create an outage if a project lacks its required environment configuration.
+
+The handoff must state:
+
+- what changed;
+- what was verified locally;
+- what was verified live;
+- deployment and PR links;
+- current indexing state;
+- remaining external actions;
+- any deliberately unmerged work and why.
+
+## 17. Rollback
+
+If production verification fails:
+
+1. stop sharing or promoting the affected URL;
+2. identify the last verified deployment;
+3. promote or redeploy that exact version;
+4. verify the public URL again;
+5. fix forward on a clean branch;
+6. document the failure and add a behavioral check that would have caught it.
+
+Do not use destructive Git resets on a shared or dirty worktree.
+
+## 18. Rejected, expired, or terminated properties
+
+When an owner declines or a relationship ends:
+
+- update `PORTFOLIO_STATUS.md` immediately;
+- remove the property from active registry and discovery surfaces;
+- disable inquiry/payment routing;
+- remove or redirect domains after checking active bookings;
+- stop using its materials in presentations;
+- retain or delete private sources according to authorization and need;
+- verify former URLs no longer expose an active commercial page.
+
+Do not maintain speculative owner sites indefinitely. The reusable value belongs in the engine and QA system, not in unauthorized public pages.
+
+## Definition of done
+
+A property is done only when:
+
+- commercial and identity roles are documented;
+- approved source materials are traceable and private;
+- content and media meet the quality standard;
+- local validation and type checks pass;
+- isolated build proves one property only;
+- dedicated deployment is Ready;
+- live URLs, metadata, discovery state, and forbidden routes are verified;
+- inquiry routing is proven when applicable;
+- portfolio and decision documentation are current;
+- the source commit is recoverable and professionally handed off.
