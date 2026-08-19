@@ -50,7 +50,8 @@ Rules:
 - Do not present these sites as active LoveThisPlace inventory.
 - Do not index, advertise, or create dedicated production projects for them.
 - Do not reuse their photography or copy for another prospect.
-- Remove them from active registry and public deployment surfaces in the next controlled cleanup release.
+- Registry state: disabled (`active: false`, `visibility: hidden`). Dedicated builds reject these slugs, shared builds omit them, and post-build validation rejects their routes or media.
+- Historical source files may remain temporarily for controlled retention, but they are not deployable inventory and must not be reactivated without a new written commercial decision.
 - Preserve only what is legally and operationally necessary; raw owner or prospect materials remain private and should be removed when retention is no longer justified.
 
 Git history is not a deployment source. A future agent must not restore a retired property merely because old files remain available.

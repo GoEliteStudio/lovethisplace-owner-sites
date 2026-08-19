@@ -290,9 +290,9 @@ Each independent property site receives one dedicated Vercel project. Configure:
 - Node version compatible with the repository;
 - no secrets copied from another property without an explicit shared-service decision.
 
-Run the remote build and read its output. It must prove only the intended slug was generated.
+Run the remote build and read its output. It must prove only the intended slug and its `assetSlug || slug` media directory were retained.
 
-Shared Vercel builds without `VILLA_SLUG` generate public villas only. They are not a substitute for dedicated owner-site projects.
+Shared Vercel builds without `VILLA_SLUG` generate active public villas only. If none exist, they produce a neutral shell with no property routes or property media. They are not a substitute for dedicated owner-site projects.
 
 ## 13. DNS and domain activation
 
@@ -389,6 +389,7 @@ When an owner declines or a relationship ends:
 - stop using its materials in presentations;
 - retain or delete private sources according to authorization and need;
 - verify former URLs no longer expose an active commercial page.
+- verify representative former property image URLs also return 404; HTML `noindex` does not protect standalone media files.
 
 Do not maintain speculative owner sites indefinitely. The reusable value belongs in the engine and QA system, not in unauthorized public pages.
 
@@ -400,7 +401,7 @@ A property is done only when:
 - approved source materials are traceable and private;
 - content and media meet the quality standard;
 - local validation and type checks pass;
-- isolated build proves one property only;
+- isolated build proves one property route and one allowed property-media directory only;
 - dedicated deployment is Ready;
 - live URLs, metadata, discovery state, and forbidden routes are verified;
 - inquiry routing is proven when applicable;

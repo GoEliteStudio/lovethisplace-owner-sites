@@ -43,7 +43,7 @@ The current commercial portfolio is recorded in `docs/PORTFOLIO_STATUS.md`. Reti
 
 ### Local development without `VILLA_SLUG`
 
-The engine can generate all registered properties for local comparison and maintenance.
+The engine generates active, non-hidden properties for local comparison and maintenance. Retired records remain excluded.
 
 ### Dedicated property deployment
 
@@ -51,11 +51,11 @@ Set `VILLA_SLUG={exact-registry-slug}`. Only that property may be generated. An 
 
 ### Shared Vercel build without `VILLA_SLUG`
 
-Only active properties with `visibility: 'public'` may be generated. If no public property exists, the build fails. A private preview must never appear because an environment variable was omitted.
+Only active properties with `visibility: 'public'` may be generated. If none exist, the deployment produces a neutral shell with no property routes or property media. A private preview must never appear because an environment variable was omitted.
 
 ### Post-build verification
 
-`npm run build` runs `scripts/validate-build-isolation.mjs` after Astro completes. The script inspects actual output. For a dedicated build it must find exactly the configured property and reject unexpected property routes.
+`npm run build` prunes the rendered output and then runs behavioral isolation validation. For a dedicated build, the output must contain exactly the configured property route and its `assetSlug || slug` media directory. For a shared build, the output must exactly match the active public allowlist, including the valid empty-shell case. Unexpected routes or property-media directories fail the build.
 
 The environment variable is necessary, but output inspection is the proof.
 
@@ -159,6 +159,7 @@ Record the commit, deployment identifier, hostname, configured slug, verificatio
 A release is incomplete until the actual public hostname proves:
 
 - intended routes return successfully and unrelated property routes return 404;
+- exact foreign property-media URLs return 404, while intended responsive image variants return successfully;
 - CSS, fonts, and image variants resolve;
 - mobile navigation, anchors, galleries, and forms work;
 - metadata and Open Graph media resolve;

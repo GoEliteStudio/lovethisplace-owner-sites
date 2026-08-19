@@ -78,8 +78,8 @@ export const VILLAS: VillaConfig[] = [
     ],
     updatedAt: '2025-12-03',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
-    active: true,
-    visibility: 'public',
+    active: false,
+    visibility: 'hidden',
     canonicalOrigin: 'https://www.domaine-desmontarels.com',
     theme: 'classic',
     region: 'europe',
@@ -94,8 +94,8 @@ export const VILLAS: VillaConfig[] = [
     altDomains: [],
     updatedAt: '2025-12-03',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
-    active: true,
-    visibility: 'private-preview',
+    active: false,
+    visibility: 'hidden',
     canonicalOrigin: 'https://villa-casa-muralla.vercel.app',
     theme: 'classic',
     region: 'latam',
@@ -110,8 +110,8 @@ export const VILLAS: VillaConfig[] = [
     altDomains: [],
     updatedAt: '2025-12-05',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
-    active: true,
-    visibility: 'private-preview',
+    active: false,
+    visibility: 'hidden',
     canonicalOrigin: 'https://mount-zurich.vercel.app',
     theme: 'classic',
     region: 'usa',
@@ -126,8 +126,8 @@ export const VILLAS: VillaConfig[] = [
     altDomains: [],
     updatedAt: '2025-12-06',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
-    active: true,
-    visibility: 'private-preview',
+    active: false,
+    visibility: 'hidden',
     canonicalOrigin: 'https://villa-kassandra.vercel.app',
     theme: 'classic',
     region: 'europe',
@@ -142,8 +142,8 @@ export const VILLAS: VillaConfig[] = [
     altDomains: [],
     updatedAt: '2025-12-07',
     auxPages: ['contact', 'rates', 'terms', 'privacy', 'about', 'thank-you'],
-    active: true,
-    visibility: 'private-preview',
+    active: false,
+    visibility: 'hidden',
     canonicalOrigin: 'https://villa-orama.vercel.app',
     theme: 'classic',
     region: 'europe',
@@ -202,9 +202,10 @@ export function getVillaBySlug(slug: string): VillaConfig | undefined {
  * Get villa config by hostname (checks domain + altDomains)
  */
 export function getVillaByHostname(hostname: string): VillaConfig | undefined {
-  return VILLAS.find(v => 
-    v.domain === hostname || 
-    v.altDomains?.includes(hostname)
+  return VILLAS.find(v =>
+    v.active &&
+    v.visibility !== 'hidden' &&
+    (v.domain === hostname || v.altDomains?.includes(hostname))
   );
 }
 
@@ -216,20 +217,18 @@ export function getBuildVillas(): VillaConfig[] {
   const configuredSlug = process.env.VILLA_SLUG?.trim();
   if (!configuredSlug) {
     if (process.env.VERCEL === '1') {
-      const publicVillas = VILLAS.filter(v => v.active && v.visibility === 'public');
-      if (publicVillas.length === 0) {
-        throw new Error('[build-isolation] Shared Vercel build has no public villas to generate.');
-      }
-
-      return publicVillas;
+      return VILLAS.filter(v => v.active && v.visibility === 'public');
     }
 
-    return VILLAS;
+    return VILLAS.filter(v => v.active && v.visibility !== 'hidden');
   }
 
   const villa = getVillaBySlug(configuredSlug);
   if (!villa) {
     throw new Error(`Unknown VILLA_SLUG: ${configuredSlug}`);
+  }
+  if (!villa.active || villa.visibility === 'hidden') {
+    throw new Error(`[build-isolation] VILLA_SLUG is retired or disabled: ${configuredSlug}`);
   }
 
   return [villa];
@@ -400,7 +399,7 @@ export const LANG_META: Record<string, { name: string; locale: string; dir: stri
  * @deprecated Use getVillaByHostname() instead - this is auto-generated from VILLAS
  */
 export const HOSTNAME_SLUG_MAP: Record<string, string> = Object.fromEntries(
-  VILLAS.flatMap(v => [
+  VILLAS.filter(v => v.active && v.visibility !== 'hidden').flatMap(v => [
     [v.domain, v.slug],
     ...(v.altDomains?.map(alt => [alt, v.slug]) || [])
   ])
