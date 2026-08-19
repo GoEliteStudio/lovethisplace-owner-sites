@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 
+// Keep src/config/i18n.ts self-contained. This lightweight loader intentionally
+// transpiles the registry as a data URL, so relative imports would not resolve.
 export async function loadVillaRegistry() {
   const sourcePath = path.resolve('src/config/i18n.ts');
   const source = fs.readFileSync(sourcePath, 'utf8');
