@@ -6,6 +6,10 @@ import path from 'node:path';
 const configuredSlug = process.env.VILLA_SLUG?.trim();
 
 if (!configuredSlug) {
+  if (process.env.VERCEL === '1') {
+    throw new Error('[build-isolation] VILLA_SLUG is required for every Vercel owner-site deployment.');
+  }
+
   console.log('[build-isolation] SKIP: VILLA_SLUG is not set; shared development build retained.');
   process.exit(0);
 }

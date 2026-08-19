@@ -214,7 +214,13 @@ export function getVillaByHostname(hostname: string): VillaConfig | undefined {
  */
 export function getBuildVillas(): VillaConfig[] {
   const configuredSlug = process.env.VILLA_SLUG?.trim();
-  if (!configuredSlug) return VILLAS;
+  if (!configuredSlug) {
+    if (process.env.VERCEL === '1') {
+      throw new Error('[build-isolation] VILLA_SLUG is required for every Vercel owner-site deployment.');
+    }
+
+    return VILLAS;
+  }
 
   const villa = getVillaBySlug(configuredSlug);
   if (!villa) {
