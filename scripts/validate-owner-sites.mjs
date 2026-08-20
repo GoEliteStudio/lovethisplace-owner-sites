@@ -146,6 +146,11 @@ assert(heritageGalleryPage.includes('content-visibility: auto'), 'off-screen gal
 assert(heritageGalleryPage.includes('position: sticky'), 'the complete gallery keeps its chapter index in reach');
 assert(heritageGalleryPage.includes('object-fit: contain'), 'the complete-gallery lightbox preserves every image composition');
 assert(heritageGalleryPage.includes('ArrowLeft') && heritageGalleryPage.includes('ArrowRight'), 'the complete-gallery lightbox supports keyboard navigation');
+assert(layout.includes('imagesrcset={lcpSrcset}') && layout.includes('imagesizes={lcpSizes}'), 'the base layout preloads responsive LCP candidates');
+assert(route.includes('lcpSrcset={heritageHeroSrcset}') && route.includes("lcpSizes={heritageHeroSrcset ? '100vw' : undefined}"), 'heritage pages pass responsive hero preload metadata');
+assert(heritagePage.includes('height: 100dvh'), 'the heritage lightbox uses the mobile dynamic viewport');
+assert(heritageGalleryPage.includes('height: 100dvh'), 'the complete-gallery lightbox uses the mobile dynamic viewport');
+assert(heritageGalleryPage.includes('display: block') && heritageGalleryPage.includes('position: absolute'), 'mobile complete-gallery navigation overlays the image instead of shrinking it');
 assert(schema.includes("'ImageGallery'"), 'gallery metadata identifies the page as an ImageGallery');
 assert(registry.includes("'about', 'gallery', 'thank-you'"), 'the complete gallery is registered for future public sitemap discovery');
 
