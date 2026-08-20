@@ -106,7 +106,6 @@ assert(heritagePage.includes('.details__grid > div:first-child { position: stick
 assert(heritagePage.includes('.lightbox[open] { display: grid; place-items: center; }'), 'the image viewer uses a stable centered frame');
 assert(heritagePage.includes('object-fit: cover; object-position: center;'), 'lightbox images share one aligned presentation frame');
 const forbiddenLightboxRuntime = [
-  'new Image(',
   'cachedImages',
   'renderRequest',
   'displayVariant',
@@ -151,6 +150,13 @@ assert(route.includes('lcpSrcset={heritageHeroSrcset}') && route.includes("lcpSi
 assert(heritagePage.includes('height: 100dvh'), 'the heritage lightbox uses the mobile dynamic viewport');
 assert(heritageGalleryPage.includes('height: 100dvh'), 'the complete-gallery lightbox uses the mobile dynamic viewport');
 assert(heritageGalleryPage.includes('display: block') && heritageGalleryPage.includes('position: absolute'), 'mobile complete-gallery navigation overlays the image instead of shrinking it');
+assert(heritageGalleryPage.includes('const neighbour = new Image();') && heritageGalleryPage.includes('warmAdjacent(shownIndex)'), 'complete-gallery neighbors warm without blocking navigation');
+assert(heritageGalleryPage.includes('calc(50vw - 20px)') && heritageGalleryPage.includes('calc(100vw - 32px)'), 'complete-gallery cards declare accurate responsive display sizes');
+const completeGalleryShowBlock = heritageGalleryPage.slice(
+  heritageGalleryPage.indexOf('const show ='),
+  heritageGalleryPage.indexOf("gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-open]')"),
+);
+assert(!/await|\.decode\(/.test(completeGalleryShowBlock), 'complete-gallery show remains synchronous and decode-free');
 assert(schema.includes("'ImageGallery'"), 'gallery metadata identifies the page as an ImageGallery');
 assert(registry.includes("'about', 'gallery', 'thank-you'"), 'the complete gallery is registered for future public sitemap discovery');
 
@@ -217,13 +223,15 @@ const completeAssetNames = new Set();
 let completeAssetsValid = true;
 for (const item of completeGallery.items) {
   const widths = item.variants.map((variant) => variant.width).sort((a, b) => a - b);
-  const [small, medium, large] = widths;
   if (
-    widths.length !== 3
-    || small !== 480
-    || medium !== 960
-    || large < 1000
-    || large > 1600
+    widths.length < 5
+    || widths[0] !== 480
+    || widths[1] !== 640
+    || widths[2] !== 768
+    || widths[3] !== 960
+    || widths.at(-1) < 1000
+    || widths.at(-1) > 2560
+    || new Set(widths).size !== widths.length
   ) completeAssetsValid = false;
   for (const variant of item.variants) {
     const filename = path.posix.basename(variant.src);
@@ -239,13 +247,16 @@ for (const item of completeGallery.items) {
       metadata.format !== 'webp'
       || metadata.width !== variant.width
       || metadata.height !== variant.height
-      || fs.statSync(assetPath).size > 900 * 1024
+      || fs.statSync(assetPath).size > 1200 * 1024
     ) {
       completeAssetsValid = false;
     }
   }
 }
-assert(completeAssetNames.size === 312, 'the complete gallery references 312 unique responsive derivatives');
+assert(
+  completeAssetNames.size === completeGallery.items.reduce((total, item) => total + item.variants.length, 0),
+  'the complete gallery references every source-bounded responsive derivative exactly once',
+);
 assert(completeAssetsValid, 'all complete-gallery derivatives exist as dimensionally correct budgeted WebP files');
 const prohibitedReviewClaims = ['Alexandra M.', 'James R.', 'Sofia L.', 'genericGoogleReviews'];
 for (const claim of prohibitedReviewClaims) {

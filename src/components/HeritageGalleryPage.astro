@@ -62,8 +62,13 @@ const galleryVariant = (item: GalleryItem, preferredWidth: number) =>
 const gallerySrcSet = (item: GalleryItem) =>
   item.variants.map(({ src, width }) => `${src} ${width}w`).join(', ');
 
+const GALLERY_CARD_SIZES =
+  '(max-width: 700px) calc(50vw - 20px), (max-width: 1100px) calc(33vw - 28px), 28vw';
+const GALLERY_WIDE_CARD_SIZES =
+  '(max-width: 700px) calc(100vw - 32px), (max-width: 1100px) calc(66vw - 36px), 56vw';
+
 const lightboxItems = items.flatMap((item) => {
-  const fallback = item.variants.at(-1) ?? item.variants[0];
+  const fallback = galleryVariant(item, 1280);
   return fallback ? [{
     src: fallback.src,
     srcset: gallerySrcSet(item),
@@ -126,11 +131,12 @@ const lightboxItems = items.flatMap((item) => {
             {category.items.map((item, index) => {
               const thumbnail = galleryVariant(item, 480);
               const globalIndex = items.findIndex(({ id }) => id === item.id);
+              const isWide = index % 7 === 0 || index % 7 === 5;
               return thumbnail && (
                 <button
                   class:list={[
                     'gallery-card',
-                    { 'gallery-card--wide': index % 7 === 0 || index % 7 === 5 },
+                    { 'gallery-card--wide': isWide },
                   ]}
                   type="button"
                   aria-label={`Open ${category.label.toLowerCase()} image ${index + 1}: ${item.alt}`}
@@ -140,7 +146,7 @@ const lightboxItems = items.flatMap((item) => {
                   <img
                     src={thumbnail.src}
                     srcset={gallerySrcSet(item)}
-                    sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 28vw"
+                    sizes={isWide ? GALLERY_WIDE_CARD_SIZES : GALLERY_CARD_SIZES}
                     alt={item.alt}
                     width={thumbnail.width}
                     height={thumbnail.height}
@@ -654,9 +660,22 @@ const lightboxItems = items.flatMap((item) => {
     }>;
     let active = 0;
     let opener: HTMLElement | null = null;
+    const warm = (index: number) => {
+      const item = items[(index + items.length) % items.length];
+      const neighbour = new Image();
+      neighbour.decoding = 'async';
+      neighbour.sizes = '100vw';
+      neighbour.srcset = item.srcset;
+      neighbour.src = item.src;
+    };
+    const warmAdjacent = (index: number) => {
+      warm(index - 1);
+      warm(index + 1);
+    };
     const show = (index: number) => {
       active = (index + items.length) % items.length;
       const item = items[active];
+      const shownIndex = active;
       image.srcset = item.srcset;
       image.sizes = '100vw';
       image.src = item.src;
@@ -665,6 +684,7 @@ const lightboxItems = items.flatMap((item) => {
       image.alt = item.alt;
       caption.textContent = item.alt;
       current.textContent = String(active + 1);
+      image.addEventListener('load', () => warmAdjacent(shownIndex), { once: true });
     };
 
     gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-open]').forEach((button) => {
