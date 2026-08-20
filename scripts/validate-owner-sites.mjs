@@ -126,13 +126,14 @@ for (const [source, label] of [
   }
   assert(
     source.includes('image.srcset = item.srcset;')
-      && source.includes("image.sizes = '100vw';")
       && source.includes('image.src = item.src;')
       && source.includes('image.width = item.width;')
       && source.includes('image.height = item.height;'),
     `${label} delegates responsive image selection directly to the browser`,
   );
 }
+assert(heritagePage.includes("image.sizes = '100vw';"), 'the curated gallery keeps its full-viewport responsive hint');
+assert(heritageGalleryPage.includes('image.sizes = item.sizes;'), 'the complete gallery uses its measured modal display width');
 assert(molonta.completeGallery?.imageCount === 104, 'Molonta declares the 104-image complete collection');
 assert(molonta.completeGallery?.chapterCount === 9, 'Molonta declares nine complete-gallery chapters');
 assert(heritagePage.includes('Explore complete gallery'), 'the curated main page links to the complete gallery');
@@ -150,13 +151,23 @@ assert(route.includes('lcpSrcset={heritageHeroSrcset}') && route.includes("lcpSi
 assert(heritagePage.includes('height: 100dvh'), 'the heritage lightbox uses the mobile dynamic viewport');
 assert(heritageGalleryPage.includes('height: 100dvh'), 'the complete-gallery lightbox uses the mobile dynamic viewport');
 assert(heritageGalleryPage.includes('display: block') && heritageGalleryPage.includes('position: absolute'), 'mobile complete-gallery navigation overlays the image instead of shrinking it');
-assert(heritageGalleryPage.includes('const neighbour = new Image();') && heritageGalleryPage.includes('warmAdjacent(shownIndex)'), 'complete-gallery neighbors warm without blocking navigation');
+assert(
+  heritageGalleryPage.includes('const neighbour = new Image();')
+    && heritageGalleryPage.includes('let warmTimer = 0;')
+    && heritageGalleryPage.includes("image.addEventListener('load'")
+    && heritageGalleryPage.includes('active === loadedIndex')
+    && !heritageGalleryPage.includes('warmAdjacent(shownIndex)'),
+  'complete-gallery neighbors warm through one stable debounced load listener',
+);
 assert(heritageGalleryPage.includes('calc(50vw - 20px)') && heritageGalleryPage.includes('calc(100vw - 32px)'), 'complete-gallery cards declare accurate responsive display sizes');
+assert(heritageGalleryPage.includes('calc(100vw - 180px)'), 'complete-gallery lightbox declares its measured desktop display width');
 const completeGalleryShowBlock = heritageGalleryPage.slice(
   heritageGalleryPage.indexOf('const show ='),
   heritageGalleryPage.indexOf("gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-open]')"),
 );
-assert(!/await|\.decode\(/.test(completeGalleryShowBlock), 'complete-gallery show remains synchronous and decode-free');
+assert(!/await|\.decode\(|addEventListener/.test(completeGalleryShowBlock), 'complete-gallery show remains synchronous, decode-free, and listener-free');
+assert(!heritagePage.includes('<source media="(max-width: 720px)"'), 'mobile hero selection is not forced to a soft 768px source');
+assert(heritagePage.includes('calc(100svh - 110px)') && heritagePage.includes('.inquire h2 { max-width: 10ch;'), 'small-screen hero and inquiry composition stay proportionate');
 assert(schema.includes("'ImageGallery'"), 'gallery metadata identifies the page as an ImageGallery');
 assert(registry.includes("'about', 'gallery', 'thank-you'"), 'the complete gallery is registered for future public sitemap discovery');
 
