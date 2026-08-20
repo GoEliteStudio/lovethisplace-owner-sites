@@ -66,12 +66,15 @@ const GALLERY_CARD_SIZES =
   '(max-width: 700px) calc(50vw - 20px), (max-width: 1100px) calc(33vw - 28px), 28vw';
 const GALLERY_WIDE_CARD_SIZES =
   '(max-width: 700px) calc(100vw - 32px), (max-width: 1100px) calc(66vw - 36px), 56vw';
+const GALLERY_MODAL_SIZES =
+  '(max-width: 760px) calc(100vw - 16px), calc(100vw - 180px)';
 
 const lightboxItems = items.flatMap((item) => {
   const fallback = galleryVariant(item, 1280);
   return fallback ? [{
     src: fallback.src,
     srcset: gallerySrcSet(item),
+    sizes: GALLERY_MODAL_SIZES,
     width: fallback.width,
     height: fallback.height,
     alt: item.alt,
@@ -654,17 +657,19 @@ const lightboxItems = items.flatMap((item) => {
     const items = JSON.parse(data.textContent ?? '[]') as Array<{
       src: string;
       srcset: string;
+      sizes: string;
       width: number;
       height: number;
       alt: string;
     }>;
     let active = 0;
     let opener: HTMLElement | null = null;
+    let warmTimer = 0;
     const warm = (index: number) => {
       const item = items[(index + items.length) % items.length];
       const neighbour = new Image();
       neighbour.decoding = 'async';
-      neighbour.sizes = '100vw';
+      neighbour.sizes = item.sizes;
       neighbour.srcset = item.srcset;
       neighbour.src = item.src;
     };
@@ -672,19 +677,26 @@ const lightboxItems = items.flatMap((item) => {
       warm(index - 1);
       warm(index + 1);
     };
+    image.addEventListener('load', () => {
+      const loadedIndex = active;
+      window.clearTimeout(warmTimer);
+      warmTimer = window.setTimeout(() => {
+        if (modal.open && active === loadedIndex) {
+          warmAdjacent(loadedIndex);
+        }
+      }, 250);
+    });
     const show = (index: number) => {
       active = (index + items.length) % items.length;
       const item = items[active];
-      const shownIndex = active;
       image.srcset = item.srcset;
-      image.sizes = '100vw';
+      image.sizes = item.sizes;
       image.src = item.src;
       image.width = item.width;
       image.height = item.height;
       image.alt = item.alt;
       caption.textContent = item.alt;
       current.textContent = String(active + 1);
-      image.addEventListener('load', () => warmAdjacent(shownIndex), { once: true });
     };
 
     gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-open]').forEach((button) => {
@@ -701,7 +713,10 @@ const lightboxItems = items.flatMap((item) => {
     modal.addEventListener('click', (event) => {
       if (event.target === modal) modal.close();
     });
-    modal.addEventListener('close', () => opener?.focus());
+    modal.addEventListener('close', () => {
+      window.clearTimeout(warmTimer);
+      opener?.focus();
+    });
     modal.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft') show(active - 1);
       if (event.key === 'ArrowRight') show(active + 1);

@@ -49,7 +49,6 @@ const lightboxItems = images.map((item: any, index: number) => ({
 <main class="heritage-site" id="overview">
   <section class="heritage-hero" aria-labelledby="property-title">
     <picture class="heritage-hero__media">
-      <source media="(max-width: 720px)" srcset={variant(images[0].src, 768)} />
       <img
         src={variant(images[0].src, 1600)}
         srcset={srcset(images[0].src)}
@@ -475,9 +474,9 @@ const lightboxItems = images.map((item: any, index: number) => ({
   .lightbox__previous, .lightbox__next { top: 50%; font-size: 2rem; }
   .lightbox__previous { left: 28px; } .lightbox__next { right: 28px; }
   @media (max-width: 900px) {
-    .heritage-hero { min-height: 760px; }
+    .heritage-hero { min-height: clamp(620px, calc(100svh - 110px), 700px); }
     .heritage-hero__content, .section-shell { width: min(100% - 36px, 1420px); }
-    .heritage-hero__content { padding-bottom: 70px; }
+    .heritage-hero__content { padding: 96px 0 54px; }
     .heritage-hero h1 { font-size: clamp(3.7rem, 16vw, 6.2rem); }
     .heritage-hero__scroll { display: none; }
     .fact-ribbon { grid-template-columns: repeat(2, 1fr); }
@@ -504,10 +503,13 @@ const lightboxItems = images.map((item: any, index: number) => ({
   }
   @media (max-width: 560px) {
     .heritage-hero__content { width: calc(100% - 32px); }
-    .heritage-hero h1 { max-width: 100%; font-size: clamp(3.05rem, 13.4vw, 4.35rem); line-height: .84; letter-spacing: -.045em; text-wrap: wrap; }
+    .heritage-hero__media img { object-position: 56% 52%; }
+    .heritage-hero h1 { max-width: 100%; font-size: clamp(2.85rem, 12.8vw, 3.75rem); line-height: .88; letter-spacing: -.04em; text-wrap: wrap; }
     .heritage-hero .eyebrow { max-width: 100%; font-size: .63rem; line-height: 1.55; letter-spacing: .17em; overflow-wrap: anywhere; }
     .heritage-hero__scrim { background: linear-gradient(0deg, rgba(7,8,7,.82), rgba(7,8,7,.12) 80%); }
-    .heritage-hero__subtitle { margin-top: 24px; }
+    .heritage-hero__subtitle { max-width: 31rem; margin-top: 20px; font-size: 1rem; line-height: 1.48; }
+    .heritage-hero__actions { gap: 10px; margin-top: 26px; }
+    .heritage-hero__actions .button { min-height: 46px; padding-inline: 18px; font-size: .64rem; }
     .fact-ribbon strong { font-size: 2.2rem; }
     .section-shell { width: calc(100% - 32px); padding: 78px 0; }
     .story h2, .section-intro h2, .details h2, .hosts h2 { font-size: 3.4rem; }
@@ -527,6 +529,11 @@ const lightboxItems = images.map((item: any, index: number) => ({
     .faq-list details p { margin: 0 20px 26px 42px; }
     .faq__topics { gap: 10px 14px; }
     .hosts__legacy { min-height: 430px; }
+    .inquire { gap: 32px; padding-top: 64px; padding-bottom: 64px; }
+    .inquire h2 { max-width: 10ch; font-size: clamp(2.55rem, 12vw, 3.25rem); line-height: .92; }
+    .inquire__intro > p:not(.eyebrow) { margin-top: 22px; line-height: 1.65; }
+    .inquire__promise { margin-top: 28px; }
+    .inquire__form { padding: 24px 20px; }
     .lightbox figure { width: 100vw; height: 100dvh; padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom)); grid-template-rows: minmax(0, 1fr) auto; gap: 6px; background: #080807; }
     .lightbox img { object-fit: contain; }
     .lightbox figcaption { max-width: calc(100vw - 72px); min-height: 1.2em; overflow: hidden; font-size: .68rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
