@@ -157,6 +157,18 @@ if (!villaConfig) {
   return Astro.redirect('/', 302);
 }
 
+const heritageHeroBase = heroImages[0];
+const heritageHeroVariant = (width: number) =>
+  heritageHeroBase?.replace(/\.webp$/i, `-${width}.webp`);
+const heritageHeroSrcset = villaConfig.theme === 'heritage-signature' && heritageHeroBase
+  ? [480, 768, 1024, 1280, 1600]
+      .map((width) => `${heritageHeroVariant(width)} ${width}w`)
+      .join(', ')
+  : undefined;
+const lcpImage = villaConfig.theme === 'heritage-signature'
+  ? heritageHeroVariant(1600)
+  : heritageHeroBase;
+
 const siteBase = `${getVillaPublicOrigin(villaConfig)}/`;
 const pageTitle = villa.seo?.title || `${villa.name} — Luxury Villa Retreat`;
 const canonical = getVillaCanonicalUrl(villaConfig, lang);
@@ -382,7 +394,9 @@ const villaFooter = {
   canonical={canonical} 
   noindex={!isVillaIndexable(villaConfig)}
   jsonLd={jsonLd} 
-  lcpImage={villaConfig.theme === 'classic' ? heroImages[0] : undefined}
+  lcpImage={lcpImage}
+  lcpSrcset={heritageHeroSrcset}
+  lcpSizes={heritageHeroSrcset ? '100vw' : undefined}
   ogImage={heroImages[0]}
   villaName={villa.name}
   homeUrl={publicHomePath}

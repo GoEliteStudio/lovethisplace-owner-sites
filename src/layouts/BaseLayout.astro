@@ -10,6 +10,8 @@ export interface Props {
   jsonLd?: any[];
   hasStickyPanel?: boolean;
   lcpImage?: string; // optional hero LCP image path (original format)
+  lcpSrcset?: string;
+  lcpSizes?: string;
   noindex?: boolean;
   ogImage?: string;     // e.g., "/images/MONT_001.webp"
   themeColor?: string;  // e.g., "#0f0f0f"
@@ -41,6 +43,8 @@ const {
   jsonLd = [],
   hasStickyPanel = false,
   lcpImage,
+  lcpSrcset,
+  lcpSizes,
   noindex = false,
   ogImage,
   themeColor = '#0f0f0f',
@@ -113,7 +117,14 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
     )}
     
     {lcpImage && (
-      <link rel="preload" as="image" href={lcpImage} fetchpriority="high" />
+      <link
+        rel="preload"
+        as="image"
+        href={lcpImage}
+        imagesrcset={lcpSrcset}
+        imagesizes={lcpSizes}
+        fetchpriority="high"
+      />
     )}
     <meta name="theme-color" content={themeColor} />
 
