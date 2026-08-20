@@ -167,7 +167,12 @@ const completeGalleryShowBlock = heritageGalleryPage.slice(
 );
 assert(!/await|\.decode\(|addEventListener/.test(completeGalleryShowBlock), 'complete-gallery show remains synchronous, decode-free, and listener-free');
 assert(!heritagePage.includes('<source media="(max-width: 720px)"'), 'mobile hero selection is not forced to a soft 768px source');
-assert(heritagePage.includes('calc(100svh - 110px)') && heritagePage.includes('.inquire h2 { max-width: 10ch;'), 'small-screen hero and inquiry composition stay proportionate');
+assert(
+  heritagePage.includes('calc(100svh - 110px)')
+    && heritagePage.includes('.inquire { gap: 32px; padding: 64px 24px; }')
+    && heritagePage.includes('.inquire h2 { max-width: 10ch;'),
+  'small-screen hero and inquiry composition stay proportionate and inset',
+);
 assert(schema.includes("'ImageGallery'"), 'gallery metadata identifies the page as an ImageGallery');
 assert(registry.includes("'about', 'gallery', 'thank-you'"), 'the complete gallery is registered for future public sitemap discovery');
 
