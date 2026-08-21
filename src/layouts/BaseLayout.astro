@@ -12,6 +12,9 @@ export interface Props {
   lcpImage?: string; // optional hero LCP image path (original format)
   lcpSrcset?: string;
   lcpSizes?: string;
+  lcpMobileImage?: string;
+  lcpMobileSrcset?: string;
+  lcpMobileSizes?: string;
   noindex?: boolean;
   ogImage?: string;     // e.g., "/images/MONT_001.webp"
   themeColor?: string;  // e.g., "#0f0f0f"
@@ -45,6 +48,9 @@ const {
   lcpImage,
   lcpSrcset,
   lcpSizes,
+  lcpMobileImage,
+  lcpMobileSrcset,
+  lcpMobileSizes,
   noindex = false,
   ogImage,
   themeColor = '#0f0f0f',
@@ -116,13 +122,24 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
       <link rel="alternate" hreflang="x-default" href={absUrl(hreflangs[0].url)} />
     )}
     
-    {lcpImage && (
+    {lcpImage && !lcpMobileImage && (
       <link
         rel="preload"
         as="image"
         href={lcpImage}
         imagesrcset={lcpSrcset}
         imagesizes={lcpSizes}
+        fetchpriority="high"
+      />
+    )}
+    {lcpImage && lcpMobileImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={lcpMobileImage}
+        imagesrcset={lcpMobileSrcset}
+        imagesizes={lcpMobileSizes}
+        media="(max-width: 760px)"
         fetchpriority="high"
       />
     )}
@@ -356,8 +373,51 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
 
       /* Earlier mobile breakpoint to avoid header crowding */
       @media (max-width: 1100px) {
-        .nav-links { display: none; }
-        .mobile-menu-btn { display: block; }
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0;
+          max-height: calc(100svh - 80px);
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          padding: 10px 24px 24px;
+          background: rgba(255, 255, 255, .985);
+          border-top: 1px solid rgba(0, 0, 0, .06);
+          box-shadow: 0 18px 34px rgba(0, 0, 0, .12);
+        }
+        .nav-links.is-open { display: flex; }
+        .nav-link {
+          width: 100%;
+          padding: 16px 0;
+          border-bottom: 1px solid rgba(0, 0, 0, .08);
+          font-size: .78rem;
+        }
+        .nav-link::after { display: none; }
+        .nav-cta {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          min-height: 48px;
+          margin: 16px 0 0;
+          text-align: center;
+        }
+        .mobile-menu-btn {
+          display: grid;
+          place-items: center;
+          width: 40px;
+          height: 40px;
+          padding: 0;
+          flex: 0 0 40px;
+          position: relative;
+          z-index: 1;
+        }
+        body.nav-open { overflow: hidden; }
         header { padding: 16px 24px; }
         .logo { letter-spacing: 1px; }
       }
@@ -468,7 +528,7 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
         .nav-links { display: none; }
         
         .mobile-menu-btn {
-          display: block;
+          display: grid;
         }
         
         .container {
@@ -484,7 +544,7 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
   <body>
     <header>
       <a href={homeUrl} class="logo" aria-label="Home">{villaName.toUpperCase()}</a>
-      <nav class="nav-links" aria-label="Primary">
+      <nav class="nav-links" id="primary-navigation" aria-label="Primary">
         {resolvedNavLinks.map(({ href, label }) => (
           <a href={href} class="nav-link" data-nav>{label}</a>
         ))}
@@ -494,7 +554,7 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
           <button type="button" class="nav-cta" id="nav-inquire" data-inquire>{resolvedNavCtaLabel}</button>
         )}
       </nav>
-      <button class="mobile-menu-btn" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="mobile-menu-btn" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">
         <i class="fas fa-bars"></i>
       </button>
     </header>
@@ -552,12 +612,36 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
         const inquireBtn = document.querySelector('[data-inquire]');
         let lastScroll = 0;
 
+        const setMobileMenuOpen = (open: boolean) => {
+          if (!(mobileMenuBtn instanceof HTMLElement) || !(navLinks instanceof HTMLElement)) return;
+          mobileMenuBtn.setAttribute('aria-expanded', String(open));
+          mobileMenuBtn.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+          mobileMenuBtn.classList.toggle('is-open', open);
+          navLinks.classList.toggle('is-open', open);
+          document.body.classList.toggle('nav-open', open);
+          const icon = mobileMenuBtn.querySelector('i');
+          if (icon) icon.className = open ? 'fas fa-times' : 'fas fa-bars';
+        };
+
         mobileMenuBtn?.addEventListener('click', function() {
-          const isExpanded = this.getAttribute('aria-expanded') === 'true';
-          this.setAttribute('aria-expanded', String(!isExpanded));
-          if (navLinks instanceof HTMLElement) {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+          setMobileMenuOpen(this.getAttribute('aria-expanded') !== 'true');
+        });
+
+        navLinks?.addEventListener('click', (event) => {
+          if ((event.target instanceof Element) && event.target.closest('a, button')) {
+            setMobileMenuOpen(false);
           }
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            setMobileMenuOpen(false);
+            if (mobileMenuBtn instanceof HTMLElement) mobileMenuBtn.focus();
+          }
+        });
+
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 1100) setMobileMenuOpen(false);
         });
 
         // Smooth scroll for nav links + ensure tab panels (e.g., #location) activate via hashchange
@@ -579,10 +663,7 @@ const resolvedNavCtaLabel = navCtaLabel ?? 'Inquire';
               setTimeout(() => {
                 target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }, 40);
-              if (mobileMenuBtn?.getAttribute('aria-expanded') === 'true') {
-                mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                if (navLinks instanceof HTMLElement) navLinks.style.display = 'none';
-              }
+              setMobileMenuOpen(false);
             }
           });
         });
