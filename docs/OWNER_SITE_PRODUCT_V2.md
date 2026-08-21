@@ -148,3 +148,6 @@ Do not publish because the design looks finished. Confirm:
 - Structured data: `src/lib/schema.ts`
 - Discovery boundaries: `src/pages/sitemap.xml.ts`, `src/pages/robots.txt.ts`, `src/layouts/BaseLayout.astro`
 - Validation: `scripts/validate-owner-sites.mjs`, `scripts/validate-build-isolation.mjs`, and `npm run check`
+- Clean static routes: `scripts/materialize-clean-owner-routes.mjs`
+- Post-build route/media proof: `scripts/validate-output-isolation.mjs`
+- Browser regression: `scripts/qa-static-owner-output.mjs`
