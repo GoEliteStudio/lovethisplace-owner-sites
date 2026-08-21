@@ -17,6 +17,12 @@ const {
   privacyHref,
 } = Astro.props;
 const images = Array.isArray(villa.images) ? villa.images : [];
+const desktopHero = images[0];
+const requestedMobileHero = String(villa.hero?.mobileImage || '');
+const mobileHero = requestedMobileHero
+  ? images.find((image: any) => image.src === requestedMobileHero) || desktopHero
+  : desktopHero;
+const heroAlt = String(villa.hero?.imageAlt || desktopHero?.alt || villa.name || '');
 const completeGallery = villa.completeGallery || { imageCount: images.length, chapterCount: 1 };
 const storyParagraphs = String(villa.content?.overview || '').split(/\n\s*\n/).filter(Boolean);
 const facts = villa.content?.signatureFacts || [];
@@ -49,11 +55,12 @@ const lightboxItems = images.map((item: any, index: number) => ({
 <main class="heritage-site" id="overview">
   <section class="heritage-hero" aria-labelledby="property-title">
     <picture class="heritage-hero__media">
+      {requestedMobileHero && <source media="(min-width: 761px)" srcset={srcset(desktopHero.src)} sizes="100vw" />}
       <img
-        src={variant(images[0].src, 1600)}
-        srcset={srcset(images[0].src)}
+        src={variant(mobileHero.src, 1600)}
+        srcset={srcset(mobileHero.src)}
         sizes="100vw"
-        alt={images[0].alt}
+        alt={heroAlt}
         fetchpriority="high"
         decoding="async"
       />
@@ -285,7 +292,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
 <dialog class="lightbox" id="heritage-lightbox" aria-label="Property image viewer">
   <button type="button" class="lightbox__close" aria-label="Close image viewer">×</button>
   <button type="button" class="lightbox__previous" aria-label="Previous image">&larr;</button>
-  <figure><img src={lightboxItems[0].src} srcset={lightboxItems[0].srcset} sizes="100vw" width={lightboxItems[0].width} height={lightboxItems[0].height} alt={lightboxItems[0].alt} /><figcaption></figcaption></figure>
+  <figure><img width={lightboxItems[0].width} height={lightboxItems[0].height} alt="" /><figcaption></figcaption></figure>
   <output class="lightbox__counter" aria-live="polite"></output>
   <button type="button" class="lightbox__next" aria-label="Next image">&rarr;</button>
 </dialog>

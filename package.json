@@ -9,6 +9,7 @@
     "check": "astro check",
     "postbuild": "node scripts/postbuild.mjs",
     "preview": "astro preview",
+    "qa:mobile": "node scripts/qa-mobile-hero-menu.mjs",
     "villa:create": "node scripts/create-villa.mjs",
     "villa:onboard": "node scripts/onboard-villa.mjs",
     "villa:seed": "node scripts/seed-firestore.mjs",
@@ -29,7 +30,8 @@
   },
   "devDependencies": {
     "@astrojs/vercel": "11.0.5",
-    "@types/node": "^24.10.0"
+    "@types/node": "^24.10.0",
+    "puppeteer-core": "25.3.0"
   },
   "engines": {
     "node": ">=22.12.0 <25"

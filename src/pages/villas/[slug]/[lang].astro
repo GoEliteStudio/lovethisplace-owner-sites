@@ -168,6 +168,18 @@ const heritageHeroSrcset = villaConfig.theme === 'heritage-signature' && heritag
 const lcpImage = villaConfig.theme === 'heritage-signature'
   ? heritageHeroVariant(1600)
   : heritageHeroBase;
+const requestedMobileHero = resolveImage(extractSrc((villa.hero as any)?.mobileImage));
+const heritageMobileHeroBase = villaConfig.theme === 'heritage-signature'
+  ? requestedMobileHero?.src || heritageHeroBase
+  : undefined;
+const heritageMobileHeroVariant = (width: number) =>
+  heritageMobileHeroBase?.replace(/\.webp$/i, `-${width}.webp`);
+const heritageMobileHeroSrcset = heritageMobileHeroBase && heritageMobileHeroBase !== heritageHeroBase
+  ? [480, 768, 1024, 1280, 1600]
+      .map((width) => `${heritageMobileHeroVariant(width)} ${width}w`)
+      .join(', ')
+  : undefined;
+const lcpMobileImage = heritageMobileHeroSrcset ? heritageMobileHeroVariant(1600) : undefined;
 
 const siteBase = `${getVillaPublicOrigin(villaConfig)}/`;
 const pageTitle = villa.seo?.title || `${villa.name} — Luxury Villa Retreat`;
@@ -397,6 +409,9 @@ const villaFooter = {
   lcpImage={lcpImage}
   lcpSrcset={heritageHeroSrcset}
   lcpSizes={heritageHeroSrcset ? '100vw' : undefined}
+  lcpMobileImage={lcpMobileImage}
+  lcpMobileSrcset={heritageMobileHeroSrcset}
+  lcpMobileSizes={heritageMobileHeroSrcset ? '100vw' : undefined}
   ogImage={heroImages[0]}
   villaName={villa.name}
   homeUrl={publicHomePath}

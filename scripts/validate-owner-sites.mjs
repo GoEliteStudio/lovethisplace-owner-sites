@@ -30,6 +30,7 @@ const rootRoute = read('src/pages/index.astro');
 const cleanAuxRoute = read('src/pages/[page].astro');
 const ownerSiteRouting = read('src/lib/ownerSiteRouting.ts');
 const completeGallery = JSON.parse(read('src/content/galleries/molonta-heritage-estate.en.json'));
+const mobileHeroMenuQa = read('scripts/qa-mobile-hero-menu.mjs');
 
 assert(registry.includes("slug: 'molonta-heritage-estate'"), 'Molonta is registered');
 assert(registry.includes("domain: 'molonta.lovethisplace.co'"), 'Molonta has the approved clean custom domain');
@@ -92,6 +93,10 @@ assert(Boolean(molonta.seo?.title && molonta.seo?.description), 'Molonta has pro
 assert(Array.isArray(molonta.content?.faq) && molonta.content.faq.length >= 15, 'Molonta has at least 15 useful traveler FAQs');
 assert(Array.isArray(molonta.content?.testimonials) && molonta.content.testimonials.length === 0, 'no testimonial is invented');
 assert(Array.isArray(molonta.images) && molonta.images.length === 15, 'the Molonta main page keeps 15 curated images');
+assert(
+  molonta.hero?.mobileImage === '/images/villas/molonta-owner-preview/hero-infinity-pool.webp',
+  'Molonta uses the approved infinity-pool opening frame on mobile',
+);
 assert(heritagePage.includes('const galleryPreviewIndexes = [1, 3, 8, 6, 5]'), 'the editorial gallery preview is deterministic');
 assert(heritagePage.includes('gallery-card--feature') && heritagePage.includes('gallery-card--support'), 'the gallery uses one feature frame and aligned supporting frames');
 assert(!heritagePage.includes('gallery-grid'), 'the misaligned masonry gallery cannot return');
@@ -148,6 +153,11 @@ assert(heritageGalleryPage.includes('object-fit: contain'), 'the complete-galler
 assert(heritageGalleryPage.includes('ArrowLeft') && heritageGalleryPage.includes('ArrowRight'), 'the complete-gallery lightbox supports keyboard navigation');
 assert(layout.includes('imagesrcset={lcpSrcset}') && layout.includes('imagesizes={lcpSizes}'), 'the base layout preloads responsive LCP candidates');
 assert(route.includes('lcpSrcset={heritageHeroSrcset}') && route.includes("lcpSizes={heritageHeroSrcset ? '100vw' : undefined}"), 'heritage pages pass responsive hero preload metadata');
+assert(
+  layout.includes('media="(max-width: 760px)"')
+    && route.includes('lcpMobileSrcset={heritageMobileHeroSrcset}'),
+  'the art-directed mobile hero receives a responsive preload without preloading the desktop frame',
+);
 assert(heritagePage.includes('height: 100dvh'), 'the heritage lightbox uses the mobile dynamic viewport');
 assert(heritageGalleryPage.includes('height: 100dvh'), 'the complete-gallery lightbox uses the mobile dynamic viewport');
 assert(heritageGalleryPage.includes('display: block') && heritageGalleryPage.includes('position: absolute'), 'mobile complete-gallery navigation overlays the image instead of shrinking it');
@@ -166,7 +176,32 @@ const completeGalleryShowBlock = heritageGalleryPage.slice(
   heritageGalleryPage.indexOf("gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-open]')"),
 );
 assert(!/await|\.decode\(|addEventListener/.test(completeGalleryShowBlock), 'complete-gallery show remains synchronous, decode-free, and listener-free');
-assert(!heritagePage.includes('<source media="(max-width: 720px)"'), 'mobile hero selection is not forced to a soft 768px source');
+assert(
+  heritagePage.includes('media="(min-width: 761px)"')
+    && heritagePage.includes('srcset={srcset(mobileHero.src)}')
+    && heritagePage.includes('srcset={srcset(desktopHero.src)}'),
+  'heritage hero uses the mobile frame as its fallback and browser-native desktop art direction',
+);
+assert(
+  heritagePage.includes('<img width={lightboxItems[0].width} height={lightboxItems[0].height} alt="" />'),
+  'the closed heritage lightbox does not download an unseen opening image',
+);
+assert(
+  layout.includes('.nav-links.is-open { display: flex; }')
+    && layout.includes('flex-direction: column;')
+    && layout.includes("navLinks.classList.toggle('is-open', open)")
+    && !layout.includes('navLinks.style.display'),
+  'mobile navigation opens as a bounded vertical panel without inline desktop display overrides',
+);
+assert(
+  mobileHeroMenuQa.includes("name: 'samsung-compact'")
+    && mobileHeroMenuQa.includes("name: 'iphone-compact'")
+    && mobileHeroMenuQa.includes("name: 'samsung-large'")
+    && mobileHeroMenuQa.includes("textContent?.trim().toLowerCase() === 'gallery'")
+    && mobileHeroMenuQa.includes("hero-infinity-pool-")
+    && mobileHeroMenuQa.includes("hero-estate-twilight-"),
+  'browser QA covers opened-menu clipping and mobile/desktop hero selection',
+);
 assert(
   heritagePage.includes('calc(100svh - 110px)')
     && heritagePage.includes('.inquire { gap: 32px; padding: 64px 24px; }')
