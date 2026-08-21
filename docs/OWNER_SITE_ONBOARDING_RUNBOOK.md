@@ -244,11 +244,22 @@ $env:VERCEL='1'
 npm run build
 ```
 
-The build must end with:
+For a root-canonical site, the build must end with all three controls:
 
 ```text
-[build-isolation] PASS: only property-slug was generated.
+[clean-owner-routes] PASS: materialized static clean-route files for property-slug.
+[gallery-output] PASS: every declared complete-gallery variant survived pruning.
+[build-isolation] PASS: routes property-slug; media property-asset-slug.
 ```
+
+Serve the generated `.vercel/output/static` directory and run:
+
+```powershell
+npm run qa:mobile -- http://127.0.0.1:PORT/
+npm run qa:owner-static -- http://127.0.0.1:PORT/
+```
+
+The clean homepage and auxiliary pages must be static files copied from the selected property's prerendered default-language routes. Do not implement a clean URL by making a server function fetch its own deployment. That doubles the request path, creates compression failure modes, and prevents the page from behaving as an ordinary static artifact.
 
 Review at minimum:
 
@@ -291,6 +302,8 @@ Each independent property site receives one dedicated Vercel project. Configure:
 - no secrets copied from another property without an explicit shared-service decision.
 
 Run the remote build and read its output. It must prove only the intended slug and its `assetSlug || slug` media directory were retained. The rendered static root, top-level image directory, and `images/villas/` are deny-by-default: loose files, archives, and legacy property directories are removed unless the shared-asset policy explicitly allows them.
+
+For `rootCanonical` properties, confirm the clean page is served from the filesystem rather than the Astro render function. Compare `/` with the internal prerendered route before release: content must match, while the clean route must not make a same-deployment HTTP fetch.
 
 Shared Vercel builds without `VILLA_SLUG` generate active public villas only. If none exist, they produce a neutral shell with no property routes or property media. They are not a substitute for dedicated owner-site projects.
 
@@ -338,6 +351,9 @@ Verify and record:
 - metadata uses working URLs;
 - publication state matches robots and sitemap;
 - images return successfully;
+- every complete-gallery `srcset` candidate returns successfully;
+- clean pages are served as static output with normal compression;
+- measured TTFB and cache headers are recorded before and after routing or caching changes;
 - no fabricated review or stale property identity appears;
 - inquiry attribution remains correct if the route changed.
 

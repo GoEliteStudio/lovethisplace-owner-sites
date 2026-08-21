@@ -1,59 +1,18 @@
 ---
 /**
- * Root Redirect Engine - The "Traffic Cop"
+ * Neutral shared-build shell.
  * 
- * Handles all traffic to the root URL (https://villa-*.vercel.app/)
- * Intelligently redirects to the correct villa + language:
+ * Dedicated builds replace this file with the selected property's
+ * already-prerendered default-language page.
  * 
- * 1. Detects which villa site (hostname → slug mapping)
- * 2. Detects user's preferred language (Accept-Language header)
- * 3. Redirects to /villas/{slug}/{lang}/
+ * Shared builds retain this neutral shell and expose no property.
  * 
- * This is a SERVER-SIDE ONLY page (no static pre-rendering)
- * Must read request headers to detect language preference
+ * No runtime self-fetch or hostname-dependent render occurs here.
  */
 
-// Must be server-side rendered to read headers
-export const prerender = false;
-
-import { VILLA_LANGUAGES, DEFAULT_LANG, HOSTNAME_SLUG_MAP, getVillaBySlug, getVillaPublicPath } from '../config/i18n';
-import { getRequestHostname, proxyInternalOwnerRoute } from '../lib/ownerSiteRouting';
-
-// Step 1: Identify which villa site this is
-const hostname = getRequestHostname(Astro.request);
-const envSlug = import.meta.env.VILLA_SLUG as string | undefined;
-
-// Check if hostname matches a known villa
-const matchedSlug = HOSTNAME_SLUG_MAP[hostname] || envSlug;
-
-// If no villa match found (shared Vercel URL), show branded landing page
-// This prevents cross-villa exposure between owners
-if (!matchedSlug) {
-  // Don't redirect - render the landing page below
-} else {
-  // Step 2: Get supported languages for this villa
-  const supportedLangs = VILLA_LANGUAGES[matchedSlug] || [DEFAULT_LANG];
-
-  // Step 3: Detect browser's preferred language
-  const acceptHeader = Astro.request.headers.get('accept-language') || '';
-  const preferredLang = acceptHeader.split(',')[0]?.split('-')[0]?.toLowerCase() || DEFAULT_LANG;
-
-  // Step 4: Choose target language
-  let targetLang = DEFAULT_LANG;
-  if (supportedLangs.includes(preferredLang)) {
-    targetLang = preferredLang;
-  }
-
-  // Step 5: Keep root-canonical owner sites on their clean public URL.
-  const villaConfig = getVillaBySlug(matchedSlug);
-  const internalTarget = '/villas/' + matchedSlug + '/' + targetLang + '/';
-  if (villaConfig?.rootCanonical) {
-    return proxyInternalOwnerRoute(Astro.request, internalTarget);
-  }
-
-  const targetUrl = villaConfig ? getVillaPublicPath(villaConfig, targetLang) : internalTarget;
-  return Astro.redirect(targetUrl, 301);
-}
+// Dedicated owner deployments materialize their already-prerendered villa
+// page over this neutral shell during postbuild. Shared builds remain empty.
+export const prerender = true;
 ---
 
 <!-- Neutral Landing Page - Shown when no villa is matched -->

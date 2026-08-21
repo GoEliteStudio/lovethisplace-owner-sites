@@ -32,6 +32,8 @@ VILLA_SLUG=<registered-property-slug>
 
 The production build and `scripts/validate-build-isolation.mjs` must prove that only that property's routes were generated.
 
+For a registry entry with `rootCanonical: true`, postbuild copies the selected property's already-prerendered HTML to the clean root URLs. Clean pages are static files; they must never fetch the same deployment at runtime. Postbuild also verifies byte equality, route isolation, and every complete-gallery derivative after media pruning.
+
 When `VILLA_SLUG` is absent on Vercel, the shared build generates public properties only. Private previews must never appear in a shared deployment. Locally, an unset value may still be used intentionally for shared development.
 
 ## Standard commands
@@ -42,6 +44,7 @@ npm run validate
 npm run check
 npm run build
 npm run dev
+npm run qa:owner-static -- https://property-domain.example/
 ```
 
 Production-style isolated build:
@@ -64,7 +67,9 @@ Do not deploy if the build, type check, owner-site validator, or isolation valid
 - `src/pages/api/inquire.ts` - inquiry entry point.
 - `src/pages/robots.txt.ts` and `src/pages/sitemap.xml.ts` - discovery boundaries.
 - `scripts/validate-owner-sites.mjs` - product and content invariants.
-- `scripts/validate-build-isolation.mjs` - rendered-route isolation check.
+- `scripts/materialize-clean-owner-routes.mjs` - clean static URL materialization for dedicated owner sites.
+- `scripts/validate-output-isolation.mjs` - post-prune route, media, clean-page, and complete-gallery validation.
+- `scripts/qa-static-owner-output.mjs` - browser QA for clean pages and rapid deep-gallery navigation.
 
 ## Publication states
 

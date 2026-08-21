@@ -10,6 +10,7 @@
     "postbuild": "node scripts/postbuild.mjs",
     "preview": "astro preview",
     "qa:mobile": "node scripts/qa-mobile-hero-menu.mjs",
+    "qa:owner-static": "node scripts/qa-static-owner-output.mjs",
     "villa:create": "node scripts/create-villa.mjs",
     "villa:onboard": "node scripts/onboard-villa.mjs",
     "villa:seed": "node scripts/seed-firestore.mjs",

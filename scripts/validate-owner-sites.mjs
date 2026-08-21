@@ -27,8 +27,8 @@ const molonta = JSON.parse(read('src/content/villas/molonta-heritage-estate.en.j
 const heritageGalleryPage = read('src/components/HeritageGalleryPage.astro');
 const completeGalleryRoute = read('src/pages/villas/[slug]/[lang]/gallery.astro');
 const rootRoute = read('src/pages/index.astro');
-const cleanAuxRoute = read('src/pages/[page].astro');
-const ownerSiteRouting = read('src/lib/ownerSiteRouting.ts');
+const cleanRouteMaterializer = read('scripts/materialize-clean-owner-routes.mjs');
+const outputIsolation = read('scripts/validate-output-isolation.mjs');
 const completeGallery = JSON.parse(read('src/content/galleries/molonta-heritage-estate.en.json'));
 const mobileHeroMenuQa = read('scripts/qa-mobile-hero-menu.mjs');
 
@@ -38,9 +38,17 @@ assert(registry.includes("canonicalOrigin: 'https://molonta.lovethisplace.co'"),
 assert(registry.includes("previewOrigin: 'https://molonta-heritage-estate.vercel.app'"), 'Molonta previews use a live share origin');
 assert(registry.includes("villa.visibility !== 'public' && villa.previewOrigin"), 'private-preview metadata never points at an unresolved custom domain');
 assert(registry.includes('rootCanonical: true'), 'Molonta is configured for root-domain presentation');
-assert(rootRoute.includes('proxyInternalOwnerRoute(Astro.request, internalTarget)'), 'root-canonical properties render without exposing the engine route');
-assert(ownerSiteRouting.includes("request.headers.get('x-forwarded-host')") && ownerSiteRouting.includes("split(':')[0].toLowerCase()"), 'owner-site routing normalizes production proxy host headers');
-assert(cleanAuxRoute.includes('villa.auxPages.includes(page)') && cleanAuxRoute.includes('proxyInternalOwnerRoute(Astro.request, internalTarget)'), 'clean auxiliary routes are restricted to registered property pages');
+assert(rootRoute.includes('export const prerender = true'), 'the root shell is static and cannot self-fetch the deployment');
+assert(
+  cleanRouteMaterializer.includes("fs.copyFileSync(source, destination)")
+    && cleanRouteMaterializer.includes("const cleanPages = ['', ...villa.auxPages]"),
+  'dedicated builds materialize registry-approved clean routes from prerendered pages'
+);
+assert(
+  outputIsolation.includes('fileHash(internalFile) !== fileHash(cleanFile)')
+    && outputIsolation.includes('expectedVariants.length'),
+  'post-build validation proves clean routes and every gallery variant survived'
+);
 assert(registry.includes("visibility: 'private-preview'"), 'the registry supports a private-preview state');
 assert(registry.includes("theme: 'heritage-signature'"), 'the heritage-signature theme is explicit');
 assert(registry.includes('getIndexableVillas'), 'public discovery is generated from an indexable allowlist');
@@ -321,4 +329,3 @@ if (errors.length) {
 }
 
 console.log('\nOwner-site validation passed.');
-await import('./validate-owner-route-proxy.mjs');
