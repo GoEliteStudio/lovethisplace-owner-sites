@@ -186,9 +186,36 @@ const completeGalleryShowBlock = heritageGalleryPage.slice(
 assert(!/await|\.decode\(|addEventListener/.test(completeGalleryShowBlock), 'complete-gallery show remains synchronous, decode-free, and listener-free');
 assert(
   heritagePage.includes('media="(min-width: 761px)"')
-    && heritagePage.includes('srcset={srcset(mobileHero.src)}')
-    && heritagePage.includes('srcset={srcset(desktopHero.src)}'),
-  'heritage hero uses the mobile frame as its fallback and browser-native desktop art direction',
+    && heritagePage.includes('srcset={srcset(frame.mobile.src)}')
+    && heritagePage.includes('srcset={srcset(frame.desktop.src)}'),
+  'heritage hero uses mobile-first frames and browser-native desktop art direction',
+);
+assert(
+  heritagePage.includes('data-cinematic-hero')
+    && heritagePage.includes('heroFrames.map')
+    && heritagePage.includes('data-srcset={srcset(frame.desktop.src)}')
+    && heritagePage.includes('data-srcset={srcset(frame.mobile.src)}'),
+  'heritage hero renders one immediate frame and defers later cinematic frames',
+);
+assert(
+  heritagePage.includes('const hydrateHeroSlide =')
+    && heritagePage.includes('const hydrationPromises = new WeakMap()')
+    && heritagePage.includes('await hydrateHeroSlide(heroSlides[nextIndex])')
+    && heritagePage.includes('}, 7200);'),
+  'heritage hero hydrates each later frame once before changing the visible frame',
+);
+assert(
+  heritagePage.includes("window.matchMedia('(prefers-reduced-motion: reduce)')")
+    && heritagePage.includes("document.addEventListener('visibilitychange'")
+    && heritagePage.includes('showHeroSlide(0)'),
+  'heritage hero pauses when hidden and preserves a static reduced-motion experience',
+);
+assert(
+  heritagePage.includes('transition: opacity 1.2s ease')
+    && heritagePage.includes('transition: transform 7s ease')
+    && heritagePage.includes('translateZ(0) scale(1.035)')
+    && heritagePage.includes('translateZ(0) scale(1);'),
+  'heritage hero uses the proven storefront crossfade and cinematic transform timing',
 );
 assert(
   heritagePage.includes('<img width={lightboxItems[0].width} height={lightboxItems[0].height} alt="" />'),

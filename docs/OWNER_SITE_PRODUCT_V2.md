@@ -33,6 +33,8 @@ A signed property may use both products when their jobs are documented:
 
 This is not accidental duplicate content while only one canonical discovery surface is indexable. Every dual-site property requires a dated decision stating which page is canonical, how inquiries are attributed, and what triggers public indexing of the independent site.
 
+The repeatable delivery path is documented in DUAL_SITE_TWO_HOUR_PLAYBOOK.md. The two-hour target is for review-ready previews when authorization, facts, media, commercial terms, and an existing theme are available. It is not a reason to bypass launch gates or promise external DNS/deployment timing.
+
 ## Themes
 
 - `classic`: information-dense, agency-style conversion flow. Best when rates, logistics, trust signals, and fast comparison dominate.
