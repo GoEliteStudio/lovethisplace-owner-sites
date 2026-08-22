@@ -2,6 +2,8 @@
 
 This is the canonical operating procedure for every new villa or yacht. It exists to make the next property faster without sacrificing authorization, identity, design quality, privacy, search integrity, or deployment isolation.
 
+For an authorized property receiving both a LoveThisPlace storefront and an independent owner site, use DUAL_SITE_TWO_HOUR_PLAYBOOK.md. It is the bounded two-hour preview workflow; this runbook remains the complete commercial, release, indexing, and offboarding authority.
+
 ## 0. Preflight and ownership
 
 Before touching code:
@@ -156,6 +158,8 @@ Quality requirements:
 - one clear primary CTA per decision stage;
 - no decorative section that provides no traveler value;
 - no repeated specification paragraph where a fact strip already does the job.
+
+For cinematic heritage heroes, reuse the proven storefront transition rather than inventing property-specific animation: hydrate later frames once, show only complete images, keep the class swap synchronous, use a 1.2-second opacity crossfade and a 7-second scale(1.035) to scale(1) transform, pause when hidden, and honor reduced motion.
 
 ## 7. Media production standard
 

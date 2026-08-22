@@ -28,7 +28,8 @@ try {
     await page.goto(url, { waitUntil: 'networkidle0' });
 
     const initial = await page.evaluate(() => {
-      const hero = document.querySelector('.heritage-hero__media img');
+      const hero = document.querySelector('.heritage-hero__slide.is-active img');
+      const heroSlides = [...document.querySelectorAll('[data-hero-slide]')];
       const button = document.querySelector('.mobile-menu-btn');
       const navigation = document.querySelector('#primary-navigation');
       if (!(hero instanceof HTMLImageElement)
@@ -41,6 +42,8 @@ try {
         scrollWidth: document.documentElement.scrollWidth,
         heroCurrentSrc: hero.currentSrc,
         heroComplete: hero.complete && hero.naturalWidth > 0,
+        heroSlideCount: heroSlides.length,
+        hydratedHeroCount: heroSlides.filter((slide) => slide.getAttribute('data-hydrated') === 'true').length,
         buttonDisplay: getComputedStyle(button).display,
         navigationDisplay: getComputedStyle(navigation).display,
       };
@@ -50,9 +53,14 @@ try {
       throw new Error(`${profile.name}: mobile hero is not the approved infinity-pool frame: ${initial.heroCurrentSrc}`);
     }
     if (!initial.heroComplete) throw new Error(`${profile.name}: mobile hero did not load`);
-    const desktopHeroRequests = initialImages.filter((requestUrl) => requestUrl.includes('hero-estate-twilight-'));
-    if (desktopHeroRequests.length > 0) {
-      throw new Error(`${profile.name}: desktop hero was downloaded by the mobile viewport: ${desktopHeroRequests.join(', ')}`);
+    if (initial.heroSlideCount !== 3 || initial.hydratedHeroCount !== 3) {
+      throw new Error(`${profile.name}: cinematic hero did not hydrate exactly three frames`);
+    }
+    const cinematicRequests = initialImages.filter((requestUrl) =>
+      /hero-(infinity-pool|estate-twilight|pool-panorama)-/.test(requestUrl)
+    );
+    if (!cinematicRequests[0]?.includes('hero-infinity-pool-')) {
+      throw new Error(`${profile.name}: the approved mobile frame was not requested first`);
     }
     if (initial.scrollWidth > initial.viewportWidth + 1) {
       throw new Error(`${profile.name}: closed page overflows horizontally`);
@@ -133,7 +141,7 @@ try {
   await desktop.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
   await desktop.goto(url, { waitUntil: 'networkidle0' });
   const desktopResult = await desktop.evaluate(() => {
-    const hero = document.querySelector('.heritage-hero__media img');
+    const hero = document.querySelector('.heritage-hero__slide.is-active img');
     const button = document.querySelector('.mobile-menu-btn');
     const navigation = document.querySelector('#primary-navigation');
     if (!(hero instanceof HTMLImageElement)
@@ -157,6 +165,41 @@ try {
     || desktopResult.navigationDisplay !== 'flex'
     || desktopResult.navigationDirection !== 'row') {
     throw new Error('desktop: navigation behavior regressed');
+  }
+  await desktop.waitForFunction(() =>
+    document.querySelector('[data-hero-index="1"]')?.classList.contains('is-active'),
+    { timeout: 10000 },
+  );
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const crossfade = await desktop.evaluate(() => {
+    const active = document.querySelector('.heritage-hero__slide.is-active');
+    const previous = document.querySelector('[data-hero-index="0"]');
+    return {
+      activeCount: document.querySelectorAll('.heritage-hero__slide.is-active').length,
+      activeOpacity: active ? Number.parseFloat(getComputedStyle(active).opacity) : -1,
+      previousOpacity: previous ? Number.parseFloat(getComputedStyle(previous).opacity) : -1,
+      activeTransform: active ? getComputedStyle(active.querySelector('img')).transform : 'missing',
+      previousTransform: previous ? getComputedStyle(previous.querySelector('img')).transform : 'missing',
+    };
+  });
+  if (crossfade.activeCount !== 1
+    || crossfade.activeOpacity <= 0
+    || crossfade.activeOpacity >= 1
+    || crossfade.previousOpacity <= 0
+    || crossfade.previousOpacity >= 1
+    || crossfade.activeTransform === 'none'
+    || crossfade.previousTransform === 'none') {
+    throw new Error(`desktop: cinematic crossfade layers are unstable: ${JSON.stringify(crossfade)}`);
+  }
+  const desktopTransition = await desktop.$eval(
+    '.heritage-hero__slide.is-active img',
+    (image) => ({
+      currentSrc: image.currentSrc,
+      complete: image.complete && image.naturalWidth > 0,
+    }),
+  );
+  if (!desktopTransition.currentSrc.includes('hero-pool-panorama-') || !desktopTransition.complete) {
+    throw new Error(`desktop: cinematic transition did not reach a loaded panorama frame: ${desktopTransition.currentSrc}`);
   }
   console.log(JSON.stringify({ profile: 'desktop', ...desktopResult }));
   await desktop.close();

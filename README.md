@@ -11,8 +11,9 @@ Read these files in order before changing a property or deployment:
 1. `docs/PORTFOLIO_STATUS.md` - which properties are active, retained, or retired.
 2. `docs/OWNER_SITE_PRODUCT_V2.md` - product boundaries and quality standard.
 3. `docs/OWNER_SITE_ONBOARDING_RUNBOOK.md` - canonical intake, build, release, and offboarding workflow.
-4. `docs/platform-documentation.md` - current technical architecture and deployment model.
-5. `MULTI-LANGUAGE-GUIDE.md` - language-specific implementation and QA.
+4. `docs/DUAL_SITE_TWO_HOUR_PLAYBOOK.md` - fast lane for a storefront plus owner-site preview.
+5. `docs/platform-documentation.md` - current technical architecture and deployment model.
+6. `MULTI-LANGUAGE-GUIDE.md` - language-specific implementation and QA.
 
 Property-specific decisions belong in dated documents such as `docs/MOLONTA_TWO_SITE_AND_INDEXING_DECISION_2026-08-19.md`. They do not override the canonical runbook unless the runbook is updated deliberately.
 

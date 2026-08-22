@@ -19,9 +19,26 @@ const {
 const images = Array.isArray(villa.images) ? villa.images : [];
 const desktopHero = images[0];
 const requestedMobileHero = String(villa.hero?.mobileImage || '');
-const mobileHero = requestedMobileHero
-  ? images.find((image: any) => image.src === requestedMobileHero) || desktopHero
-  : desktopHero;
+const requestedPriorityHeroes = Array.isArray(villa.hero?.priorityImages)
+  ? villa.hero.priorityImages
+  : [];
+const imageBySource = new Map(images.map((image: any) => [image.src, image]));
+const uniqueHeroImages = (sources: string[]) => Array.from(new Set(sources))
+  .map((source) => imageBySource.get(source))
+  .filter(Boolean);
+const desktopHeroSlides = uniqueHeroImages([
+  ...requestedPriorityHeroes,
+  ...images.map((image: any) => image.src),
+]).slice(0, 3);
+const mobileHeroSlides = uniqueHeroImages([
+  requestedMobileHero,
+  ...requestedPriorityHeroes,
+  ...images.map((image: any) => image.src),
+]).slice(0, 3);
+const heroFrames = desktopHeroSlides.map((desktop: any, index: number) => ({
+  desktop,
+  mobile: mobileHeroSlides[index] || desktop,
+}));
 const heroAlt = String(villa.hero?.imageAlt || desktopHero?.alt || villa.name || '');
 const completeGallery = villa.completeGallery || { imageCount: images.length, chapterCount: 1 };
 const storyParagraphs = String(villa.content?.overview || '').split(/\n\s*\n/).filter(Boolean);
@@ -54,17 +71,46 @@ const lightboxItems = images.map((item: any, index: number) => ({
 
 <main class="heritage-site" id="overview">
   <section class="heritage-hero" aria-labelledby="property-title">
-    <picture class="heritage-hero__media">
-      {requestedMobileHero && <source media="(min-width: 761px)" srcset={srcset(desktopHero.src)} sizes="100vw" />}
-      <img
-        src={variant(mobileHero.src, 1600)}
-        srcset={srcset(mobileHero.src)}
-        sizes="100vw"
-        alt={heroAlt}
-        fetchpriority="high"
-        decoding="async"
-      />
-    </picture>
+    <div class="heritage-hero__media" data-cinematic-hero>
+      {heroFrames.map((frame: any, index: number) => (
+        <picture
+          class:list={['heritage-hero__slide', { 'is-active': index === 0 }]}
+          data-hero-slide
+          data-hero-index={index}
+          data-hydrated={index === 0 ? 'true' : 'false'}
+          aria-hidden={index === 0 ? 'false' : 'true'}
+        >
+          {index === 0 ? (
+            <source media="(min-width: 761px)" srcset={srcset(frame.desktop.src)} sizes="100vw" />
+          ) : (
+            <source media="(min-width: 761px)" data-srcset={srcset(frame.desktop.src)} data-sizes="100vw" />
+          )}
+          {index === 0 ? (
+            <img
+              src={variant(frame.mobile.src, 1600)}
+              srcset={srcset(frame.mobile.src)}
+              sizes="100vw"
+              width="1920"
+              height="1080"
+              alt={heroAlt}
+              fetchpriority="high"
+              decoding="async"
+            />
+          ) : (
+            <img
+              data-src={variant(frame.mobile.src, 1600)}
+              data-srcset={srcset(frame.mobile.src)}
+              data-sizes="100vw"
+              width="1920"
+              height="1080"
+              alt=""
+              fetchpriority="low"
+              decoding="async"
+            />
+          )}
+        </picture>
+      ))}
+    </div>
     <div class="heritage-hero__scrim"></div>
     <div class="heritage-hero__content">
       <p class="eyebrow">{villa.hero.eyebrow}</p>
@@ -298,6 +344,100 @@ const lightboxItems = images.map((item: any, index: number) => ({
 </dialog>
 
 <script define:vars={{ galleryImages: lightboxItems }}>
+  const cinematicHero = document.querySelector('[data-cinematic-hero]');
+  if (cinematicHero instanceof HTMLElement) {
+    const heroSlides = Array.from(cinematicHero.querySelectorAll('[data-hero-slide]'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const hydrationPromises = new WeakMap();
+    let activeHeroIndex = 0;
+    let heroTimer = 0;
+
+    const hydrateHeroSlide = (slide) => {
+      if (!(slide instanceof HTMLElement)) return Promise.resolve(false);
+      const existing = hydrationPromises.get(slide);
+      if (existing) return existing;
+      if (slide.dataset.hydrated === 'true') return Promise.resolve(true);
+
+      const image = slide.querySelector('img');
+      const source = slide.querySelector('source');
+      if (!(image instanceof HTMLImageElement)) return Promise.resolve(false);
+
+      const hydration = new Promise((resolve) => {
+        const finish = () => {
+          image.removeEventListener('load', finish);
+          image.removeEventListener('error', finish);
+          const ready = image.complete && image.naturalWidth > 0;
+          slide.dataset.hydrated = ready ? 'true' : 'failed';
+          resolve(ready);
+        };
+        image.addEventListener('load', finish);
+        image.addEventListener('error', finish);
+        if (source instanceof HTMLSourceElement && source.dataset.srcset) {
+          source.srcset = source.dataset.srcset;
+          source.sizes = source.dataset.sizes || '100vw';
+          delete source.dataset.srcset;
+          delete source.dataset.sizes;
+        }
+        if (image.dataset.srcset) image.srcset = image.dataset.srcset;
+        image.sizes = image.dataset.sizes || '100vw';
+        if (image.dataset.src) image.src = image.dataset.src;
+        delete image.dataset.src;
+        delete image.dataset.srcset;
+        delete image.dataset.sizes;
+        if (image.complete) finish();
+      });
+      hydrationPromises.set(slide, hydration);
+      return hydration;
+    };
+
+    const showHeroSlide = (index) => {
+      const nextHeroIndex = (index + heroSlides.length) % heroSlides.length;
+      if (nextHeroIndex === activeHeroIndex) return;
+      activeHeroIndex = nextHeroIndex;
+      heroSlides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === activeHeroIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+    };
+
+    const scheduleHeroAdvance = () => {
+      window.clearTimeout(heroTimer);
+      if (document.hidden || reducedMotion.matches || heroSlides.length < 2) return;
+      heroTimer = window.setTimeout(async () => {
+        const nextIndex = (activeHeroIndex + 1) % heroSlides.length;
+        const ready = await hydrateHeroSlide(heroSlides[nextIndex]);
+        if (!ready || document.hidden || reducedMotion.matches) {
+          scheduleHeroAdvance();
+          return;
+        }
+        showHeroSlide(nextIndex);
+        void hydrateHeroSlide(heroSlides[(nextIndex + 1) % heroSlides.length]);
+        scheduleHeroAdvance();
+      }, 7200);
+    };
+
+    const beginCinematicHero = async () => {
+      if (reducedMotion.matches || heroSlides.length < 2) return;
+      await hydrateHeroSlide(heroSlides[1]);
+      void hydrateHeroSlide(heroSlides[2]);
+      scheduleHeroAdvance();
+    };
+
+    const startHero = () => window.setTimeout(() => { void beginCinematicHero(); }, 350);
+    if (document.readyState === 'complete') startHero();
+    else window.addEventListener('load', startHero, { once: true });
+    document.addEventListener('visibilitychange', scheduleHeroAdvance);
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) {
+        window.clearTimeout(heroTimer);
+        showHeroSlide(0);
+      } else {
+        void beginCinematicHero();
+      }
+    });
+  }
+
   const dialog = document.querySelector('#heritage-lightbox');
   if (dialog instanceof HTMLDialogElement) {
     const image = dialog.querySelector('img');
@@ -338,8 +478,11 @@ const lightboxItems = images.map((item: any, index: number) => ({
 <style>
   .heritage-site { --ink: #171512; --paper: #f4f0e8; --warm: #9a7652; --line: rgba(23, 21, 18, .16); background: #fff; color: var(--ink); }
   .heritage-hero { min-height: min(880px, 92vh); position: relative; display: grid; align-items: end; overflow: hidden; background: #171512; color: #fff; }
-  .heritage-hero__media, .heritage-hero__media img, .heritage-hero__scrim { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .heritage-hero__media img { object-fit: cover; object-position: 50% 52%; }
+  .heritage-hero__media, .heritage-hero__slide, .heritage-hero__slide img, .heritage-hero__scrim { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .heritage-hero__slide { opacity: 0; overflow: hidden; transition: opacity 1.2s ease; will-change: opacity; }
+  .heritage-hero__slide.is-active { opacity: 1; }
+  .heritage-hero__slide img { object-fit: cover; object-position: 50% 52%; backface-visibility: hidden; transform: translateZ(0) scale(1.035); transition: transform 7s ease; will-change: transform; }
+  .heritage-hero__slide.is-active img { transform: translateZ(0) scale(1); }
   .heritage-hero__scrim { background: linear-gradient(90deg, rgba(7, 8, 7, .78) 0%, rgba(7, 8, 7, .34) 54%, rgba(7, 8, 7, .05) 100%), linear-gradient(0deg, rgba(7, 8, 7, .55), transparent 55%); }
   .heritage-hero__content { width: min(1380px, calc(100% - 64px)); margin: 0 auto; padding: 140px 0 105px; position: relative; z-index: 1; }
   .eyebrow { margin: 0 0 22px; color: rgba(255,255,255,.82); font: 600 .74rem/1.3 var(--font-sans); letter-spacing: .25em; text-transform: uppercase; }
@@ -510,7 +653,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
   }
   @media (max-width: 560px) {
     .heritage-hero__content { width: calc(100% - 32px); }
-    .heritage-hero__media img { object-position: 56% 52%; }
+    .heritage-hero__slide img { object-position: 56% 52%; }
     .heritage-hero h1 { max-width: 100%; font-size: clamp(2.85rem, 12.8vw, 3.75rem); line-height: .88; letter-spacing: -.04em; text-wrap: wrap; }
     .heritage-hero .eyebrow { max-width: 100%; font-size: .63rem; line-height: 1.55; letter-spacing: .17em; overflow-wrap: anywhere; }
     .heritage-hero__scrim { background: linear-gradient(0deg, rgba(7,8,7,.82), rgba(7,8,7,.12) 80%); }
@@ -551,5 +694,6 @@ const lightboxItems = images.map((item: any, index: number) => ({
   }
   @media (prefers-reduced-motion: reduce) {
     .heritage-site *, .heritage-site *::before, .heritage-site *::after { scroll-behavior: auto !important; transition: none !important; }
+    .heritage-hero__slide img { animation: none !important; transform: none !important; }
   }
 </style>
