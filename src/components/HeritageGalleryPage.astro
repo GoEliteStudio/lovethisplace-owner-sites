@@ -10,6 +10,8 @@ interface GalleryItem {
   categoryId: string;
   alt: string;
   variants: GalleryVariant[];
+  dominantColor: string;
+  placeholder?: string;
 }
 
 interface GalleryCategory {
@@ -61,11 +63,11 @@ const galleryVariant = (item: GalleryItem, preferredWidth: number) =>
 
 const gallerySrcSet = (item: GalleryItem) =>
   item.variants.map(({ src, width }) => `${src} ${width}w`).join(', ');
+const galleryAvifSrcSet = (item: GalleryItem) =>
+  gallerySrcSet(item).replaceAll(/\.webp(?=\s)/g, '.avif');
 
 const GALLERY_CARD_SIZES =
-  '(max-width: 700px) calc(50vw - 20px), (max-width: 1100px) calc(33vw - 28px), 28vw';
-const GALLERY_WIDE_CARD_SIZES =
-  '(max-width: 700px) calc(100vw - 32px), (max-width: 1100px) calc(66vw - 36px), 56vw';
+  '(max-width: 700px) calc(100vw - 28px), (max-width: 900px) calc(50vw - 24px), (max-width: 1100px) calc(50vw - 36px), 42vw';
 const GALLERY_MODAL_SIZES =
   '(max-width: 760px) calc(100vw - 16px), calc(100vw - 180px)';
 
@@ -74,6 +76,7 @@ const lightboxItems = items.flatMap((item) => {
   return fallback ? [{
     src: fallback.src,
     srcset: gallerySrcSet(item),
+    avifSrcset: galleryAvifSrcSet(item),
     sizes: GALLERY_MODAL_SIZES,
     width: fallback.width,
     height: fallback.height,
@@ -134,22 +137,20 @@ const lightboxItems = items.flatMap((item) => {
             {category.items.map((item, index) => {
               const thumbnail = galleryVariant(item, 480);
               const globalIndex = items.findIndex(({ id }) => id === item.id);
-              const isWide = index % 7 === 0 || index % 7 === 5;
               return thumbnail && (
                 <button
-                  class:list={[
-                    'gallery-card',
-                    { 'gallery-card--wide': isWide },
-                  ]}
+                  class="gallery-card"
                   type="button"
                   aria-label={`Open ${category.label.toLowerCase()} image ${index + 1}: ${item.alt}`}
                   data-gallery-open
                   data-index={globalIndex}
                 >
+                  <picture>
+                  <source type="image/avif" srcset={galleryAvifSrcSet(item)} sizes={GALLERY_CARD_SIZES} />
                   <img
                     src={thumbnail.src}
                     srcset={gallerySrcSet(item)}
-                    sizes={isWide ? GALLERY_WIDE_CARD_SIZES : GALLERY_CARD_SIZES}
+                    sizes={GALLERY_CARD_SIZES}
                     alt={item.alt}
                     width={thumbnail.width}
                     height={thumbnail.height}
@@ -157,7 +158,7 @@ const lightboxItems = items.flatMap((item) => {
                     fetchpriority={categoryIndex === 0 && index === 0 ? 'high' : 'auto'}
                     decoding="async"
                   />
-                  <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  </picture>
                 </button>
               );
             })}
@@ -176,7 +177,10 @@ const lightboxItems = items.flatMap((item) => {
     <div class="gallery-lightbox__stage">
       <button type="button" aria-label="Previous image" data-gallery-previous>&larr;</button>
       <figure>
-        <img data-gallery-image alt="" />
+        <picture data-gallery-picture>
+          <source type="image/avif" data-gallery-avif />
+          <img data-gallery-image alt="" />
+        </picture>
         <figcaption data-gallery-caption></figcaption>
       </figure>
       <button type="button" aria-label="Next image" data-gallery-next>&rarr;</button>
@@ -366,47 +370,35 @@ const lightboxItems = items.flatMap((item) => {
 
   .gallery-mosaic {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-flow: dense;
-    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(12px, 1.5vw, 22px);
   }
 
   .gallery-card {
     min-width: 0;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 2;
     padding: 0;
     border: 0;
     overflow: hidden;
     position: relative;
-    background: #dedbd5;
+    background: transparent;
     cursor: zoom-in;
   }
 
-  .gallery-card--wide {
-    grid-column: span 2;
-    aspect-ratio: 16 / 9;
-  }
-
+  .gallery-card picture,
   .gallery-card img {
     width: 100%;
     height: 100%;
     display: block;
+  }
+
+  .gallery-card img {
     object-fit: cover;
     transition: transform 0.7s ease;
   }
 
   .gallery-card:hover img {
     transform: scale(1.025);
-  }
-
-  .gallery-card > span {
-    position: absolute;
-    right: 13px;
-    bottom: 10px;
-    color: rgba(255, 255, 255, 0.92);
-    font-family: var(--font-serif);
-    font-size: 0.78rem;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.52);
   }
 
   .gallery-lightbox {
@@ -485,14 +477,26 @@ const lightboxItems = items.flatMap((item) => {
     justify-items: center;
   }
 
+  .gallery-lightbox figure picture,
   .gallery-lightbox figure img {
     width: 100%;
     height: 100%;
     min-height: 0;
+  }
+
+  .gallery-lightbox figure picture {
+    display: block;
+    background: transparent;
+  }
+
+  .gallery-lightbox figure img {
     object-fit: contain;
   }
 
   .gallery-lightbox figcaption {
+    min-height: 2.8em;
+    max-height: 2.8em;
+    overflow: hidden;
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.72rem;
     text-align: center;
@@ -562,12 +566,8 @@ const lightboxItems = items.flatMap((item) => {
     }
 
     .gallery-mosaic {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 5px;
-    }
-
-    .gallery-card--wide {
-      grid-column: span 2;
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
 
     .gallery-lightbox__bar {
@@ -650,6 +650,7 @@ const lightboxItems = items.flatMap((item) => {
     const modal = gallery.querySelector<HTMLDialogElement>('[data-gallery-modal]');
     const data = gallery.querySelector<HTMLScriptElement>('[data-gallery-data]');
     const image = gallery.querySelector<HTMLImageElement>('[data-gallery-image]');
+    const avifSource = gallery.querySelector<HTMLSourceElement>('[data-gallery-avif]');
     const caption = gallery.querySelector<HTMLElement>('[data-gallery-caption]');
     const current = gallery.querySelector<HTMLElement>('[data-gallery-current]');
     if (!modal || !data || !image || !caption || !current) return;
@@ -657,6 +658,7 @@ const lightboxItems = items.flatMap((item) => {
     const items = JSON.parse(data.textContent ?? '[]') as Array<{
       src: string;
       srcset: string;
+      avifSrcset: string;
       sizes: string;
       width: number;
       height: number;
@@ -670,7 +672,7 @@ const lightboxItems = items.flatMap((item) => {
       const neighbour = new Image();
       neighbour.decoding = 'async';
       neighbour.sizes = item.sizes;
-      neighbour.srcset = item.srcset;
+      neighbour.srcset = item.avifSrcset || item.srcset;
       neighbour.src = item.src;
     };
     const warmAdjacent = (index: number) => {
@@ -689,6 +691,7 @@ const lightboxItems = items.flatMap((item) => {
     const show = (index: number) => {
       active = (index + items.length) % items.length;
       const item = items[active];
+      if (avifSource) avifSource.srcset = item.avifSrcset;
       image.srcset = item.srcset;
       image.sizes = item.sizes;
       image.src = item.src;

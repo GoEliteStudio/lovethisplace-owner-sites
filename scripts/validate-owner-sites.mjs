@@ -105,19 +105,20 @@ assert(
   molonta.hero?.mobileImage === '/images/villas/molonta-owner-preview/hero-infinity-pool.webp',
   'Molonta uses the approved infinity-pool opening frame on mobile',
 );
-assert(heritagePage.includes('const galleryPreviewIndexes = [1, 3, 8, 6, 5]'), 'the editorial gallery preview is deterministic');
-assert(heritagePage.includes('gallery-card--feature') && heritagePage.includes('gallery-card--support'), 'the gallery uses one feature frame and aligned supporting frames');
-assert(!heritagePage.includes('gallery-grid'), 'the misaligned masonry gallery cannot return');
+assert(heritagePage.includes('const galleryPreviewIndexes = [1, 3, 8, 6, 5, 7]'), 'the six-image editorial gallery preview is deterministic');
+assert(heritagePage.includes('class="gallery-grid"'), 'the main-page gallery uses the approved balanced grid');
 assert(heritagePage.includes('hosts__legacy') && !heritagePage.includes('hosts__portrait'), 'the host section does not imply that an estate photograph is an owner portrait');
 assert(heritagePage.includes('faq__layout') && heritagePage.includes('class="faq-item"'), 'the FAQ uses the refined split accordion layout');
 assert(schema.includes("'@type': 'FAQPage'"), 'villa FAQs generate FAQPage structured data');
-assert(heritagePage.includes('.gallery-card--feature { aspect-ratio: 16 / 9; }'), 'the desktop gallery feature frame has a fixed ratio');
-assert(heritagePage.includes('.gallery-card--support { aspect-ratio: 16 / 10; }'), 'supporting desktop gallery frames share a fixed ratio');
+assert(heritagePage.includes('aspect-ratio: 3 / 2;'), 'every main-page gallery frame uses the approved 3:2 ratio');
+assert(heritagePage.includes('.gallery-card picture { overflow: hidden; background: transparent; }'), 'main-page gallery loading surfaces remain transparent and consistent');
+assert(heritagePage.includes('width: min(1280px, calc(100vw - clamp(36px, 8vw, 120px)))'), 'the owner gallery matches the storefront presentation width');
 assert(heritagePage.includes('id="amenities"'), 'the Amenities menu has a real section target');
 assert(heritagePage.includes('https://www.google.com/maps?'), 'the location section uses an actionable map');
 assert(heritagePage.includes('.details__grid > div:first-child { position: sticky;'), 'the suite overview uses the approved sticky split layout');
 assert(heritagePage.includes('.lightbox[open] { display: grid; place-items: center; }'), 'the image viewer uses a stable centered frame');
-assert(heritagePage.includes('object-fit: cover; object-position: center;'), 'lightbox images share one aligned presentation frame');
+assert(heritagePage.includes('object-fit: contain; object-position: center; background: transparent;'), 'lightbox images share one uncropped presentation frame');
+assert(heritagePage.includes('width: min(calc(100vw - 180px), 1500px)') && heritagePage.includes('height: min(calc(100dvh - 60px), 920px)'), 'the desktop owner viewer matches the storefront image stage');
 const forbiddenLightboxRuntime = [
   'cachedImages',
   'renderRequest',
@@ -145,7 +146,7 @@ for (const [source, label] of [
     `${label} delegates responsive image selection directly to the browser`,
   );
 }
-assert(heritagePage.includes("image.sizes = '100vw';"), 'the curated gallery keeps its full-viewport responsive hint');
+assert(heritagePage.includes('image.sizes = item.sizes;'), 'the curated gallery uses its measured modal display width');
 assert(heritageGalleryPage.includes('image.sizes = item.sizes;'), 'the complete gallery uses its measured modal display width');
 assert(molonta.completeGallery?.imageCount === 104, 'Molonta declares the 104-image complete collection');
 assert(molonta.completeGallery?.chapterCount === 9, 'Molonta declares nine complete-gallery chapters');
@@ -177,7 +178,19 @@ assert(
     && !heritageGalleryPage.includes('warmAdjacent(shownIndex)'),
   'complete-gallery neighbors warm through one stable debounced load listener',
 );
-assert(heritageGalleryPage.includes('calc(50vw - 20px)') && heritageGalleryPage.includes('calc(100vw - 32px)'), 'complete-gallery cards declare accurate responsive display sizes');
+assert(
+  heritageGalleryPage.includes('calc(100vw - 28px)')
+    && heritageGalleryPage.includes('grid-template-columns: 1fr;')
+    && !heritageGalleryPage.includes('gallery-card--wide'),
+  'complete-gallery cards keep one consistent mobile presentation size',
+);
+assert(
+  heritageGalleryPage.includes('grid-template-columns: repeat(2, minmax(0, 1fr));')
+    && heritageGalleryPage.includes('aspect-ratio: 3 / 2;')
+    && heritageGalleryPage.includes('background: transparent;')
+    && !heritageGalleryPage.includes('data-gallery-tile-image'),
+  'complete-gallery cards use a large editorial grid without visible loading tiles',
+);
 assert(heritageGalleryPage.includes('calc(100vw - 180px)'), 'complete-gallery lightbox declares its measured desktop display width');
 const completeGalleryShowBlock = heritageGalleryPage.slice(
   heritageGalleryPage.indexOf('const show ='),
@@ -234,7 +247,7 @@ assert(
     && mobileHeroMenuQa.includes("name: 'samsung-large'")
     && mobileHeroMenuQa.includes("textContent?.trim().toLowerCase() === 'gallery'")
     && mobileHeroMenuQa.includes("hero-infinity-pool-")
-    && mobileHeroMenuQa.includes("hero-estate-twilight-"),
+    && mobileHeroMenuQa.includes("hero-estate-twilight"),
   'browser QA covers opened-menu clipping and mobile/desktop hero selection',
 );
 assert(
@@ -251,11 +264,9 @@ const imageSources = molonta.images.map((image) => image.src);
 assert(new Set(imageSources).size === imageSources.length, 'curated gallery sources are unique');
 
 const variantBudgets = new Map([
-  [480, 100],
-  [768, 180],
-  [1024, 300],
-  [1280, 420],
-  [1600, 600],
+  [640, 120],
+  [960, 230],
+  [1280, 360],
 ]);
 for (const source of imageSources) {
   const relative = source.replace(/^\//, '');
@@ -264,10 +275,17 @@ for (const source of imageSources) {
     const masterPath = path.join(root, 'public', relative);
     const masterMetadata = await sharp(masterPath).metadata();
     assert(masterMetadata.format === 'webp', `${source} is WebP`);
-    assert(masterMetadata.width === 1920, `${source} has a 1920px master`);
-    assert(fs.statSync(masterPath).size <= 800 * 1024, `${source} stays within the master-image budget`);
+    assert(masterMetadata.width >= 1536 && masterMetadata.width <= 2048, `${source} has a source-faithful master`);
+    assert(fs.statSync(masterPath).size <= 1400 * 1024, `${source} stays within the master-image budget`);
+    const masterAvif = masterPath.replace(/\.webp$/, '.avif');
+    assert(fs.existsSync(masterAvif), `${source.replace(/\.webp$/, '.avif')} exists`);
+    if (fs.existsSync(masterAvif)) {
+      const avifMetadata = await sharp(masterAvif).metadata();
+      assert(avifMetadata.format === 'heif' && avifMetadata.width === masterMetadata.width, `${source.replace(/\.webp$/, '.avif')} is a matching AVIF`);
+      assert(fs.statSync(masterAvif).size < fs.statSync(masterPath).size, `${source} AVIF is smaller than WebP`);
+    }
 
-    for (const width of [480, 768, 1024, 1280, 1600]) {
+    for (const width of [640, 960, 1280]) {
       const variant = source.replace(/\.webp$/, `-${width}.webp`).replace(/^\//, '');
       assert(exists(`public/${variant}`), `${variant} exists`);
       if (exists(`public/${variant}`)) {
@@ -275,6 +293,13 @@ for (const source of imageSources) {
         const metadata = await sharp(variantPath).metadata();
         assert(metadata.format === 'webp' && metadata.width === width, `${variant} is a ${width}px WebP`);
         assert(fs.statSync(variantPath).size <= variantBudgets.get(width) * 1024, `${variant} stays within its delivery budget`);
+        const avifPath = variantPath.replace(/\.webp$/, '.avif');
+        assert(fs.existsSync(avifPath), `${variant.replace(/\.webp$/, '.avif')} exists`);
+        if (fs.existsSync(avifPath)) {
+          const avifMetadata = await sharp(avifPath).metadata();
+          assert(avifMetadata.format === 'heif' && avifMetadata.width === width, `${variant.replace(/\.webp$/, '.avif')} is a ${width}px AVIF`);
+          assert(fs.statSync(avifPath).size < fs.statSync(variantPath).size, `${variant} AVIF is smaller than WebP`);
+        }
       }
     }
   }
@@ -310,13 +335,12 @@ let completeAssetsValid = true;
 for (const item of completeGallery.items) {
   const widths = item.variants.map((variant) => variant.width).sort((a, b) => a - b);
   if (
-    widths.length < 5
-    || widths[0] !== 480
-    || widths[1] !== 640
-    || widths[2] !== 768
-    || widths[3] !== 960
+    widths.length < 3
+    || widths.length > 4
+    || widths[0] !== 640
+    || widths[1] !== 960
     || widths.at(-1) < 1000
-    || widths.at(-1) > 2560
+    || widths.at(-1) > 2048
     || new Set(widths).size !== widths.length
   ) completeAssetsValid = false;
   for (const variant of item.variants) {
@@ -329,13 +353,23 @@ for (const item of completeGallery.items) {
     }
     const assetPath = path.join(root, relative);
     const metadata = await sharp(assetPath).metadata();
+    const avifPath = assetPath.replace(/\.webp$/, '.avif');
     if (
       metadata.format !== 'webp'
       || metadata.width !== variant.width
       || metadata.height !== variant.height
-      || fs.statSync(assetPath).size > 1200 * 1024
+      || fs.statSync(assetPath).size > 1400 * 1024
+      || !fs.existsSync(avifPath)
     ) {
       completeAssetsValid = false;
+    } else {
+      const avifMetadata = await sharp(avifPath).metadata();
+      if (
+        avifMetadata.format !== 'heif'
+        || avifMetadata.width !== variant.width
+        || avifMetadata.height !== variant.height
+        || fs.statSync(avifPath).size >= fs.statSync(assetPath).size
+      ) completeAssetsValid = false;
     }
   }
 }
@@ -343,7 +377,12 @@ assert(
   completeAssetNames.size === completeGallery.items.reduce((total, item) => total + item.variants.length, 0),
   'the complete gallery references every source-bounded responsive derivative exactly once',
 );
-assert(completeAssetsValid, 'all complete-gallery derivatives exist as dimensionally correct budgeted WebP files');
+assert(completeAssetsValid, 'all complete-gallery derivatives exist as dimensionally correct budgeted AVIF/WebP files');
+assert(
+  completeGallery.items.filter((item) => item.placeholder).length === 6
+  && completeGallery.items.every((item) => /^#[0-9a-f]{6}$/i.test(item.dominantColor)),
+  'complete-gallery placeholders stay limited above the fold and every card has a dominant color',
+);
 const prohibitedReviewClaims = ['Alexandra M.', 'James R.', 'Sofia L.', 'genericGoogleReviews'];
 for (const claim of prohibitedReviewClaims) {
   assert(!route.includes(claim) && !schema.includes(claim), `fabricated review marker "${claim}" is absent`);

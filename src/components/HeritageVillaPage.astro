@@ -1,5 +1,6 @@
 ---
 import InquiryForm from './InquiryForm.astro';
+import molontaPresentation from '../content/media/molonta-presentation.json' with { type: 'json' };
 
 interface Props {
   villa: any;
@@ -48,24 +49,42 @@ const addOns = villa.content?.addOns || [];
 const bookingNotes = villa.content?.bookingNotes || [];
 const faqs = villa.content?.faq || [];
 const rates = villa.seasons || [];
-const galleryPreviewIndexes = [1, 3, 8, 6, 5].filter((index) => images[index]);
+const galleryPreviewIndexes = [1, 3, 8, 6, 5, 7].filter((index) => images[index]);
 const galleryPreview = galleryPreviewIndexes.map((galleryIndex) => ({
   ...images[galleryIndex],
   galleryIndex
 }));
 
-const variant = (src: string, width: number) => src.replace(/\.webp$/i, `-${width}.webp`);
-const srcset = (src: string) => [480, 768, 1024, 1280, 1600]
-  .map((width) => `${variant(src, width)} ${width}w`)
+const sourceWidthById: Record<string, number> = {
+  'hero-estate-twilight': 1536,
+  'private-beach': 2000,
+};
+const mediaId = (src: string) => src.split('/').at(-1)?.replace(/\.webp$/i, '') ?? '';
+const presentationFor = (src: string) =>
+  molontaPresentation[mediaId(src) as keyof typeof molontaPresentation] as
+    | { dominantColor: string; placeholder?: string }
+    | undefined;
+const sourceWidth = (src: string) => sourceWidthById[mediaId(src)] ?? 2048;
+const asFormat = (src: string, format: 'webp' | 'avif') => src.replace(/\.webp$/i, `.${format}`);
+const variant = (src: string, width: number, format: 'webp' | 'avif' = 'webp') =>
+  src.replace(/\.webp$/i, `-${width}.${format}`);
+const srcset = (src: string, format: 'webp' | 'avif' = 'webp') => [640, 960, 1280]
+  .filter((width) => width < sourceWidth(src))
+  .map((width) => `${variant(src, width, format)} ${width}w`)
+  .concat(`${asFormat(src, format)} ${sourceWidth(src)}w`)
   .join(', ');
 const lightboxHeights = [1067, 1067, 1067, 1015, 1067, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900];
+const GALLERY_CARD_SIZES = '(max-width: 700px) calc(100vw - 28px), (max-width: 900px) calc(50vw - 24px), (max-width: 1100px) calc(50vw - 36px), 42vw';
+const GALLERY_MODAL_SIZES = '(max-width: 760px) calc(100vw - 16px), calc(100vw - 180px)';
 const lightboxItems = images.map((item: any, index: number) => ({
-  src: variant(item.src, 1600),
+  src: variant(item.src, 1280),
   srcset: srcset(item.src),
-  width: 1600,
+  avifSrcset: srcset(item.src, 'avif'),
+  width: 1280,
   height: lightboxHeights[index] ?? 900,
   alt: item.alt,
   caption: item.caption,
+  sizes: GALLERY_MODAL_SIZES,
 }));
 ---
 
@@ -79,15 +98,26 @@ const lightboxItems = images.map((item: any, index: number) => ({
           data-hero-index={index}
           data-hydrated={index === 0 ? 'true' : 'false'}
           aria-hidden={index === 0 ? 'false' : 'true'}
+          style={`--hero-placeholder-desktop: ${presentationFor(frame.desktop.src)?.placeholder ? `url("${presentationFor(frame.desktop.src)?.placeholder}")` : 'none'}; --hero-placeholder-mobile: ${presentationFor(frame.mobile.src)?.placeholder ? `url("${presentationFor(frame.mobile.src)?.placeholder}")` : 'none'}; background-color: ${presentationFor(frame.mobile.src)?.dominantColor ?? '#171512'};`}
         >
+          {index === 0 ? (
+            <source type="image/avif" media="(min-width: 761px)" srcset={srcset(frame.desktop.src, 'avif')} sizes="100vw" />
+          ) : (
+            <source type="image/avif" media="(min-width: 761px)" data-srcset={srcset(frame.desktop.src, 'avif')} data-sizes="100vw" />
+          )}
           {index === 0 ? (
             <source media="(min-width: 761px)" srcset={srcset(frame.desktop.src)} sizes="100vw" />
           ) : (
             <source media="(min-width: 761px)" data-srcset={srcset(frame.desktop.src)} data-sizes="100vw" />
           )}
           {index === 0 ? (
+            <source type="image/avif" srcset={srcset(frame.mobile.src, 'avif')} sizes="100vw" />
+          ) : (
+            <source type="image/avif" data-srcset={srcset(frame.mobile.src, 'avif')} data-sizes="100vw" />
+          )}
+          {index === 0 ? (
             <img
-              src={variant(frame.mobile.src, 1600)}
+              src={variant(frame.mobile.src, 1280)}
               srcset={srcset(frame.mobile.src)}
               sizes="100vw"
               width="1920"
@@ -98,7 +128,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
             />
           ) : (
             <img
-              data-src={variant(frame.mobile.src, 1600)}
+              data-src={variant(frame.mobile.src, 1280)}
               data-srcset={srcset(frame.mobile.src)}
               data-sizes="100vw"
               width="1920"
@@ -152,11 +182,11 @@ const lightboxItems = images.map((item: any, index: number) => ({
 
   <section class="editorial-pair" aria-label="Molonta setting">
     <figure class="editorial-pair__large">
-      <img src={variant(images[1].src, 1280)} srcset={srcset(images[1].src)} sizes="(max-width: 850px) 100vw, 64vw" alt={images[1].alt} loading="lazy" decoding="async" />
+      <picture style={`background-color: ${presentationFor(images[1].src)?.dominantColor ?? '#ddd'}; background-image: ${presentationFor(images[1].src)?.placeholder ? `url("${presentationFor(images[1].src)?.placeholder}")` : 'none'}; background-size: cover; background-position: center;`}><source type="image/avif" srcset={srcset(images[1].src, 'avif')} sizes="(max-width: 850px) 100vw, 64vw" /><img src={variant(images[1].src, 1280)} srcset={srcset(images[1].src)} sizes="(max-width: 850px) 100vw, 64vw" alt={images[1].alt} loading="lazy" decoding="async" /></picture>
       <figcaption>{images[1].caption}</figcaption>
     </figure>
     <figure class="editorial-pair__small">
-      <img src={variant(images[8].src, 768)} srcset={srcset(images[8].src)} sizes="(max-width: 850px) 100vw, 30vw" alt={images[8].alt} loading="lazy" decoding="async" />
+      <picture style={`background-color: ${presentationFor(images[8].src)?.dominantColor ?? '#ddd'}; background-size: cover; background-position: center;`}><source type="image/avif" srcset={srcset(images[8].src, 'avif')} sizes="(max-width: 850px) 100vw, 30vw" /><img src={variant(images[8].src, 960)} srcset={srcset(images[8].src)} sizes="(max-width: 850px) 100vw, 30vw" alt={images[8].alt} loading="lazy" decoding="async" /></picture>
       <figcaption>{images[8].caption}</figcaption>
     </figure>
   </section>
@@ -194,17 +224,10 @@ const lightboxItems = images.map((item: any, index: number) => ({
       <p>A curated introduction to the landscape, living spaces, shoreline and life around the estate.</p>
     </header>
     <div class="gallery-showcase">
-      {galleryPreview[0] && (
-        <button class="gallery-card gallery-card--feature" type="button" data-gallery-index={galleryPreview[0].galleryIndex} aria-label={`Open image ${galleryPreview[0].galleryIndex + 1}: ${galleryPreview[0].alt}`}>
-          <img src={variant(galleryPreview[0].src, 1280)} srcset={srcset(galleryPreview[0].src)} sizes="(max-width: 760px) 100vw, 92vw" alt={galleryPreview[0].alt} loading="lazy" decoding="async" />
-          <span class="gallery-card__caption">{galleryPreview[0].caption}</span>
-        </button>
-      )}
-      <div class="gallery-strip" aria-label="Selected views of Molonta Heritage Estate">
-        {galleryPreview.slice(1).map((image: any) => (
-          <button class="gallery-card gallery-card--support" type="button" data-gallery-index={image.galleryIndex} aria-label={`Open image ${image.galleryIndex + 1}: ${image.alt}`}>
-            <img src={variant(image.src, 768)} srcset={srcset(image.src)} sizes="(max-width: 560px) 82vw, (max-width: 900px) 50vw, 24vw" alt={image.alt} loading="lazy" decoding="async" />
-            <span class="gallery-card__caption">{image.caption}</span>
+      <div class="gallery-grid" aria-label="Selected views of Molonta Heritage Estate">
+        {galleryPreview.map((image: any) => (
+          <button class="gallery-card" type="button" data-gallery-index={image.galleryIndex} aria-label={`Open image ${image.galleryIndex + 1}: ${image.alt}`}>
+            <picture><source type="image/avif" srcset={srcset(image.src, 'avif')} sizes={GALLERY_CARD_SIZES} /><img src={variant(image.src, 960)} srcset={srcset(image.src)} sizes={GALLERY_CARD_SIZES} alt={image.alt} loading="lazy" decoding="async" /></picture>
           </button>
         ))}
       </div>
@@ -338,7 +361,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
 <dialog class="lightbox" id="heritage-lightbox" aria-label="Property image viewer">
   <button type="button" class="lightbox__close" aria-label="Close image viewer">×</button>
   <button type="button" class="lightbox__previous" aria-label="Previous image">&larr;</button>
-  <figure><img width={lightboxItems[0].width} height={lightboxItems[0].height} alt="" /><figcaption></figcaption></figure>
+  <figure><picture data-lightbox-picture><source type="image/avif" data-lightbox-avif /><img width={lightboxItems[0].width} height={lightboxItems[0].height} alt="" /></picture><figcaption></figcaption></figure>
   <output class="lightbox__counter" aria-live="polite"></output>
   <button type="button" class="lightbox__next" aria-label="Next image">&rarr;</button>
 </dialog>
@@ -441,15 +464,37 @@ const lightboxItems = images.map((item: any, index: number) => ({
   const dialog = document.querySelector('#heritage-lightbox');
   if (dialog instanceof HTMLDialogElement) {
     const image = dialog.querySelector('img');
+    const avifSource = dialog.querySelector('[data-lightbox-avif]');
     const caption = dialog.querySelector('figcaption');
     const counter = dialog.querySelector('.lightbox__counter');
     let active = 0;
+    let warmTimer = 0;
+    const warm = (index) => {
+      const item = galleryImages[(index + galleryImages.length) % galleryImages.length];
+      const neighbour = new Image();
+      neighbour.decoding = 'async';
+      neighbour.sizes = item.sizes;
+      neighbour.srcset = item.avifSrcset || item.srcset;
+      neighbour.src = item.src;
+    };
+    const warmAdjacent = (index) => {
+      warm(index - 1);
+      warm(index + 1);
+    };
+    image?.addEventListener('load', () => {
+      const loadedIndex = active;
+      window.clearTimeout(warmTimer);
+      warmTimer = window.setTimeout(() => {
+        if (dialog.open && active === loadedIndex) warmAdjacent(loadedIndex);
+      }, 250);
+    });
     const show = (index) => {
       active = (index + galleryImages.length) % galleryImages.length;
       const item = galleryImages[active];
+      if (avifSource instanceof HTMLSourceElement) avifSource.srcset = item.avifSrcset;
       if (image) {
         image.srcset = item.srcset;
-        image.sizes = '100vw';
+        image.sizes = item.sizes;
         image.src = item.src;
         image.width = item.width;
         image.height = item.height;
@@ -468,6 +513,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
     dialog.querySelector('.lightbox__previous')?.addEventListener('click', () => show(active - 1));
     dialog.querySelector('.lightbox__next')?.addEventListener('click', () => show(active + 1));
     dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('close', () => window.clearTimeout(warmTimer));
     dialog.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft') show(active - 1);
       if (event.key === 'ArrowRight') show(active + 1);
@@ -479,7 +525,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
   .heritage-site { --ink: #171512; --paper: #f4f0e8; --warm: #9a7652; --line: rgba(23, 21, 18, .16); background: #fff; color: var(--ink); }
   .heritage-hero { min-height: min(880px, 92vh); position: relative; display: grid; align-items: end; overflow: hidden; background: #171512; color: #fff; }
   .heritage-hero__media, .heritage-hero__slide, .heritage-hero__slide img, .heritage-hero__scrim { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .heritage-hero__slide { opacity: 0; overflow: hidden; transition: opacity 1.2s ease; will-change: opacity; }
+  .heritage-hero__slide { opacity: 0; overflow: hidden; background-image: var(--hero-placeholder-desktop); background-size: cover; background-position: center; transition: opacity 1.2s ease; will-change: opacity; }
   .heritage-hero__slide.is-active { opacity: 1; }
   .heritage-hero__slide img { object-fit: cover; object-position: 50% 52%; backface-visibility: hidden; transform: translateZ(0) scale(1.035); transition: transform 7s ease; will-change: transform; }
   .heritage-hero__slide.is-active img { transform: translateZ(0) scale(1); }
@@ -513,7 +559,8 @@ const lightboxItems = images.map((item: any, index: number) => ({
   .editorial-pair figure { margin: 0; position: relative; overflow: hidden; background: #ddd; }
   .editorial-pair__large { aspect-ratio: 1.55; }
   .editorial-pair__small { aspect-ratio: .82; }
-  .editorial-pair img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
+  .editorial-pair picture, .editorial-pair img { width: 100%; height: 100%; display: block; }
+  .editorial-pair img { object-fit: cover; transition: transform .8s ease; }
   .editorial-pair figure:hover img { transform: scale(1.02); }
   .editorial-pair figcaption { position: absolute; left: 22px; right: 22px; bottom: 18px; color: #fff; font: 500 .76rem/1.45 var(--font-sans); text-shadow: 0 2px 16px rgba(0,0,0,.75); }
   .stay { padding-bottom: clamp(80px, 8vw, 125px); }
@@ -532,15 +579,13 @@ const lightboxItems = images.map((item: any, index: number) => ({
   .booking-note { padding: 28px 36px; border: 1px solid var(--line); border-top: 0; display: grid; grid-template-columns: 170px 1fr; gap: 30px; }
   .booking-note > span { color: var(--warm); font: 600 .68rem/1.5 var(--font-sans); letter-spacing: .15em; text-transform: uppercase; }
   .booking-note ul { margin: 0; padding-left: 18px; color: #565049; }
-  .gallery-showcase { margin-top: 58px; }
-  .gallery-card { width: 100%; position: relative; display: block; padding: 0; border: 0; overflow: hidden; background: #ddd; color: #fff; cursor: zoom-in; text-align: left; }
-  .gallery-card--feature { aspect-ratio: 16 / 9; }
-  .gallery-strip { margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .gallery-card--support { aspect-ratio: 16 / 10; }
-  .gallery-card::after { content: ''; position: absolute; inset: 42% 0 0; background: linear-gradient(0deg, rgba(9,8,7,.62), transparent); pointer-events: none; }
-  .gallery-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .65s ease, filter .65s ease; }
+  .gallery-showcase { width: min(1280px, calc(100vw - clamp(36px, 8vw, 120px))); margin-top: 58px; position: relative; left: 50%; transform: translateX(-50%); }
+  .gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 1.5vw, 22px); }
+  .gallery-card { width: 100%; min-width: 0; aspect-ratio: 3 / 2; position: relative; display: block; padding: 0; border: 0; overflow: hidden; background: transparent; color: #fff; cursor: zoom-in; text-align: left; }
+  .gallery-card picture, .gallery-card img { width: 100%; height: 100%; display: block; }
+  .gallery-card picture { overflow: hidden; background: transparent; }
+  .gallery-card img { object-fit: cover; transition: transform .65s ease, filter .65s ease; }
   .gallery-card:hover img { transform: scale(1.018); filter: brightness(.94); }
-  .gallery-card__caption { position: absolute; z-index: 1; left: 20px; right: 20px; bottom: 17px; color: #fff; font: 500 .75rem/1.45 var(--font-sans); text-shadow: 0 2px 12px rgba(0,0,0,.5); }
   .gallery-showcase__footer { margin-top: 26px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
   .gallery-showcase__footer p { margin: 0; color: #6a635b; font-size: .9rem; }
   .gallery-showcase__footer strong { color: var(--ink); font-family: var(--font-serif); font-size: 1.35rem; font-weight: 400; }
@@ -615,9 +660,11 @@ const lightboxItems = images.map((item: any, index: number) => ({
   .lightbox { width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; padding: 0; border: 0; background: rgba(8,8,7,.96); color: #fff; }
   .lightbox::backdrop { background: rgba(0,0,0,.78); }
   .lightbox[open] { display: grid; place-items: center; }
-  .lightbox figure { width: min(90vw, 1500px); height: min(84vh, 920px); margin: 0; padding: 36px; display: grid; grid-template-rows: minmax(0, 1fr) 54px; gap: 14px; background: #0e0d0c; box-sizing: border-box; }
-  .lightbox img { width: 100%; height: 100%; min-height: 0; object-fit: cover; object-position: center; background: #0e0d0c; }
-  .lightbox figcaption { margin: 0; overflow: hidden; color: rgba(255,255,255,.68); font-size: .8rem; line-height: 1.45; }
+  .lightbox figure { width: min(calc(100vw - 180px), 1500px); height: min(calc(100dvh - 60px), 920px); margin: 0; padding: 24px 36px; display: grid; grid-template-rows: minmax(0, 1fr) 54px; gap: 14px; background: #0e0d0c; box-sizing: border-box; }
+  .lightbox picture, .lightbox img { width: 100%; height: 100%; min-height: 0; }
+  .lightbox picture { display: block; background: transparent; }
+  .lightbox img { object-fit: contain; object-position: center; background: transparent; }
+  .lightbox figcaption { width: 100%; min-height: 2.8em; max-height: 2.8em; margin: 0; overflow: hidden; color: rgba(255,255,255,.68); font-size: .8rem; line-height: 1.45; text-align: center; }
   .lightbox__counter { position: fixed; left: 28px; bottom: 24px; color: rgba(255,255,255,.62); font: 600 .68rem/1 var(--font-sans); letter-spacing: .12em; }
   .lightbox button { position: fixed; z-index: 2; border: 0; background: transparent; color: #fff; cursor: pointer; }
   .lightbox__close { top: 22px; right: 28px; font-size: 2.2rem; }
@@ -640,7 +687,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
     .service-grid { grid-template-columns: 1fr; }
     .service-card { min-height: 0; }
     .booking-note { grid-template-columns: 1fr; }
-    .gallery-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .faq__intro { position: static; max-width: 720px; }
     .faq-list { max-width: none; }
     .hosts__legacy { min-height: 480px; }
@@ -652,6 +699,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
     .inquire { width: 100%; padding-left: 18px; padding-right: 18px; }
   }
   @media (max-width: 560px) {
+    .heritage-hero__slide { background-image: var(--hero-placeholder-mobile); }
     .heritage-hero__content { width: calc(100% - 32px); }
     .heritage-hero__slide img { object-position: 56% 52%; }
     .heritage-hero h1 { max-width: 100%; font-size: clamp(2.85rem, 12.8vw, 3.75rem); line-height: .88; letter-spacing: -.04em; text-wrap: wrap; }
@@ -663,9 +711,7 @@ const lightboxItems = images.map((item: any, index: number) => ({
     .fact-ribbon strong { font-size: 2.2rem; }
     .section-shell { width: calc(100% - 32px); padding: 78px 0; }
     .story h2, .section-intro h2, .details h2, .hosts h2 { font-size: 3.4rem; }
-    .gallery-card--feature { aspect-ratio: 4 / 3; }
-    .gallery-strip { grid-template-columns: 1fr; gap: 10px; }
-    .gallery-card--support { width: 100%; aspect-ratio: 4 / 3; }
+    .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
     .gallery-showcase__footer { align-items: flex-start; flex-direction: column; }
     .gallery-card__caption { left: 16px; right: 16px; bottom: 14px; }
     .rate-grid { grid-template-columns: 1fr; }

@@ -25,7 +25,11 @@ try {
       if (request.resourceType() === 'image') initialImages.push(request.url());
     });
     await page.setViewport({ ...profile, isMobile: true, hasTouch: true });
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(() => {
+      const image = document.querySelector('.heritage-hero__slide.is-active img');
+      return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
+    }, { timeout: 15000 });
 
     const initial = await page.evaluate(() => {
       const hero = document.querySelector('.heritage-hero__slide.is-active img');
@@ -53,8 +57,8 @@ try {
       throw new Error(`${profile.name}: mobile hero is not the approved infinity-pool frame: ${initial.heroCurrentSrc}`);
     }
     if (!initial.heroComplete) throw new Error(`${profile.name}: mobile hero did not load`);
-    if (initial.heroSlideCount !== 3 || initial.hydratedHeroCount !== 3) {
-      throw new Error(`${profile.name}: cinematic hero did not hydrate exactly three frames`);
+    if (initial.heroSlideCount !== 3 || initial.hydratedHeroCount < 1) {
+      throw new Error(`${profile.name}: cinematic hero did not render its three-frame contract`);
     }
     const cinematicRequests = initialImages.filter((requestUrl) =>
       /hero-(infinity-pool|estate-twilight|pool-panorama)-/.test(requestUrl)
@@ -68,6 +72,16 @@ try {
     if (initial.buttonDisplay === 'none' || initial.navigationDisplay !== 'none') {
       throw new Error(`${profile.name}: mobile navigation does not start collapsed`);
     }
+
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll('[data-hero-slide]')]
+        .filter((slide) => slide.getAttribute('data-hydrated') === 'true').length === 3,
+      { timeout: 30000 },
+    );
+    const hydratedHeroCount = await page.$$eval(
+      '[data-hero-slide]',
+      (slides) => slides.filter((slide) => slide.getAttribute('data-hydrated') === 'true').length,
+    );
 
     await page.click('.mobile-menu-btn');
     await page.waitForFunction(() =>
@@ -133,13 +147,17 @@ try {
     const closedDisplay = await page.$eval('#primary-navigation', (element) => getComputedStyle(element).display);
     if (closedDisplay !== 'none') throw new Error(`${profile.name}: mobile navigation did not close`);
 
-    console.log(JSON.stringify({ profile: profile.name, initial, opened }));
+    console.log(JSON.stringify({ profile: profile.name, initial, hydratedHeroCount, opened }));
     await page.close();
   }
 
   const desktop = await browser.newPage();
   await desktop.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
-  await desktop.goto(url, { waitUntil: 'networkidle0' });
+  await desktop.goto(url, { waitUntil: 'domcontentloaded' });
+  await desktop.waitForFunction(() => {
+    const image = document.querySelector('.heritage-hero__slide.is-active img');
+    return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0;
+  }, { timeout: 15000 });
   const desktopResult = await desktop.evaluate(() => {
     const hero = document.querySelector('.heritage-hero__slide.is-active img');
     const button = document.querySelector('.mobile-menu-btn');
@@ -157,7 +175,7 @@ try {
       navigationDirection: getComputedStyle(navigation).flexDirection,
     };
   });
-  if (!desktopResult.heroCurrentSrc.includes('hero-estate-twilight-')) {
+  if (!desktopResult.heroCurrentSrc.includes('hero-estate-twilight')) {
     throw new Error(`desktop: twilight estate is no longer the opening frame: ${desktopResult.heroCurrentSrc}`);
   }
   if (!desktopResult.heroComplete) throw new Error('desktop: hero did not load');
@@ -168,7 +186,7 @@ try {
   }
   await desktop.waitForFunction(() =>
     document.querySelector('[data-hero-index="1"]')?.classList.contains('is-active'),
-    { timeout: 10000 },
+    { timeout: 15000 },
   );
   await new Promise((resolve) => setTimeout(resolve, 500));
   const crossfade = await desktop.evaluate(() => {
@@ -198,7 +216,7 @@ try {
       complete: image.complete && image.naturalWidth > 0,
     }),
   );
-  if (!desktopTransition.currentSrc.includes('hero-pool-panorama-') || !desktopTransition.complete) {
+  if (!desktopTransition.currentSrc.includes('hero-pool-panorama') || !desktopTransition.complete) {
     throw new Error(`desktop: cinematic transition did not reach a loaded panorama frame: ${desktopTransition.currentSrc}`);
   }
   console.log(JSON.stringify({ profile: 'desktop', ...desktopResult }));
