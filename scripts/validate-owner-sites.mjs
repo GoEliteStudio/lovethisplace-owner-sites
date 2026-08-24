@@ -110,6 +110,7 @@ assert(heritagePage.includes('class="gallery-grid"'), 'the main-page gallery use
 assert(heritagePage.includes('hosts__legacy') && !heritagePage.includes('hosts__portrait'), 'the host section does not imply that an estate photograph is an owner portrait');
 assert(heritagePage.includes('faq__layout') && heritagePage.includes('class="faq-item"'), 'the FAQ uses the refined split accordion layout');
 assert(schema.includes("'@type': 'FAQPage'"), 'villa FAQs generate FAQPage structured data');
+assert(!schema.includes('logo.webp'), 'schema omits unverified property and organization logo URLs');
 assert(heritagePage.includes('aspect-ratio: 3 / 2;'), 'every main-page gallery frame uses the approved 3:2 ratio');
 assert(heritagePage.includes('.gallery-card picture { overflow: hidden; background: transparent; }'), 'main-page gallery loading surfaces remain transparent and consistent');
 assert(heritagePage.includes('width: min(1280px, calc(100vw - clamp(36px, 8vw, 120px)))'), 'the owner gallery matches the storefront presentation width');
