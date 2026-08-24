@@ -60,7 +60,6 @@ export function buildSchemaGraph(input: BuildSchemaInput) {
     '@id': `${base}#organization`,
     name: villa.name,
     url: base,
-    logo: `${base}images/logo.webp`,
     brand: villa.name
   };
 
@@ -276,8 +275,7 @@ export function buildAuxPageSchema(input: BuildAuxPageSchemaInput) {
     '@type': 'Organization',
     '@id': `${base}#organization`,
     name: villaName,
-    url: villaPageUrl,
-    logo: toAbsolute(base, `/images/villas/${slug}/logo.webp`)
+    url: villaPageUrl
   };
 
   // WebSite (reference)
