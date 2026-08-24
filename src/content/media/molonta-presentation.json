@@ -1,0 +1,55 @@
+{
+    "hero-poolside": {
+        "dominantColor": "#f8f8f8",
+        "placeholder": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAABQBACdASoUAA0APyl8tVIuJ6UisAgBwCUJbACsOUAA43soLqDxpiMlrwlAAPudfNRWAJrxE5shGT1g5IBJqc0y6YCutpIv+vwOrXKv+O90+ZyBsVpbZ3LJuSHcu3wiI23SxEpRQZgFgu8vfmcuAJo/U68+pOWiDJvOhoAb9F1msXz4vpqRzAAA"
+    },
+    "hero-infinity-pool": {
+        "dominantColor": "#0868c8",
+        "placeholder": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAABQBACdASoUAA0APyl+tVIuKCUisAgBwCUJbACdMoMYAC4/UAPLE9S6MaWAAP1JbZIbSkbcGrN649862D1CgFmG66gmMsHrdp3PzSuT6uy82lf/DnQbbVzvRz5ACyE1v+NEF0gEbSHPoTZjlY+aJmZR2bpuCFUYAAA="
+    },
+    "hero-pool-panorama": {
+        "dominantColor": "#f8e8e8",
+        "placeholder": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAAAQBACdASoUAA0APyl8tVIuJ6UisAgBwCUJbACdABuszlCkfTocmdgqFgD+WaFg2xm11MVM8OzbDNiHuPELRs/VO+OSuUsTLqgAzmvHOGuapb4+Vy4Lyt7yLNETFub/GgnGgRshD0VbEaD6R9bz5rPbiEJKTgY4HkScXFBwIR08dEV5WCIAAA=="
+    },
+    "hero-sunset-pool": {
+        "dominantColor": "#080808",
+        "placeholder": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAACwAwCdASoUAA0APyl8tlIuJ6UisAgBwCUJaAC7ACG1RA89rdk+AADeMxG8omwsFs/wII92WbBFeJ9uD/lF4MpWJYA2PJcYRVUE8L7jOvfRP9BQnhbVrPE1Qs1Ql5POqyAAAA=="
+    },
+    "hero-estate-twilight": {
+        "dominantColor": "#181808",
+        "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAwCdASoUAA0APyl+tlKuKCUisAgBwCUJZgC7ACKq6Ft3l9lrWwAA/tjfCDfMHw3ZbU59HOWZut2PnYCaHr9tQ2FTekcrvE0ybJSNse4AAA=="
+    },
+    "hero-private-yacht": {
+        "dominantColor": "#080808",
+        "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAACQAwCdASoUAAsAPyl8tVIuJ6UisAgBwCUJQBYdhC188lhfQBXYAP7kELHJuwARxrmEj8cIIwP6urLnB7OSDqk87JvQJqfxXE6m7IRIpmU6mTqbk11ZjtHAAAA="
+    },
+    "hero-living-room": {
+        "dominantColor": "#685848",
+        "placeholder": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwAwCdASoUAAsAPyl8tVIuJ6UisAgBwCUJQBOgAPieGkoAAP47gl2V7MxbBBmMQPY6rFkxahcIdWYRi2GHxTeZM3uIdf0wiHZLpTRJMPUfHgiW7xBWb+yg7iiQ08VjabZTvvY3JVYLYeAA"
+    },
+    "hero-estate-night": {
+        "dominantColor": "#080808",
+        "placeholder": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAwAwCdASoUAAsAPyl+tlKuKCUisAgBwCUJZQAAg+/ow+dAAP7tY64lWUnhJboCB5lXthc1OUfVYU++YFDwTRGLq+TTc9GcDwAAAA=="
+    },
+    "private-beach": {
+        "dominantColor": "#184878"
+    },
+    "shoreline": {
+        "dominantColor": "#082848"
+    },
+    "estate-detail-01": {
+        "dominantColor": "#c8b8a8"
+    },
+    "estate-detail-02": {
+        "dominantColor": "#281818"
+    },
+    "estate-detail-03": {
+        "dominantColor": "#887868"
+    },
+    "estate-detail-04": {
+        "dominantColor": "#382818"
+    },
+    "estate-detail-05": {
+        "dominantColor": "#181818"
+    }
+}
