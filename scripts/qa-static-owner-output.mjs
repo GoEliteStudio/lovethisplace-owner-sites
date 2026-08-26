@@ -22,6 +22,65 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox'],
 });
 
+const measureCaptionAttachment = async (page, imageSelector, captionSelector) => page.evaluate(
+  ({ imageSelector, captionSelector }) => {
+    const image = document.querySelector(imageSelector);
+    const caption = document.querySelector(captionSelector);
+    if (!(image instanceof HTMLImageElement) || !(caption instanceof HTMLElement)) {
+      throw new Error('Lightbox image or caption is missing');
+    }
+
+    const imageRect = image.getBoundingClientRect();
+    const captionRect = caption.getBoundingClientRect();
+    const intrinsicWidth = image.naturalWidth || Number(image.getAttribute('width')) || 1;
+    const intrinsicHeight = image.naturalHeight || Number(image.getAttribute('height')) || 1;
+    const aspect = intrinsicWidth / intrinsicHeight;
+    const visibleHeight = Math.min(imageRect.height, imageRect.width / aspect);
+    const visibleTop = imageRect.top + ((imageRect.height - visibleHeight) / 2);
+    const visibleBottom = visibleTop + visibleHeight;
+
+    return {
+      gap: captionRect.top - visibleBottom,
+      caption: caption.textContent?.trim() || '',
+      captionClipped: caption.scrollHeight > caption.clientHeight + 1,
+    };
+  },
+  { imageSelector, captionSelector },
+);
+
+const auditEveryCaption = async (page, {
+  label,
+  count,
+  openSelector,
+  modalSelector,
+  nextSelector,
+  imageSelector,
+  captionSelector,
+  counterSelector,
+}) => {
+  await page.click(openSelector);
+  await page.waitForSelector(modalSelector);
+  const seen = new Set();
+
+  for (let step = 0; step < count; step += 1) {
+    const counter = await page.$eval(counterSelector, (element) => element.textContent?.trim() || '');
+    seen.add(counter);
+    const geometry = await measureCaptionAttachment(page, imageSelector, captionSelector);
+
+    if (!geometry.caption) throw new Error(`${label} ${counter}: caption is empty`);
+    if (geometry.captionClipped) throw new Error(`${label} ${counter}: caption is clipped`);
+    if (geometry.gap < 6 || geometry.gap > 18) {
+      throw new Error(`${label} ${counter}: visible image-to-caption gap is ${geometry.gap.toFixed(1)}px`);
+    }
+
+    if (step < count - 1) await page.click(nextSelector);
+  }
+
+  if (seen.size !== count) {
+    throw new Error(`${label}: expected ${count} unique slides, measured ${seen.size}`);
+  }
+};
+
 try {
   for (const viewport of [
     { name: 'mobile', width: 360, height: 800, deviceScaleFactor: 3, isMobile: true, hasTouch: true },
@@ -84,6 +143,37 @@ try {
     }
     if (failedImages.length > 0) {
       throw new Error(`${viewport.name}: broken gallery requests: ${failedImages.slice(0, 3).join(', ')}`);
+    }
+
+    if (viewport.name === 'mobile') {
+      const captionPage = await browser.newPage();
+      await captionPage.setViewport(viewport);
+
+      await captionPage.goto(base.href, { waitUntil: 'networkidle0' });
+      await auditEveryCaption(captionPage, {
+        label: 'curated gallery',
+        count: 15,
+        openSelector: '.gallery-card',
+        modalSelector: '#heritage-lightbox[open]',
+        nextSelector: '.lightbox__next',
+        imageSelector: '#heritage-lightbox img',
+        captionSelector: '#heritage-lightbox figcaption',
+        counterSelector: '.lightbox__counter',
+      });
+
+      await captionPage.goto(new URL('/gallery/', base).href, { waitUntil: 'networkidle0' });
+      await auditEveryCaption(captionPage, {
+        label: 'complete gallery',
+        count: 104,
+        openSelector: '[data-gallery-open]',
+        modalSelector: '[data-gallery-modal][open]',
+        nextSelector: '[data-gallery-next]',
+        imageSelector: '[data-gallery-image]',
+        captionSelector: '[data-gallery-caption]',
+        counterSelector: '[data-gallery-current]',
+      });
+
+      await captionPage.close();
     }
 
     console.log(JSON.stringify({ profile: viewport.name, ...result }));
