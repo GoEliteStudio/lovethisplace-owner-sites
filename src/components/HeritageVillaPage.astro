@@ -660,10 +660,9 @@ const lightboxItems = images.map((item: any, index: number) => ({
   .lightbox { width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; padding: 0; border: 0; background: rgba(8,8,7,.96); color: #fff; }
   .lightbox::backdrop { background: rgba(0,0,0,.78); }
   .lightbox[open] { display: grid; place-items: center; }
-  .lightbox figure { width: min(calc(100vw - 180px), 1500px); height: min(calc(100dvh - 60px), 920px); margin: 0; padding: 24px 36px; display: grid; grid-template-rows: minmax(0, 1fr) 54px; gap: 14px; background: #0e0d0c; box-sizing: border-box; }
-  .lightbox picture, .lightbox img { width: 100%; height: 100%; min-height: 0; }
-  .lightbox picture { display: block; background: transparent; }
-  .lightbox img { object-fit: contain; object-position: center; background: transparent; }
+  .lightbox figure { width: min(calc(100vw - 180px), 1500px); height: min(calc(100dvh - 60px), 920px); margin: 0; padding: 24px 36px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #0e0d0c; box-sizing: border-box; }
+  .lightbox picture { width: 100%; height: auto; max-height: calc(100dvh - 160px); display: flex; align-items: center; justify-content: center; background: transparent; }
+  .lightbox img { width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 160px); object-fit: contain; object-position: center; background: transparent; }
   .lightbox figcaption { width: 100%; min-height: 2.8em; max-height: 2.8em; margin: 0; overflow: hidden; color: rgba(255,255,255,.68); font-size: .8rem; line-height: 1.45; text-align: center; }
   .lightbox__counter { position: fixed; left: 28px; bottom: 24px; color: rgba(255,255,255,.62); font: 600 .68rem/1 var(--font-sans); letter-spacing: .12em; }
   .lightbox button { position: fixed; z-index: 2; border: 0; background: transparent; color: #fff; cursor: pointer; }
@@ -730,9 +729,11 @@ const lightboxItems = images.map((item: any, index: number) => ({
     .inquire__intro > p:not(.eyebrow) { margin-top: 22px; line-height: 1.65; }
     .inquire__promise { margin-top: 28px; }
     .inquire__form { padding: 24px 20px; }
-    .lightbox figure { width: 100vw; height: 100dvh; padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom)); grid-template-rows: minmax(0, 1fr) auto; gap: 6px; background: #080807; }
-    .lightbox img { object-fit: contain; }
-    .lightbox figcaption { max-width: calc(100vw - 72px); min-height: 1.2em; overflow: hidden; font-size: .68rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+    .lightbox figure { width: 100vw; height: 100dvh; padding: max(54px, calc(env(safe-area-inset-top) + 44px)) 8px max(18px, env(safe-area-inset-bottom)); gap: 10px; background: #080807; }
+    .lightbox picture { max-height: calc(100dvh - 132px); }
+    .lightbox img { max-height: calc(100dvh - 132px); object-fit: contain; }
+    .lightbox figcaption { width: auto; max-width: calc(100vw - 48px); min-height: 0; max-height: 2.7em; overflow: hidden; font-size: .7rem; line-height: 1.35; text-align: center; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .lightbox__counter { top: max(20px, env(safe-area-inset-top)); bottom: auto; left: 14px; }
     .lightbox__close { top: max(10px, env(safe-area-inset-top)); right: 12px; }
     .lightbox__previous, .lightbox__next { width: 42px; height: 54px; top: 50%; background: rgba(7,7,7,.58); transform: translateY(-50%); }
     .lightbox__previous { left: 8px; }
