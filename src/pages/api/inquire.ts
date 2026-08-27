@@ -193,10 +193,10 @@ export const POST: APIRoute = async ({ request }) => {
             failure,
           });
           if (!alertResult.ok) {
-            console.error('[inquire] Managed inquiry failure alert failed');
+            console.error('[inquire] Managed inquiry failure alert failed', { incidentId });
           }
         } catch {
-          console.error('[inquire] Managed inquiry failure alert failed');
+          console.error('[inquire] Managed inquiry failure alert failed', { incidentId });
         }
       };
 

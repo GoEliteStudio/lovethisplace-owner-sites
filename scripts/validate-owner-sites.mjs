@@ -101,6 +101,10 @@ assert(
   'managed inquiry alerts preserve the lead for the operator without logging traveler details'
 );
 assert(
+  inquiry.includes("console.error('[inquire] Managed inquiry failure alert failed', { incidentId })"),
+  'managed inquiry alert failures log the PII-free incident ID for reconciliation'
+);
+assert(
   inquiryForm.includes('name="phone"') &&
     inquiryForm.includes('name="consent"') &&
     inquiryForm.includes('Privacy policy'),
