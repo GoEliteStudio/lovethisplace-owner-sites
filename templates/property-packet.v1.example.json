@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "property": {
+    "name": "Example Estate",
+    "slug": "example-estate",
+    "type": "villa",
+    "country": "Country",
+    "region": "Region",
+    "city": "City",
+    "maxGuests": 8,
+    "bedrooms": 4,
+    "bathrooms": 4,
+    "currency": "EUR"
+  },
+  "authorization": {
+    "privatePreviewAuthorized": true,
+    "publicPromotionAuthorized": false,
+    "mediaUseAuthorized": true,
+    "evidenceReference": ".source/example/authorization-note.md"
+  },
+  "commercial": {
+    "model": "founding_fee",
+    "upfrontFee": 1500,
+    "commissionPercent": 10,
+    "termsSigned": false
+  },
+  "publication": {
+    "storefront": "private-preview",
+    "ownerSite": "private-preview",
+    "ownerTheme": "heritage-signature",
+    "canonicalDomain": "",
+    "indexingApproved": false
+  },
+  "inquiry": {
+    "recipientEmail": "owner@example.com",
+    "handledBy": "Go Elite Global",
+    "sourceCampaign": "founding_owner"
+  },
+  "facts": {
+    "ownerConfirmedAt": "2026-08-27",
+    "sourceUrls": ["https://example.com"],
+    "summary": "Source-backed factual summary for internal build use."
+  },
+  "rates": {
+    "ownerVerifiedAt": "2026-08-27",
+    "displayMode": "seasonal",
+    "notes": "Exact source-backed rate notes."
+  },
+  "policies": {
+    "cancellationPolicy": "",
+    "bookingTerms": "",
+    "legalEntityName": "",
+    "authorizedSignatories": []
+  },
+  "media": {
+    "archiveRelativePath": ".source/example/originals",
+    "archiveSha256": "replace-with-sha256",
+    "heroSelections": ["hero-01.jpg", "hero-02.jpg", "hero-03.jpg"],
+    "galleryChapters": ["Estate", "Pool and terraces", "Suites", "Sea and setting"]
+  },
+  "delivery": {
+    "startedAt": "",
+    "firstPreviewAt": "",
+    "operatorMinutes": null,
+    "engineGaps": []
+  }
+}
