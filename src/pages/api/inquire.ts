@@ -6,6 +6,7 @@ import type { InquiryOrigin, Listing } from '../../lib/firestore/types';
 import { generateApproveUrl, generateDeclineUrl } from '../../lib/signing';
 import { calculateQuote, getDefaultPricing } from '../../lib/pricing';
 import { sendOwnerNotification } from '../../lib/emailRouting';
+import { sendManagedInquiryFailureAlert } from '../../lib/managedInquiryAlert';
 import { getVillaBySlug, getVillaCurrency, getVillaOwnerEmail, getVillaNightlyRate, getVillaMinimumNights } from '../../config/i18n';
 
 type InquireBody = {
@@ -32,10 +33,11 @@ type InquireBody = {
   consent?: string;
 };
 
-const managedInquiryRoutes: Record<string, { endpoint: string; publicSlug: string }> = {
+const managedInquiryRoutes: Record<string, { endpoint: string; publicSlug: string; propertyName: string }> = {
   'molonta-heritage-estate': {
     endpoint: 'https://www.lovethisplace.co/api/storefront/inquiries',
     publicSlug: 'molonta-heritage-estate',
+    propertyName: 'Molonta Heritage Estate',
   },
 };
 const required = (v?: string) => typeof v === 'string' && v.trim().length > 0;
@@ -147,7 +149,8 @@ export const POST: APIRoute = async ({ request }) => {
       forwarded.set('locale', lang === 'es' ? 'es' : 'en');
       forwarded.set('surface', 'public');
       forwarded.set('kind', 'villa');
-      forwarded.set('idempotencyKey', crypto.randomUUID());
+      const incidentId = crypto.randomUUID();
+      forwarded.set('idempotencyKey', incidentId);
       forwarded.set('checkIn', payload.checkIn);
       forwarded.set('checkOut', payload.checkOut);
       forwarded.set('groupSize', String(payload.adults + payload.children));
@@ -175,6 +178,28 @@ export const POST: APIRoute = async ({ request }) => {
       const clientAddress = request.headers.get('x-vercel-forwarded-for');
       if (clientAddress) proxyHeaders['x-vercel-forwarded-for'] = clientAddress;
 
+      const notifyManagedInquiryFailure = async (failure: string) => {
+        try {
+          const alertResult = await sendManagedInquiryFailureAlert({
+            incidentId,
+            propertyName: managedRoute.propertyName,
+            fullName: payload.fullName,
+            email: payload.email,
+            whatsapp: payload.phone,
+            checkIn: payload.checkIn,
+            checkOut: payload.checkOut,
+            groupSize: payload.adults + payload.children,
+            notes: payload.notes,
+            failure,
+          });
+          if (!alertResult.ok) {
+            console.error('[inquire] Managed inquiry failure alert failed', { incidentId });
+          }
+        } catch {
+          console.error('[inquire] Managed inquiry failure alert failed', { incidentId });
+        }
+      };
+
       let proxyResponse: Response;
       try {
         proxyResponse = await fetch(upstream, {
@@ -184,6 +209,7 @@ export const POST: APIRoute = async ({ request }) => {
         });
       } catch {
         console.error('[inquire] Managed inquiry endpoint unavailable');
+        await notifyManagedInquiryFailure('network_error');
         return new Response(JSON.stringify({ ok: false, error: 'Inquiry destination unavailable' }), {
           status: 503,
           headers: { 'Content-Type': 'application/json' },
@@ -192,6 +218,7 @@ export const POST: APIRoute = async ({ request }) => {
 
       if (!proxyResponse.ok) {
         console.error('[inquire] Managed inquiry rejected', { status: proxyResponse.status });
+        await notifyManagedInquiryFailure(`upstream_http_${proxyResponse.status}`);
         return new Response(JSON.stringify({ ok: false, error: 'Inquiry destination unavailable' }), {
           status: 503,
           headers: { 'Content-Type': 'application/json' },

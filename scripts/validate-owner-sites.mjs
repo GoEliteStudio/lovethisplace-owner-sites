@@ -20,6 +20,7 @@ const sitemap = read('src/pages/sitemap.xml.ts');
 const robots = read('src/pages/robots.txt.ts');
 const layout = read('src/layouts/BaseLayout.astro');
 const inquiry = read('src/pages/api/inquire.ts');
+const managedInquiryAlert = read('src/lib/managedInquiryAlert.ts');
 const inquiryForm = read('src/components/InquiryForm.astro');
 const ownerAbout = read('src/pages/villas/[slug]/[lang]/about.astro');
 const heritagePage = read('src/components/HeritageVillaPage.astro');
@@ -86,6 +87,22 @@ assert(
     inquiry.includes("forwarded.set('kind', 'villa')") &&
     inquiry.includes("forwarded.set('utmSource', 'molonta_owner_showcase')"),
   'Molonta inquiries reuse the established LoveThisPlace villa pipeline with explicit attribution'
+);
+assert(
+  inquiry.includes("await notifyManagedInquiryFailure('network_error')") &&
+    inquiry.includes('await notifyManagedInquiryFailure(`upstream_http_${proxyResponse.status}`)'),
+  'Molonta network and upstream failures trigger the operator recovery alert'
+);
+assert(
+  managedInquiryAlert.includes('to: GOELITE_INBOX') &&
+    managedInquiryAlert.includes('replyTo: alert.email') &&
+    managedInquiryAlert.includes('Incident ID') &&
+    !managedInquiryAlert.includes('console.'),
+  'managed inquiry alerts preserve the lead for the operator without logging traveler details'
+);
+assert(
+  inquiry.includes("console.error('[inquire] Managed inquiry failure alert failed', { incidentId })"),
+  'managed inquiry alert failures log the PII-free incident ID for reconciliation'
 );
 assert(
   inquiryForm.includes('name="phone"') &&
